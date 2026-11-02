@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232C241D'/><path d='M30 68V32h24c8.8 0 16 7.2 16 16s-7.2 16-16 16H42v4h28v6H30z' fill='%23D5C1A7'/><circle cx='46' cy='48' r='5' fill='%23B58A54'/></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ROOMORA — AI-Powered Furniture Visualization & Interior Architecture Platform</title>
+    <meta name="description" content="Premium B2B AI furniture visualization platform that seamlessly integrates into furniture retailer websites. See real furniture pieces in your own room before buying." />
+    
+    <!-- Theme Initializer: Enforces Sand Light Mode as Default -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('roomora_theme');
+          if (saved === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+          } else {
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {
+          document.documentElement.classList.add('light');
+        }
+      })();
+    </script>
+
+    <!-- Google Fonts: Alexandria & IBM Plex Sans Arabic (Arabic) + Cormorant Garamond & Inter (English) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#F6F1E8] text-[#2C241D] antialiased selection:bg-[#DECDB8] selection:text-[#2C241D] dark:bg-[#141210] dark:text-[#F6F1E8] transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
