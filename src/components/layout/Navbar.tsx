@@ -39,6 +39,10 @@ export const Navbar: React.FC = () => {
       label: isRTL ? 'للمعارض' : 'RETAILERS', 
       path: '/integration' 
     },
+    { 
+      label: isRTL ? 'متجري' : 'MY STORE', 
+      path: '/my-store' 
+    },
   ];
 
   const isActive = (path?: string) => {
