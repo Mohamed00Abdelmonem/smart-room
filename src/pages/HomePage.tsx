@@ -190,24 +190,32 @@ export const HomePage: React.FC = () => {
 
   const currentSlide = roomSlides[activeSlide];
 
-  // Intersection observer for cinematic slide-in of Property Information Card
+  // Intersection observers for cinematic slide-in cards
   const [propertyCardVisible, setPropertyCardVisible] = useState(false);
   const propertyCardRef = useRef<HTMLDivElement>(null);
 
+  const [section3CardVisible, setSection3CardVisible] = useState(false);
+  const section3Ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setPropertyCardVisible(true);
-          observer.disconnect();
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target === propertyCardRef.current) {
+              setPropertyCardVisible(true);
+            }
+            if (entry.target === section3Ref.current) {
+              setSection3CardVisible(true);
+            }
+          }
+        });
       },
       { threshold: 0.15 }
     );
 
-    if (propertyCardRef.current) {
-      observer.observe(propertyCardRef.current);
-    }
+    if (propertyCardRef.current) observer.observe(propertyCardRef.current);
+    if (section3Ref.current) observer.observe(section3Ref.current);
 
     return () => observer.disconnect();
   }, []);
@@ -783,8 +791,8 @@ export const HomePage: React.FC = () => {
       <section className="py-24 sm:py-32 bg-[#F6F3EE] dark:bg-[#121110] border-t border-[#E2DBD0] dark:border-[#2D2A26] transition-colors">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           {/* Eyebrow */}
-          <div className="flex items-center justify-between pb-6 mb-12 border-b border-[#E2DBD0] dark:border-[#2D2A26]">
-            <span className="inline-block bg-[#EAE2D6] dark:bg-[#25211D] text-[#1E1E1E] dark:text-[#EAE2D6] text-[11px] tracking-[0.14em] uppercase px-3.5 py-1.5 rounded-md font-semibold">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 mb-10 sm:mb-12 border-b border-[#E2DBD0] dark:border-[#2D2A26]">
+            <span className="inline-block bg-[#EAE2D6] dark:bg-[#25211D] text-[#1E1E1E] dark:text-[#EAE2D6] text-[11px] tracking-[0.14em] uppercase px-3.5 py-1.5 rounded-md font-semibold w-fit">
               {isRTL ? '٠٣ / تأثيث الغرفة المتكاملة' : '03 / COMPLETE ROOM DESIGN'}
             </span>
             <span className="text-[11px] font-mono text-[#6E6A63] dark:text-[#A39E96] uppercase tracking-widest font-medium">
@@ -862,33 +870,47 @@ export const HomePage: React.FC = () => {
             </div>
 
             {/* Right Large Image with Sample Prompt Overlay (7 cols) */}
-            <div className="lg:col-span-7 order-1 lg:order-2 space-y-6">
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-stone-900 shadow-sm border border-[#E2DBD0] dark:border-[#2D2A26] group">
+            <div className="lg:col-span-7 order-1 lg:order-2 space-y-6" ref={section3Ref}>
+              <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-[500px] rounded-3xl overflow-hidden bg-stone-900 shadow-md border border-[#E2DBD0] dark:border-[#2D2A26] group">
                 <img
                   src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1800&q=85"
                   alt="Coordinated Living Room Interior Design"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/15 pointer-events-none" />
 
-                {/* Editorial Prompt Card Float with In-Image Slide & Floating Animation */}
-                <div className={`absolute bottom-3 sm:bottom-5 ${isRTL ? 'left-3 sm:left-5' : 'right-3 sm:right-5'} p-4 sm:p-5 rounded-2xl bg-[#F6F3EE]/90 dark:bg-[#1A1815]/90 backdrop-blur-xl border border-[#E2DBD0] dark:border-[#2D2A26] space-y-2.5 shadow-xl animate-in-image-card transition-all duration-500 ease-out hover:shadow-2xl hover:border-[#8C6D45]/40 w-[calc(100%-1.5rem)] sm:w-auto max-w-[340px] sm:max-w-[420px]`}>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="uppercase tracking-[0.14em] font-bold text-[#8C6D45]">
-                      {isRTL ? 'طلب العميل باللغة الطبيعية' : 'CUSTOMER NATURAL PROMPT'}
+                {/* Top Corner Calibration Badge */}
+                <div className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-[#1E1E1E]/80 backdrop-blur-md text-[#F6F3EE] px-3 py-1 rounded-full text-[9px] uppercase tracking-wider font-semibold border border-white/10 shadow-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>{isRTL ? 'تنسيق مكاني ذكي' : 'Spatial AI Curation'}</span>
+                </div>
+
+                {/* Floating Customer Prompt Card with Slide-In Animation */}
+                <div 
+                  className={`absolute bottom-3 sm:bottom-5 ${
+                    isRTL ? 'left-3 sm:left-5' : 'right-3 sm:right-5'
+                  } z-10 p-3.5 sm:p-4 rounded-2xl bg-[#F6F3EE]/90 dark:bg-[#1A1815]/90 backdrop-blur-xl border border-[#E2DBD0]/80 dark:border-[#2D2A26] w-[calc(100%-1.5rem)] sm:w-auto max-w-[320px] sm:max-w-[360px] text-xs shadow-xl space-y-2 transition-all duration-300 hover:shadow-2xl hover:border-[#8C6D45]/40 select-none ${
+                    section3CardVisible
+                      ? 'animate-property-card-float'
+                      : 'opacity-0 translate-x-8 pointer-events-none'
+                  }`}
+                >
+                  <div className="flex items-center justify-between text-xs pb-1 border-b border-[#E2DBD0]/60 dark:border-[#2D2A26]">
+                    <span className="uppercase tracking-[0.14em] font-bold text-[#8C6D45] text-[10px] sm:text-[11px]">
+                      {isRTL ? 'طلب العميل' : 'CUSTOMER PROMPT'}
                     </span>
-                    <span className="font-mono text-emerald-700 dark:text-emerald-400 font-bold">
+                    <span className="font-mono text-emerald-700 dark:text-emerald-400 font-bold text-[10px] sm:text-[11px]">
                       {isRTL ? 'الميزانية: 80,000 ج.م' : 'Budget: 80,000 EGP'}
                     </span>
                   </div>
-                  <p className="text-sm sm:text-base font-medium text-[#1E1E1E] dark:text-[#F8F7F3] leading-relaxed">
+                  <p className="text-[11px] sm:text-xs font-medium text-[#1E1E1E] dark:text-[#F8F7F3] leading-relaxed line-clamp-3 sm:line-clamp-4">
                     {isRTL
-                      ? '«أريد تأثيث غرفة المعيشة بأسلوب مينيمالي حديث. ميزانيتي 80,000 ج.م. أحتاج لكنبة مريحة على شكل حرف L، وحدة تلفزيون، طاولة قهوة، وسجادة. الغرفة 5م × 4م. أفضل درجات البيج الدافئ وألوان الخشب الطبيعي.»'
-                      : '"I want to furnish my living room with a modern minimalist style. My budget is 80,000 EGP. I need a comfortable L-shaped sofa, a TV unit, a coffee table, and a carpet. The room is 5m x 4m. I prefer warm beige and natural wood colors."'}
+                      ? '«أريد تأثيث غرفة المعيشة بأسلوب مينيمالي حديث. ميزانيتي 80,000 ج.م. أحتاج لكنبة مريحة على شكل حرف L، وحدة تلفزيون، طاولة قهوة وسجادة.»'
+                      : '"Modern minimalist living room: comfortable L-sofa, media console, coffee table, and area rug. Warm beige and natural oak palette."'}
                   </p>
-                  <div className="flex items-center justify-between text-[11px] text-[#6E6A63] dark:text-[#A39E96] pt-2 border-t border-[#E2DBD0] dark:border-[#2D2A26]">
-                    <span>{isRTL ? 'النتيجة: 4 قطع أثاث متناسقة من الكتالوج' : 'Result: 4 Matched Showroom Pieces'}</span>
-                    <span className="font-bold text-[#1E1E1E] dark:text-[#F8F7F3]">{isRTL ? 'التكلفة: 78,500 ج.م (وفر 1,500 ج.م)' : 'Cost: 78,500 EGP (1,500 Under)'}</span>
+                  <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-[#6E6A63] dark:text-[#A39E96] pt-1.5 border-t border-[#E2DBD0]/60 dark:border-[#2D2A26]">
+                    <span>{isRTL ? '٤ قطع معتمدة' : '4 Matched Pieces'}</span>
+                    <span className="font-bold text-[#1E1E1E] dark:text-[#F8F7F3]">{isRTL ? 'التكلفة: 78,500 ج.م' : 'Cost: 78,500 EGP'}</span>
                   </div>
                 </div>
               </div>
