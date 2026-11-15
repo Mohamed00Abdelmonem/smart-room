@@ -6,9 +6,9 @@ import { useCart } from '../context/CartContext';
 import { BeforeAfterSlider } from '../components/common/BeforeAfterSlider';
 import { LUXURY_PRODUCTS } from '../data/products';
 import Antigravity from '../components/common/Antigravity';
-import { 
-  ArrowRight, 
-  ArrowLeft, 
+import {
+  ArrowRight,
+  ArrowLeft,
   ChevronDown,
   ChevronRight,
   ChevronLeft,
@@ -19,7 +19,11 @@ import {
   Sparkles,
   Ruler,
   CheckCircle2,
-  Maximize2
+  Maximize2,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
@@ -220,6 +224,53 @@ export const HomePage: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Cinematic Video Player State & Controls
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const [progress, setProgress] = useState(0);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !videoRef.current.muted;
+    setIsMuted(videoRef.current.muted);
+  };
+
+  const handleTimeUpdate = () => {
+    if (!videoRef.current) return;
+    const current = videoRef.current.currentTime;
+    const duration = videoRef.current.duration || 1;
+    setProgress((current / duration) * 100);
+  };
+
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!videoRef.current) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    videoRef.current.currentTime = pos * (videoRef.current.duration || 1);
+  };
+
+  const toggleFullscreen = () => {
+    if (!videoRef.current) return;
+    const container = videoRef.current.parentElement;
+    if (!container) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else {
+      container.requestFullscreen().catch(() => {});
+    }
+  };
+
   return (
     <div className="bg-white dark:bg-[#121110] text-[#292722] dark:text-[#F8F7F3] overflow-hidden transition-colors duration-300">
       {/* =========================================================================
@@ -258,7 +309,7 @@ export const HomePage: React.FC = () => {
           </p>
 
           {/* CTA Button Group: Mobile full-width / Desktop inline */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
             {/* Primary Button: Solid dark pill */}
             <Link
               to="/visualizer"
@@ -274,6 +325,15 @@ export const HomePage: React.FC = () => {
             >
               <span>{isRTL ? 'لمعارض الأثاث' : 'FOR RETAILERS'}</span>
             </Link>
+
+            {/* Film Anchor Link: Subtle Sand/Glass pill */}
+            <a
+              href="#film"
+              className="border border-[#E2DBD0] dark:border-[#3D3833] bg-[#EAE2D6]/40 dark:bg-[#25211D] text-[#1E1E1E] dark:text-[#F8F7F3] rounded-full px-6 py-3.5 text-xs tracking-[0.12em] uppercase font-medium hover:bg-[#1E1E1E] hover:text-[#F6F3EE] dark:hover:bg-[#F8F7F3] dark:hover:text-[#1E1E1E] transition-all flex items-center justify-center gap-2 cursor-pointer text-center group"
+            >
+              <Play className="w-3 h-3 fill-current text-[#8C6D45] group-hover:text-[#F6F3EE] dark:group-hover:text-[#1E1E1E] transition-colors" />
+              <span>{isRTL ? 'مشاهدة الفيلم' : 'WATCH FILM'}</span>
+            </a>
           </div>
         </div>
 
@@ -303,11 +363,10 @@ export const HomePage: React.FC = () => {
             <div className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-20 flex items-center gap-1.5">
               <button
                 onClick={() => setShowMeasurements(!showMeasurements)}
-                className={`p-2 rounded-full text-xs transition-all backdrop-blur-md shadow-xs cursor-pointer ${
-                  showMeasurements
-                    ? 'bg-white text-[#1E1E1E] border border-white'
-                    : 'bg-[#1E1E1E]/70 text-[#F6F3EE] hover:bg-[#1E1E1E] border border-white/15'
-                }`}
+                className={`p-2 rounded-full text-xs transition-all backdrop-blur-md shadow-xs cursor-pointer ${showMeasurements
+                  ? 'bg-white text-[#1E1E1E] border border-white'
+                  : 'bg-[#1E1E1E]/70 text-[#F6F3EE] hover:bg-[#1E1E1E] border border-white/15'
+                  }`}
                 title={showMeasurements ? 'Hide Dimensions' : 'Show Dimensions'}
                 aria-label="Toggle spatial dimensions"
               >
@@ -317,14 +376,14 @@ export const HomePage: React.FC = () => {
 
             {/* Interactive SVG Overlay for Spatial Measurement Lines */}
             {showMeasurements && (
-              <svg 
-                className="absolute inset-0 w-full h-full pointer-events-none z-10" 
-                viewBox="0 0 100 100" 
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none z-10"
+                viewBox="0 0 100 100"
                 preserveAspectRatio="none"
               >
                 <defs>
                   <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#000000" floodOpacity="0.6"/>
+                    <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#000000" floodOpacity="0.6" />
                   </filter>
                 </defs>
                 {currentSlide.measurements.map((m, idx) => (
@@ -377,11 +436,10 @@ export const HomePage: React.FC = () => {
                   <div className="relative flex items-center justify-center cursor-pointer">
                     <span className="absolute -inset-2 rounded-full bg-white/40 animate-ping duration-1000 pointer-events-none" />
                     <button
-                      className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-bold border transition-all shadow-md ${
-                        isHovered
-                          ? 'bg-[#1E1E1E] text-white border-white scale-110'
-                          : 'bg-white/95 text-[#1E1E1E] border-black/10 hover:scale-105'
-                      }`}
+                      className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-bold border transition-all shadow-md ${isHovered
+                        ? 'bg-[#1E1E1E] text-white border-white scale-110'
+                        : 'bg-white/95 text-[#1E1E1E] border-black/10 hover:scale-105'
+                        }`}
                       aria-label={node.title}
                     >
                       <span>0{idx + 1}</span>
@@ -390,10 +448,9 @@ export const HomePage: React.FC = () => {
 
                   {/* Sleek Tooltip Popover on Hover / Click */}
                   {isHovered && (
-                    <div 
-                      className={`absolute z-30 bottom-8 ${
-                        node.x > 60 ? 'right-0' : node.x < 40 ? 'left-0' : '-left-20 sm:-left-24'
-                      } w-56 sm:w-64 bg-white/95 dark:bg-[#1A1815]/95 backdrop-blur-md rounded-xl p-3 sm:p-3.5 border border-[#E2DBD0] dark:border-[#3D3833] shadow-xl text-start animate-in fade-in zoom-in-95 duration-150`}
+                    <div
+                      className={`absolute z-30 bottom-8 ${node.x > 60 ? 'right-0' : node.x < 40 ? 'left-0' : '-left-20 sm:-left-24'
+                        } w-56 sm:w-64 bg-white/95 dark:bg-[#1A1815]/95 backdrop-blur-md rounded-xl p-3 sm:p-3.5 border border-[#E2DBD0] dark:border-[#3D3833] shadow-xl text-start animate-in fade-in zoom-in-95 duration-150`}
                     >
                       <div className="flex items-center justify-between gap-2 pb-1.5 border-b border-[#E2DBD0]/60 dark:border-[#2D2A26] mb-1.5 sm:mb-2">
                         <span className="text-[9px] uppercase tracking-wider font-bold text-[#8C6D45] truncate">
@@ -458,11 +515,10 @@ export const HomePage: React.FC = () => {
                     setActiveSlide(idx);
                     setHoveredNode(null);
                   }}
-                  className={`flex-1 sm:flex-initial px-2.5 sm:px-4 py-2 sm:py-1.5 rounded-xl text-[10px] sm:text-[11px] tracking-[0.12em] uppercase font-bold transition-all text-center whitespace-nowrap cursor-pointer ${
-                    activeSlide === idx
-                      ? 'bg-[#1E1E1E] text-[#F6F3EE] dark:bg-[#F8F7F3] dark:text-[#1E1E1E] shadow-sm'
-                      : 'text-[#6E6A63] hover:text-[#1E1E1E] dark:text-[#A39E96] dark:hover:text-white hover:bg-[#EAE2D6] dark:hover:bg-[#25211D]'
-                  }`}
+                  className={`flex-1 sm:flex-initial px-2.5 sm:px-4 py-2 sm:py-1.5 rounded-xl text-[10px] sm:text-[11px] tracking-[0.12em] uppercase font-bold transition-all text-center whitespace-nowrap cursor-pointer ${activeSlide === idx
+                    ? 'bg-[#1E1E1E] text-[#F6F3EE] dark:bg-[#F8F7F3] dark:text-[#1E1E1E] shadow-sm'
+                    : 'text-[#6E6A63] hover:text-[#1E1E1E] dark:text-[#A39E96] dark:hover:text-white hover:bg-[#EAE2D6] dark:hover:bg-[#25211D]'
+                    }`}
                 >
                   {slide.tag}
                 </button>
@@ -606,14 +662,12 @@ export const HomePage: React.FC = () => {
                 </div>
 
                 {/* Floating Architectural Property Information Card */}
-                <div 
-                  className={`absolute bottom-3 sm:bottom-5 ${
-                    isRTL ? 'left-3 sm:left-5' : 'right-3 sm:right-5'
-                  } z-10 p-3.5 sm:p-4 rounded-2xl bg-[#F6F3EE]/90 dark:bg-[#1A1815]/90 backdrop-blur-xl border border-[#E2DBD0]/80 dark:border-[#2D2A26] w-[calc(100%-1.5rem)] sm:w-auto max-w-[320px] sm:max-w-[350px] text-xs shadow-xl space-y-1.5 transition-all duration-300 hover:shadow-2xl hover:border-[#8C6D45]/40 select-none ${
-                    propertyCardVisible
+                <div
+                  className={`absolute bottom-3 sm:bottom-5 ${isRTL ? 'left-3 sm:left-5' : 'right-3 sm:right-5'
+                    } z-10 p-3.5 sm:p-4 rounded-2xl bg-[#F6F3EE]/90 dark:bg-[#1A1815]/90 backdrop-blur-xl border border-[#E2DBD0]/80 dark:border-[#2D2A26] w-[calc(100%-1.5rem)] sm:w-auto max-w-[320px] sm:max-w-[350px] text-xs shadow-xl space-y-1.5 transition-all duration-300 hover:shadow-2xl hover:border-[#8C6D45]/40 select-none ${propertyCardVisible
                       ? 'animate-property-card-float'
                       : 'opacity-0 translate-x-8 pointer-events-none'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between gap-3">
                     <p className="font-bold text-xs sm:text-sm text-[#1E1E1E] dark:text-[#F8F7F3] leading-snug">
@@ -700,6 +754,160 @@ export const HomePage: React.FC = () => {
                 </Link>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* =========================================================================
+          CINEMATIC BRAND FILM SECTION – STOP IMAGINING. START SEEING.
+          ========================================================================= */}
+      <section id="film" className="py-24 sm:py-32 bg-[#121110] text-[#F8F7F3] border-t border-[#2D2A26] relative overflow-hidden transition-colors">
+        {/* Subtle Ambient Radial Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#8C6D45]/15 blur-[120px] pointer-events-none rounded-full" />
+
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 relative z-10 space-y-10 sm:space-y-14">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto space-y-4">
+            <div className="inline-flex items-center gap-2 bg-[#25211D] border border-white/10 text-[#EAE2D6] text-[11px] tracking-[0.18em] uppercase px-4 py-1.5 rounded-full font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8C6D45] animate-pulse" />
+              <span>{isRTL ? 'الفيلم التعريفي الرسمي' : 'OFFICIAL CINEMATIC CAMPAIGN'}</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] text-white leading-[1.08]">
+              {isRTL ? (
+                <>
+                  توقف عن التخيّل.<br />
+                  <span className="text-[#8C6D45]">ابدأ برؤية مساحتك حقيقة.</span>
+                </>
+              ) : (
+                <>
+                  Stop Imagining.<br />
+                  <span className="text-[#8C6D45]">Start Seeing.</span>
+                </>
+              )}
+            </h2>
+
+            <p className="text-sm sm:text-base text-[#A39E96] max-w-xl mx-auto leading-relaxed font-normal">
+              {isRTL
+                ? 'شاهد كيف تلغي فيستايا فجوة التردد والتخمين، محولةً جدران منزلك الفارغة إلى تحف معمارية مؤثثة بقطع حقيقية ومقاسات دقيقة ١:١.'
+                : 'Watch how VESTAIA bridges the imagination gap, transforming bare rooms into architecturally curated sanctuaries with certified showroom pieces at true scale.'}
+            </p>
+          </div>
+
+          {/* Video Player Card */}
+          <div className="relative rounded-3xl overflow-hidden bg-black/80 border border-white/15 shadow-2xl group aspect-[16/9] max-w-5xl mx-auto flex items-center justify-center">
+            <video
+              ref={videoRef}
+              src="/videos/gemini_generated_video.mp4"
+              className="w-full h-full object-cover object-center cursor-pointer"
+              playsInline
+              loop
+              muted={isMuted}
+              autoPlay
+              onTimeUpdate={handleTimeUpdate}
+              onClick={togglePlay}
+            />
+
+            {/* Video Overlays & Ambient Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30 pointer-events-none" />
+
+            {/* Top Bar Badges */}
+            <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20 pointer-events-none">
+              <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] tracking-widest font-mono text-white/90 border border-white/10">
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span>4K CINEMA · 60 FPS</span>
+              </div>
+              <div className="hidden sm:flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] tracking-wider uppercase font-semibold text-[#EAE2D6] border border-white/10">
+                <span>VESTAIA SPATIAL PREVIEW</span>
+              </div>
+            </div>
+
+            {/* Big Center Play/Pause Button when paused */}
+            {!isPlaying && (
+              <button
+                onClick={togglePlay}
+                className="absolute z-20 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30 flex items-center justify-center text-white transition-all transform hover:scale-110 cursor-pointer shadow-2xl"
+                aria-label="Play Video"
+              >
+                <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current translate-x-0.5" />
+              </button>
+            )}
+
+            {/* Bottom Controls Bar */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 z-20 flex flex-col gap-2.5 bg-gradient-to-t from-black/90 to-transparent">
+              {/* Progress Bar */}
+              <div 
+                className="w-full h-1 sm:h-1.5 bg-white/20 rounded-full overflow-hidden cursor-pointer relative"
+                onClick={handleProgressClick}
+              >
+                <div 
+                  className="h-full bg-gradient-to-r from-[#8C6D45] to-[#EAE2D6] rounded-full transition-all duration-100"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between text-xs text-white/90">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={togglePlay}
+                    className="p-1.5 rounded-full hover:bg-white/15 transition cursor-pointer"
+                    aria-label="Play/Pause"
+                  >
+                    {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                  </button>
+
+                  <button
+                    onClick={toggleMute}
+                    className="p-1.5 rounded-full hover:bg-white/15 transition cursor-pointer flex items-center gap-1.5"
+                    aria-label="Toggle Audio"
+                  >
+                    {isMuted ? (
+                      <>
+                        <VolumeX className="w-4 h-4 text-white/70" />
+                        <span className="text-[10px] uppercase font-mono tracking-wider hidden sm:inline">MUTED</span>
+                      </>
+                    ) : (
+                      <>
+                        <Volume2 className="w-4 h-4 text-emerald-400" />
+                        <span className="text-[10px] uppercase font-mono tracking-wider hidden sm:inline">SOUND ON</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] font-mono text-white/60 tracking-wider">
+                    VESTAIA FILM · 2026
+                  </span>
+                  <button
+                    onClick={toggleFullscreen}
+                    className="p-1.5 rounded-full hover:bg-white/15 transition cursor-pointer"
+                    aria-label="Fullscreen"
+                  >
+                    <Maximize2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick CTA Pills underneath */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <Link
+              to="/visualizer"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#F6F3EE] hover:bg-white text-[#1E1E1E] text-xs uppercase tracking-[0.12em] font-bold transition shadow-lg flex items-center justify-center gap-2 cursor-pointer group"
+            >
+              <span>{isRTL ? 'جرّب استوديو الذكاء الاصطناعي الآن' : 'TRY VESTAIA AI STUDIO'}</span>
+              <Arrow className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+
+            <Link
+              to="/showroom"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-transparent hover:bg-white/10 text-white border border-white/25 text-xs uppercase tracking-[0.12em] font-semibold transition flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>{isRTL ? 'استكشف قطع المعرض المعتمدة' : 'BROWSE SHOWROOM CATALOG'}</span>
+            </Link>
           </div>
         </div>
       </section>
@@ -886,14 +1094,12 @@ export const HomePage: React.FC = () => {
                 </div>
 
                 {/* Floating Customer Prompt Card with Slide-In Animation */}
-                <div 
-                  className={`absolute bottom-3 sm:bottom-5 ${
-                    isRTL ? 'left-3 sm:left-5' : 'right-3 sm:right-5'
-                  } z-10 p-3.5 sm:p-4 rounded-2xl bg-[#F6F3EE]/90 dark:bg-[#1A1815]/90 backdrop-blur-xl border border-[#E2DBD0]/80 dark:border-[#2D2A26] w-[calc(100%-1.5rem)] sm:w-auto max-w-[320px] sm:max-w-[360px] text-xs shadow-xl space-y-2 transition-all duration-300 hover:shadow-2xl hover:border-[#8C6D45]/40 select-none ${
-                    section3CardVisible
+                <div
+                  className={`absolute bottom-3 sm:bottom-5 ${isRTL ? 'left-3 sm:left-5' : 'right-3 sm:right-5'
+                    } z-10 p-3.5 sm:p-4 rounded-2xl bg-[#F6F3EE]/90 dark:bg-[#1A1815]/90 backdrop-blur-xl border border-[#E2DBD0]/80 dark:border-[#2D2A26] w-[calc(100%-1.5rem)] sm:w-auto max-w-[320px] sm:max-w-[360px] text-xs shadow-xl space-y-2 transition-all duration-300 hover:shadow-2xl hover:border-[#8C6D45]/40 select-none ${section3CardVisible
                       ? 'animate-property-card-float'
                       : 'opacity-0 translate-x-8 pointer-events-none'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between text-xs pb-1 border-b border-[#E2DBD0]/60 dark:border-[#2D2A26]">
                     <span className="uppercase tracking-[0.14em] font-bold text-[#8C6D45] text-[10px] sm:text-[11px]">
