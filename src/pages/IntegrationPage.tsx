@@ -82,7 +82,7 @@ console.log(result.renderedImageUrl, result.fitClearancePassed);`;
 
           <p className="text-sm sm:text-base text-[#6E6A63] dark:text-[#A39E96] leading-relaxed max-w-2xl mx-auto font-normal">
             {isRTL
-              ? 'سواء كان متجرك يعمل على شوبيفاي، ووكومرس، ماجنتو، أو بنية برمجية خاصة، يندمج فيستايا دون الحاجة لإعادة كتابة كود الخادم، مع الحفاظ الكامل على بوابات الدفع ومخزونك الحالي.'
+              ? 'سواء كان متجرك يعمل على شوبيفاي، ووكومرس، ماجنتو، أو بنية برمجية خاصة، يندمج ڤيستا AI دون الحاجة لإعادة كتابة كود الخادم، مع الحفاظ الكامل على بوابات الدفع ومخزونك الحالي.'
               : 'Whether you run on Shopify, WooCommerce, Magento, or a custom headless stack, Vestaia embeds with zero backend rewrites. Keep your existing payment gateway and fulfillment workflows intact.'}
           </p>
 
@@ -384,11 +384,11 @@ console.log(result.renderedImageUrl, result.fitClearancePassed);`;
               {isRTL ? 'دراسة حالة واقعية لمعرض في مصر' : 'Egyptian Showroom Case Study'}
             </span>
             <h3 className="text-2xl sm:text-3xl font-editorial font-bold text-[#292722] dark:text-[#F8F7F3]">
-              {isRTL ? '"ساعدتنا فيستايا في بيع 4 أضعاف الكنب والركنات عبر موقعنا في الشيخ زايد."' : '"Vestaia helped our Sheikh Zayed showroom close 4x more sectionals online."'}
+              {isRTL ? '"ساعدتنا ڤيستا AI في بيع 4 أضعاف الكنب والركنات عبر موقعنا في الشيخ زايد."' : '"Vestaia helped our Sheikh Zayed showroom close 4x more sectionals online."'}
             </h3>
             <p className="text-xs sm:text-sm text-[#6E6A63] dark:text-[#A39E96] leading-relaxed font-normal">
               {isRTL
-                ? '"تصميمات الشقق في مصر تتنوع بشدة. كان عملاؤنا يترددون خوفاً من عدم ملائمة الركنة ذات الـ 3 أمتار لمدخل الشقة أو مصعد العمارة. مع فحص المقاسات المكاني في فيستايا، انخفضت نسبة الإرجاع إلى أقل من 1.5%."'
+                ? '"تصميمات الشقق في مصر تتنوع بشدة. كان عملاؤنا يترددون خوفاً من عدم ملائمة الركنة ذات الـ 3 أمتار لمدخل الشقة أو مصعد العمارة. مع فحص المقاسات المكاني في ڤيستا AI، انخفضت نسبة الإرجاع إلى أقل من 1.5%."'
                 : '"Egyptian apartment layouts vary tremendously. Our clients used to worry about fitting 3-meter sectionals past tight elevator shafts. With Vestaia\'s dimensional checks, our return rate dropped to under 1.5%."'}
             </p>
             <p className="text-xs font-bold text-[#B58A54]">

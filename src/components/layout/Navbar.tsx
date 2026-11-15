@@ -58,7 +58,7 @@ export const Navbar: React.FC = () => {
             V
           </div>
           <span className="font-editorial text-xl sm:text-2xl tracking-[0.15em] text-[#1E1E1E] dark:text-[#F8F7F3] uppercase font-medium">
-            {isRTL ? 'فيستايا' : 'VESTAIA'}
+            {isRTL ? 'ڤيستا AI' : 'VESTA-AI'}
           </span>
         </Link>
 

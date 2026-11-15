@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { CartProvider } from './context/CartContext';
@@ -20,15 +20,7 @@ import { ShowroomPage } from './pages/ShowroomPage';
 import { VisualizerPage } from './pages/VisualizerPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { IntegrationPage } from './pages/IntegrationPage';
-
-// Scroll to top helper
-const ScrollToTop: React.FC = () => {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  return null;
-};
+import { ScrollToTop } from './components/common/ScrollToTop';
 
 export function App() {
   return (

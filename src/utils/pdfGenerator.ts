@@ -58,7 +58,7 @@ export function generateArchitecturalSpecSheetPdf(data: SpecSheetData): void {
 <html lang="${isRTL ? 'ar' : 'en'}" dir="${isRTL ? 'rtl' : 'ltr'}">
 <head>
   <meta charset="UTF-8">
-  <title>VESTAIA - ${isRTL ? 'المقايسة المعمارية والمواصفات الفنية' : 'Architectural Spec Sheet'} - ${docId}</title>
+  <title>VESTA-AI - ${isRTL ? 'المقايسة المعمارية والمواصفات الفنية' : 'Architectural Spec Sheet'} - ${docId}</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
@@ -509,7 +509,7 @@ export function generateArchitecturalSpecSheetPdf(data: SpecSheetData): void {
     <!-- Document Header -->
     <div class="doc-header">
       <div>
-        <div class="brand-title">VESTAIA</div>
+        <div class="brand-title">VESTA-AI</div>
         <div class="brand-sub">${isRTL ? 'منصة الذكاء الاصطناعي المكاني ومقايسات الأثاث المعمارية' : 'Spatial AI Interior Architecture & Showroom Specifications'}</div>
         <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
           ${isRTL ? 'الشريك التقني للمعارض الفاخرة · فرع التجمع الخامس، القاهرة' : 'B2B Showroom Retail Partner · New Cairo Design Hub, Egypt'}
@@ -641,8 +641,8 @@ export function generateArchitecturalSpecSheetPdf(data: SpecSheetData): void {
     <!-- Footer Signatures & QR Verification -->
     <div class="doc-footer">
       <div>
-        <div><strong>VESTAIA AI SPATIAL ARCHITECTURE PLATFORM</strong></div>
-        <div>${isRTL ? 'هذه الوثيقة صادرة ومعتمدة إلكترونياً من محرك فيستايا للذكاء الاصطناعي المكاني.' : 'This document is electronically authenticated by the Vestaia Spatial Simulation Engine.'}</div>
+        <div><strong>VESTA-AI SPATIAL ARCHITECTURE PLATFORM</strong></div>
+        <div>${isRTL ? 'هذه الوثيقة صادرة ومعتمدة إلكترونياً من محرك ڤيستا AI للذكاء الاصطناعي المكاني.' : 'This document is electronically authenticated by the VESTA-AI Spatial Simulation Engine.'}</div>
         <div>${isRTL ? 'صلاحية الأسعار وحجز القطع: ٣٠ يوماً من تاريخ التوليد.' : 'Pricing and inventory lock guarantee valid for 30 calendar days.'}</div>
       </div>
 
@@ -683,7 +683,7 @@ export function generateArchitecturalSpecSheetPdf(data: SpecSheetData): void {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `VESTAIA-SpecSheet-${docId}.html`;
+    a.download = `VESTA-AI-SpecSheet-${docId}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

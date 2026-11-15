@@ -1,4 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useLayoutEffect } from 'react';
+import gsap from 'gsap';
+import { Flip } from 'gsap/Flip';
 import { LUXURY_PRODUCTS, CATEGORIES } from '../data/products';
 import { ProductCard } from '../components/common/ProductCard';
 import { useVisualizer } from '../context/VisualizerContext';
@@ -12,9 +14,14 @@ import {
   ShieldCheck,
   CreditCard,
   Smartphone,
-  Palette
+  Palette,
+  LayoutGrid,
+  Columns3,
+  Columns2
 } from 'lucide-react';
 import type { ProductCategory, RoomStyle } from '../types';
+
+gsap.registerPlugin(Flip);
 
 const BANNER_THEMES = {
   sand: {
@@ -112,6 +119,17 @@ export const ShowroomPage: React.FC = () => {
   const [selectedStyle, setSelectedStyle] = useState<string>('all');
   const [maxPrice, setMaxPrice] = useState<number>(65000);
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc'>('featured');
+  const [gridMode, setGridMode] = useState<'4-col' | '3-col' | '2-col'>('4-col');
+
+  const gridRef = useRef<HTMLDivElement>(null);
+  const lastStateRef = useRef<any>(null);
+
+  // GSAP Flip state capture helper
+  const captureFlip = () => {
+    if (gridRef.current) {
+      lastStateRef.current = Flip.getState(gridRef.current.querySelectorAll('.product-flip-card'));
+    }
+  };
 
   // Interactive Banner Color Theme Tester
   const [bannerColor, setBannerColor] = useState<BannerThemeKey>(() => {
@@ -166,6 +184,25 @@ export const ShowroomPage: React.FC = () => {
       return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
     });
   }, [selectedCategory, selectedStyle, maxPrice, searchQuery, sortBy]);
+
+  // GSAP Flip transition whenever filtered products or grid density changes
+  useLayoutEffect(() => {
+    if (!gridRef.current || !lastStateRef.current) return;
+    Flip.from(lastStateRef.current, {
+      duration: 0.65,
+      ease: 'power3.out',
+      stagger: 0.02,
+      absolute: true,
+      scale: true,
+      onEnter: (elements) => {
+        gsap.fromTo(elements, { opacity: 0, scale: 0.9, y: 15 }, { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: 'power3.out' });
+      },
+      onLeave: (elements) => {
+        gsap.to(elements, { opacity: 0, scale: 0.9, duration: 0.3, ease: 'power2.in' });
+      }
+    });
+    lastStateRef.current = null;
+  }, [filteredProducts, gridMode]);
 
   const allStyles: { id: RoomStyle; label: string; labelAr: string }[] = [
     { id: 'Minimalist', label: 'Minimalist', labelAr: 'مينيمالي دافئ' },
@@ -283,7 +320,10 @@ export const ShowroomPage: React.FC = () => {
           </span>
           <div className="flex flex-wrap items-center gap-2">
             <button
-              onClick={() => setSelectedBrand('all')}
+              onClick={() => {
+                captureFlip();
+                setSelectedBrand('all');
+              }}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 selectedBrand === 'all'
                   ? 'bg-[#292722] text-white dark:bg-[#F8F7F3] dark:text-[#292722] shadow-xs'
@@ -293,7 +333,10 @@ export const ShowroomPage: React.FC = () => {
               {isRTL ? 'جميع المنتجات (20)' : 'All Products (20)'}
             </button>
             <button
-              onClick={() => setSelectedBrand('ikea')}
+              onClick={() => {
+                captureFlip();
+                setSelectedBrand('ikea');
+              }}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 selectedBrand === 'ikea'
                   ? 'bg-[#0058A3] text-white shadow-xs'
@@ -304,7 +347,10 @@ export const ShowroomPage: React.FC = () => {
               <span>{isRTL ? 'أيكيا مصر (10 قطع أصلية)' : 'IKEA Egypt Store (10)'}</span>
             </button>
             <button
-              onClick={() => setSelectedBrand('atelier')}
+              onClick={() => {
+                captureFlip();
+                setSelectedBrand('atelier');
+              }}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 selectedBrand === 'atelier'
                   ? 'bg-[#B58A54] text-white shadow-xs'
@@ -316,7 +362,7 @@ export const ShowroomPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Category Pills Navigation */}
+        {/* Category Pills Navigation with GSAP Flip */}
         <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none mb-6">
           {CATEGORIES.map((cat) => {
             const isSelected = selectedCategory === cat.id;
@@ -324,7 +370,10 @@ export const ShowroomPage: React.FC = () => {
             return (
               <button
                 key={cat.id}
-                onClick={() => setSelectedCategory(cat.id as ProductCategory)}
+                onClick={() => {
+                  captureFlip();
+                  setSelectedCategory(cat.id as ProductCategory);
+                }}
                 className={`px-4 py-2.5 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 ${
                   isSelected
                     ? 'bg-[#292722] text-white dark:bg-[#F8F7F3] dark:text-[#292722] shadow-sm'
@@ -441,38 +490,110 @@ export const ShowroomPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Active filter counter and reset */}
-          <div className="mt-3 pt-3 border-t border-[#E8E2D9] dark:border-[#2D2A26] flex items-center justify-between text-xs text-[#6E6A63] dark:text-[#A39E96]">
-            <span>
-              {isRTL
-                ? `عرض ${filteredProducts.length} قطعة أثاث فاخرة من المعرض`
-                : `Showing ${filteredProducts.length} luxury showroom products`}
-            </span>
-            {(selectedCategory !== 'all' || selectedStyle !== 'all' || searchQuery || maxPrice < 65000) && (
+          {/* Active filter counter, GSAP Flip Layout Density Toggles, and reset */}
+          <div className="mt-3 pt-3 border-t border-[#E8E2D9] dark:border-[#2D2A26] flex flex-wrap items-center justify-between gap-3 text-xs text-[#6E6A63] dark:text-[#A39E96]">
+            <div className="flex items-center gap-4">
+              <span>
+                {isRTL
+                  ? `عرض ${filteredProducts.length} قطعة أثاث فاخرة من المعرض`
+                  : `Showing ${filteredProducts.length} luxury showroom products`}
+              </span>
+              {(selectedCategory !== 'all' || selectedStyle !== 'all' || searchQuery || maxPrice < 65000) && (
+                <button
+                  onClick={() => {
+                    captureFlip();
+                    handleResetFilters();
+                  }}
+                  className="text-xs text-[#B58A54] hover:text-[#292722] dark:hover:text-[#F8F7F3] underline font-bold cursor-pointer"
+                >
+                  {t.resetFilters}
+                </button>
+              )}
+            </div>
+
+            {/* GSAP Flip Layout Density Switcher */}
+            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#F8F7F3] dark:bg-[#141210] border border-[#E8E2D9] dark:border-[#2D2A26]">
+              <span className="text-[10px] uppercase font-mono tracking-wider px-2 text-[#8C6D45] hidden sm:inline">
+                {isRTL ? 'تنسيق الشبكة:' : 'Grid View:'}
+              </span>
               <button
-                onClick={handleResetFilters}
-                className="text-xs text-[#B58A54] hover:text-[#292722] dark:hover:text-[#F8F7F3] underline font-bold cursor-pointer"
+                onClick={() => {
+                  if (gridMode === '4-col') return;
+                  captureFlip();
+                  setGridMode('4-col');
+                }}
+                className={`p-1.5 rounded-lg text-xs transition-all cursor-pointer flex items-center gap-1 ${
+                  gridMode === '4-col'
+                    ? 'bg-[#292722] text-white dark:bg-[#F8F7F3] dark:text-[#292722] shadow-xs'
+                    : 'text-[#6E6A63] hover:text-[#292722] dark:text-[#A39E96]'
+                }`}
+                title="4-Column Showroom Grid"
               >
-                {t.resetFilters}
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span className="text-[10px] font-bold">4x</span>
               </button>
-            )}
+              <button
+                onClick={() => {
+                  if (gridMode === '3-col') return;
+                  captureFlip();
+                  setGridMode('3-col');
+                }}
+                className={`p-1.5 rounded-lg text-xs transition-all cursor-pointer flex items-center gap-1 ${
+                  gridMode === '3-col'
+                    ? 'bg-[#292722] text-white dark:bg-[#F8F7F3] dark:text-[#292722] shadow-xs'
+                    : 'text-[#6E6A63] hover:text-[#292722] dark:text-[#A39E96]'
+                }`}
+                title="3-Column Editorial Grid"
+              >
+                <Columns3 className="w-3.5 h-3.5" />
+                <span className="text-[10px] font-bold">3x</span>
+              </button>
+              <button
+                onClick={() => {
+                  if (gridMode === '2-col') return;
+                  captureFlip();
+                  setGridMode('2-col');
+                }}
+                className={`p-1.5 rounded-lg text-xs transition-all cursor-pointer flex items-center gap-1 ${
+                  gridMode === '2-col'
+                    ? 'bg-[#292722] text-white dark:bg-[#F8F7F3] dark:text-[#292722] shadow-xs'
+                    : 'text-[#6E6A63] hover:text-[#292722] dark:text-[#A39E96]'
+                }`}
+                title="2-Column Architectural Focus"
+              >
+                <Columns2 className="w-3.5 h-3.5" />
+                <span className="text-[10px] font-bold">2x</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Product Grid */}
+        {/* Product Grid with GSAP Flip Transition */}
         {filteredProducts.length === 0 ? (
           <div className="py-20 text-center bg-white dark:bg-[#1C1A17] rounded-3xl border border-[#E8E2D9] dark:border-[#2D2A26] p-8 space-y-3">
             <p className="text-base font-bold text-[#292722] dark:text-[#F8F7F3]">{t.noProductsFound}</p>
             <p className="text-xs text-[#6E6A63] dark:text-[#A39E96]">{t.noProductsHint}</p>
             <button
-              onClick={handleResetFilters}
+              onClick={() => {
+                captureFlip();
+                handleResetFilters();
+              }}
               className="mt-2 px-5 py-2.5 rounded-xl bg-[#292722] text-white dark:bg-[#F8F7F3] dark:text-[#292722] text-xs font-bold cursor-pointer"
             >
               {t.resetFilters}
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div 
+            ref={gridRef}
+            className={`grid gap-6 transition-all duration-300 ${
+              gridMode === '4-col'
+                ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                : gridMode === '3-col'
+                ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 sm:gap-8'
+                : 'grid-cols-1 sm:grid-cols-2 lg:gap-8'
+            }`}
+          >
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

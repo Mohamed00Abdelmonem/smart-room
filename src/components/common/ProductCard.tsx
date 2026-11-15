@@ -23,7 +23,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const displayLocation = isRTL && product.stockLocationAr ? product.stockLocationAr : product.stockLocation;
 
   return (
-    <div className="taste-card group relative flex flex-col bg-white dark:bg-[#1C1A17] rounded-2xl border border-[#E8E2D9] dark:border-[#2D2A26] overflow-hidden hover:border-[#CDBBA5] dark:hover:border-[#CDBBA5]/60 transition-all duration-300 hover:shadow-md">
+    <div 
+      data-flip-id={product.id}
+      className="product-flip-card taste-card group relative flex flex-col bg-white dark:bg-[#1C1A17] rounded-2xl border border-[#E8E2D9] dark:border-[#2D2A26] overflow-hidden hover:border-[#CDBBA5] dark:hover:border-[#CDBBA5]/60 transition-colors duration-300 hover:shadow-md will-change-transform"
+    >
       {/* Image Container with Badges */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F8F7F3] dark:bg-[#141210]">
         <img

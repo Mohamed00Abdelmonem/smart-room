@@ -259,7 +259,7 @@ export function generateProposalsForRoom(
         { name: 'Rich Charcoal', nameAr: 'فحمي عميق', hex: '#2C241D' },
       ],
       previewImageUrl:
-        'https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=1600&q=80',
+        'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=80',
       productIds: ['sofa-elysian-3seat', 'storage-vesper-credenza', 'chair-lumina-armchair', 'lighting-helios-lamp'],
       spaceUtilizationScore: 88,
       clearanceRating: 'Optimal' as const,

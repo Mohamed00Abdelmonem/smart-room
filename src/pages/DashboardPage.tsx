@@ -513,7 +513,7 @@ export const DashboardPage: React.FC = () => {
                   {isRTL ? 'كود التثبيت في الموقع وإعدادات API' : 'Website Widget & API Configuration'}
                 </h3>
                 <p className="text-xs text-[#6E6A63] dark:text-[#A39E96] font-normal">
-                  {isRTL ? 'ادمج فيستايا في متجر شوبيفاي أو ووكومرس أو ماجنتو بكود جافاسكريبت واحد فقط.' : 'Embed Vestaia into your Shopify, WooCommerce, Magento, or custom React storefront with a single script tag.'}
+                  {isRTL ? 'ادمج ڤيستا AI في متجر شوبيفاي أو ووكومرس أو ماجنتو بكود جافاسكريبت واحد فقط.' : 'Embed Vestaia into your Shopify, WooCommerce, Magento, or custom React storefront with a single script tag.'}
                 </p>
               </div>
 
@@ -586,7 +586,7 @@ export const DashboardPage: React.FC = () => {
                     {/* The Live Button */}
                     <button className="w-full py-3 rounded-xl bg-[#292722] text-white dark:bg-[#F8F7F3] dark:text-[#292722] text-xs font-bold flex items-center justify-center gap-2 shadow-sm">
                       <Sparkles className="w-3.5 h-3.5 text-[#B58A54]" />
-                      <span>{t.tryInRoomBtn} (VESTAIA)</span>
+                      <span>{t.tryInRoomBtn} (VESTA-AI)</span>
                     </button>
                     <button className="w-full py-3 rounded-xl bg-[#E9DFD0] dark:bg-[#24201C] text-[#292722] dark:text-[#F8F7F3] text-xs font-bold border border-[#CDBBA5]/70">
                       {isRTL ? 'أضف لسلة المعرض' : 'Add to Showroom Cart'}

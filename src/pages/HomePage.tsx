@@ -4,6 +4,9 @@ import { useVisualizer } from '../context/VisualizerContext';
 import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { BeforeAfterSlider } from '../components/common/BeforeAfterSlider';
+import { AtelierSpatialSlider } from '../components/common/AtelierSpatialSlider';
+import { StaggeredDropSimulator } from '../components/common/StaggeredDropSimulator';
+import { SpatialLivingRoomHero } from '../components/common/SpatialLivingRoomHero';
 import { LUXURY_PRODUCTS } from '../data/products';
 import Antigravity from '../components/common/Antigravity';
 import {
@@ -23,7 +26,8 @@ import {
   Play,
   Pause,
   Volume2,
-  VolumeX
+  VolumeX,
+  Layers
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
@@ -61,6 +65,7 @@ export const HomePage: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [showMeasurements, setShowMeasurements] = useState(true);
+  const [section2Mode, setSection2Mode] = useState<'drop-physics' | 'before-after'>('drop-physics');
 
   const roomSlides = [
     {
@@ -77,7 +82,10 @@ export const HomePage: React.FC = () => {
           price: '12,200 EGP',
           x: 28,
           y: 64,
-          clearance: isRTL ? 'مسافة ممر: 1.25 متر' : 'Clearance: 1.25m Walkway',
+          boxW: 24,
+          boxH: 26,
+          material: isRTL ? 'قماش تيبول عاجي مع هيكل فولاذي أسود' : 'Ivory Weave with Matte Black Steel Frame',
+          clearance: isRTL ? 'مسافة ممر: 1.45 متر' : 'Clearance: 1.45m Walkway',
         },
         {
           id: 'table',
@@ -87,17 +95,23 @@ export const HomePage: React.FC = () => {
           price: '9,995 EGP',
           x: 54,
           y: 74,
-          clearance: isRTL ? 'ارتفاع متناسق مع الجلسة' : 'Low Profile Height 45cm',
+          boxW: 26,
+          boxH: 18,
+          material: isRTL ? 'خشب رماد صلب مع تشطيب ورنيش مهدئ' : 'Solid Ash with Clear Protective Lacquer',
+          clearance: isRTL ? 'ارتفاع متناسق مع الجلسة 45 سم' : 'Low Profile Height 45cm',
         },
         {
-          id: 'plant',
-          title: isRTL ? 'مصباح هليوس المعماري' : 'Helios Architectural Floor Lamp',
-          subtitle: isRTL ? 'لوميير ستوديو · زجاج أوبال ثلاثي' : 'Lumière Studio · Triplex Opal Glass',
-          dims: '45W × 45D × 175H cm',
-          price: '7,400 EGP',
+          id: 'sofa',
+          title: isRTL ? 'كنبة لاندسكرونا جلد طبيعي جملي' : 'Landskrona Cognac Leather Sofa',
+          subtitle: isRTL ? 'إيكيا مصر ٢٠٢٦ · جلد غريستاد الفاخر' : 'IKEA Egypt 2026 · Grain Leather Grann',
+          dims: '204W × 89D × 78H cm',
+          price: '34,995 EGP',
           x: 82,
-          y: 56,
-          clearance: isRTL ? 'إضاءة زاوية دافئة ٢٧٠٠ كلفن' : 'Corner Ambient Luminescence',
+          y: 58,
+          boxW: 28,
+          boxH: 30,
+          material: isRTL ? 'جلد طبيعي ناعم مع وسائد ريش وداعم معدني' : 'Top-Grain Cognac Leather with High Resilience Foam',
+          clearance: isRTL ? 'ارتفاع السقف: 1.75 متر فوق الجلسة' : 'Datum Height: 1.75m Above Floor',
         },
       ],
       measurements: [
@@ -337,218 +351,13 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column (Interactive Spatial Slider): #EBE5DC */}
+        {/* Right Column (Interactive Spatial Living Room Hero): #EBE5DC */}
         <div className="bg-[#EBE5DC] dark:bg-[#1A1815] p-4 sm:p-6 lg:p-10 flex flex-col justify-center gap-3 sm:gap-4 relative transition-colors w-full">
-          {/* Framed rounded image container - Unobstructed view */}
-          <div className="w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-[520px] xl:h-[580px] rounded-2xl sm:rounded-3xl overflow-hidden relative shadow-sm border border-[#E2DBD0] dark:border-[#2D2A26] bg-[#EAE2D6]/40 select-none group flex items-center justify-center">
-            {/* Sunlit Contemporary Room Slide Image */}
-            <img
-              src={currentSlide.image}
-              alt={currentSlide.title}
-              key={currentSlide.id}
-              className="w-full h-full object-cover object-center animate-in fade-in duration-500"
-            />
-
-            {/* Subtle Gradient Vignette to Enhance SVG Lines & Nodes */}
-            <div className="absolute inset-0 bg-black/15 pointer-events-none" />
-
-            {/* Top Status Pill: Spatial Calibration Active (Responsive for mobile screen) */}
-            <div className="absolute top-3.5 left-3.5 sm:top-5 sm:left-5 z-20 flex items-center gap-1.5 sm:gap-2 bg-[#1E1E1E]/80 dark:bg-[#141210]/90 backdrop-blur-md text-[#F6F3EE] px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] tracking-[0.12em] uppercase font-medium border border-white/10 shadow-xs max-w-[calc(100%-4rem)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-              <span className="hidden sm:inline truncate">{isRTL ? 'المعايرة المكانية: نشطة · المقياس ١:١' : 'SPATIAL CALIBRATION: ACTIVE · SCALE 1:1'}</span>
-              <span className="sm:hidden">{isRTL ? 'معايرة ١:١' : '1:1 SCALE'}</span>
-            </div>
-
-            {/* Top Right Tool: Toggle Measurement Overlays */}
-            <div className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-20 flex items-center gap-1.5">
-              <button
-                onClick={() => setShowMeasurements(!showMeasurements)}
-                className={`p-2 rounded-full text-xs transition-all backdrop-blur-md shadow-xs cursor-pointer ${showMeasurements
-                  ? 'bg-white text-[#1E1E1E] border border-white'
-                  : 'bg-[#1E1E1E]/70 text-[#F6F3EE] hover:bg-[#1E1E1E] border border-white/15'
-                  }`}
-                title={showMeasurements ? 'Hide Dimensions' : 'Show Dimensions'}
-                aria-label="Toggle spatial dimensions"
-              >
-                <Ruler className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            {/* Interactive SVG Overlay for Spatial Measurement Lines */}
-            {showMeasurements && (
-              <svg
-                className="absolute inset-0 w-full h-full pointer-events-none z-10"
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-              >
-                <defs>
-                  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#000000" floodOpacity="0.6" />
-                  </filter>
-                </defs>
-                {currentSlide.measurements.map((m, idx) => (
-                  <g key={idx} filter="url(#shadow)">
-                    {/* Dimension Line */}
-                    <line
-                      x1={`${m.x1}%`}
-                      y1={`${m.y1}%`}
-                      x2={`${m.x2}%`}
-                      y2={`${m.y2}%`}
-                      stroke="#FFFFFF"
-                      strokeWidth="0.5"
-                      strokeDasharray="1.5 1.5"
-                      opacity="0.85"
-                    />
-                    {/* Tick Mark 1 */}
-                    <circle cx={`${m.x1}%`} cy={`${m.y1}%`} r="0.6" fill="#FFFFFF" />
-                    {/* Tick Mark 2 */}
-                    <circle cx={`${m.x2}%`} cy={`${m.y2}%`} r="0.6" fill="#FFFFFF" />
-                  </g>
-                ))}
-              </svg>
-            )}
-
-            {/* HTML Dimension Label Badges rendered on top of SVG lines */}
-            {showMeasurements && currentSlide.measurements.map((m, idx) => (
-              <div
-                key={`badge-${idx}`}
-                className="absolute z-15 pointer-events-none transform -translate-x-1/2 -translate-y-1/2 px-1.5 sm:px-2 py-0.5 rounded-md bg-[#1E1E1E]/85 backdrop-blur-md text-[#F6F3EE] text-[8px] sm:text-[9px] font-mono tracking-wider border border-white/20 shadow-xs whitespace-nowrap"
-                style={{ left: `${m.midX}%`, top: `${m.midY}%` }}
-              >
-                {m.label}
-              </div>
-            ))}
-
-            {/* Interactive Anchor Nodes on Key Furniture Pieces */}
-            {currentSlide.nodes.map((node, idx) => {
-              const isHovered = hoveredNode === node.id;
-
-              return (
-                <div
-                  key={node.id}
-                  className="absolute z-20 transform -translate-x-1/2 -translate-y-1/2"
-                  style={{ left: `${node.x}%`, top: `${node.y}%` }}
-                  onMouseEnter={() => setHoveredNode(node.id)}
-                  onMouseLeave={() => setHoveredNode(null)}
-                  onClick={() => setHoveredNode(isHovered ? null : node.id)}
-                >
-                  {/* Pulsing ring halo */}
-                  <div className="relative flex items-center justify-center cursor-pointer">
-                    <span className="absolute -inset-2 rounded-full bg-white/40 animate-ping duration-1000 pointer-events-none" />
-                    <button
-                      className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-bold border transition-all shadow-md ${isHovered
-                        ? 'bg-[#1E1E1E] text-white border-white scale-110'
-                        : 'bg-white/95 text-[#1E1E1E] border-black/10 hover:scale-105'
-                        }`}
-                      aria-label={node.title}
-                    >
-                      <span>0{idx + 1}</span>
-                    </button>
-                  </div>
-
-                  {/* Sleek Tooltip Popover on Hover / Click */}
-                  {isHovered && (
-                    <div
-                      className={`absolute z-30 bottom-8 ${node.x > 60 ? 'right-0' : node.x < 40 ? 'left-0' : '-left-20 sm:-left-24'
-                        } w-56 sm:w-64 bg-white/95 dark:bg-[#1A1815]/95 backdrop-blur-md rounded-xl p-3 sm:p-3.5 border border-[#E2DBD0] dark:border-[#3D3833] shadow-xl text-start animate-in fade-in zoom-in-95 duration-150`}
-                    >
-                      <div className="flex items-center justify-between gap-2 pb-1.5 border-b border-[#E2DBD0]/60 dark:border-[#2D2A26] mb-1.5 sm:mb-2">
-                        <span className="text-[9px] uppercase tracking-wider font-bold text-[#8C6D45] truncate">
-                          {node.subtitle}
-                        </span>
-                        <div className="flex items-center gap-1 text-[9px] font-semibold text-emerald-600 dark:text-emerald-400 shrink-0">
-                          <CheckCircle2 className="w-3 h-3" />
-                          <span>{isRTL ? 'مطابق ١:١' : 'True Fit'}</span>
-                        </div>
-                      </div>
-
-                      <h4 className="font-editorial text-xs sm:text-sm font-bold text-[#1E1E1E] dark:text-white leading-tight mb-1">
-                        {node.title}
-                      </h4>
-
-                      <div className="flex items-center justify-between text-xs text-[#4A4A4A] dark:text-[#A39E96] pt-0.5 sm:pt-1">
-                        <span className="font-mono text-[9px] sm:text-[10px] bg-[#EAE2D6] dark:bg-[#25211D] px-1.5 py-0.5 rounded text-[#1E1E1E] dark:text-[#F8F7F3]">
-                          {node.dims}
-                        </span>
-                        <span className="font-bold text-[11px] sm:text-xs text-[#1E1E1E] dark:text-white">
-                          {node.price}
-                        </span>
-                      </div>
-
-                      <p className="text-[9px] sm:text-[10px] text-[#6E6A63] dark:text-[#A39E96] mt-1.5 sm:mt-2 italic border-t border-[#E2DBD0]/40 dark:border-[#2D2A26] pt-1 truncate">
-                        {node.clearance}
-                      </p>
-
-                      <div className="mt-2 pt-1.5 sm:pt-2 border-t border-[#E2DBD0]/60 dark:border-[#2D2A26] flex items-center justify-between gap-2">
-                        <Link
-                          to="/showroom"
-                          className="text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-[#1E1E1E] dark:text-white hover:underline flex items-center gap-1"
-                        >
-                          <span>{isRTL ? 'معاينة' : 'Showroom'}</span>
-                          <Arrow className="w-2.5 h-2.5" />
-                        </Link>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openExperienceA();
-                          }}
-                          className="px-2 py-1 rounded bg-[#1E1E1E] text-white text-[9px] font-bold uppercase tracking-wider hover:bg-[#333333] transition"
-                        >
-                          {isRTL ? 'جرّب في غرفتك' : 'Try in Room'}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* DEDICATED SLIDER CONTROL BAR BELOW THE IMAGE (Down image, not in image) */}
-          <div className="w-full flex items-center justify-between gap-2 p-1.5 sm:p-2 rounded-2xl bg-[#EAE2D6]/70 dark:bg-[#141210]/70 backdrop-blur-md border border-[#E2DBD0] dark:border-[#2D2A26] shadow-xs">
-            {/* Presets Tab Switcher */}
-            <div className="flex items-center gap-1 flex-1 sm:flex-initial">
-              {roomSlides.map((slide, idx) => (
-                <button
-                  key={slide.id}
-                  onClick={() => {
-                    setActiveSlide(idx);
-                    setHoveredNode(null);
-                  }}
-                  className={`flex-1 sm:flex-initial px-2.5 sm:px-4 py-2 sm:py-1.5 rounded-xl text-[10px] sm:text-[11px] tracking-[0.12em] uppercase font-bold transition-all text-center whitespace-nowrap cursor-pointer ${activeSlide === idx
-                    ? 'bg-[#1E1E1E] text-[#F6F3EE] dark:bg-[#F8F7F3] dark:text-[#1E1E1E] shadow-sm'
-                    : 'text-[#6E6A63] hover:text-[#1E1E1E] dark:text-[#A39E96] dark:hover:text-white hover:bg-[#EAE2D6] dark:hover:bg-[#25211D]'
-                    }`}
-                >
-                  {slide.tag}
-                </button>
-              ))}
-            </div>
-
-            {/* Prev / Next Arrows */}
-            <div className="flex items-center gap-1 shrink-0">
-              <button
-                onClick={() => {
-                  setActiveSlide((prev) => (prev === 0 ? roomSlides.length - 1 : prev - 1));
-                  setHoveredNode(null);
-                }}
-                className="w-8 h-8 rounded-xl bg-white dark:bg-[#1E1C1A] hover:bg-[#F6F3EE] dark:hover:bg-[#25211D] border border-[#E2DBD0] dark:border-[#2D2A26] text-[#1E1E1E] dark:text-white flex items-center justify-center transition shadow-2xs cursor-pointer active:scale-95"
-                aria-label="Previous room preset"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => {
-                  setActiveSlide((prev) => (prev === roomSlides.length - 1 ? 0 : prev + 1));
-                  setHoveredNode(null);
-                }}
-                className="w-8 h-8 rounded-xl bg-white dark:bg-[#1E1C1A] hover:bg-[#F6F3EE] dark:hover:bg-[#25211D] border border-[#E2DBD0] dark:border-[#2D2A26] text-[#1E1E1E] dark:text-white flex items-center justify-center transition shadow-2xs cursor-pointer active:scale-95"
-                aria-label="Next room preset"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+          <SpatialLivingRoomHero
+            slides={roomSlides}
+            activeSlide={activeSlide}
+            onSlideChange={(idx) => setActiveSlide(idx)}
+          />
         </div>
       </section>
 
@@ -714,8 +523,8 @@ export const HomePage: React.FC = () => {
               {/* Body Prose */}
               <p className="text-sm sm:text-base text-[#4A4A4A] dark:text-[#A39E96] leading-relaxed font-normal">
                 {isRTL
-                  ? 'لطالما كانت تجربة شراء الأثاث الفاخر محاطة بالتردد: محاولة تخيل تناسق الأقمشة، الخوف من عدم ملائمة الأبعاد للمداخل، والقلق من خيبة الأمل بعد التسليم. تمنحك فيستايا يقيناً تاماً بوضع قطع الأثاث المعتمدة داخل منزلك بضوئها الطبيعي ونسبها الحقيقية.'
-                  : 'For decades, acquiring luxury furniture required a leap of faith: guessing how proportions interact with daylight, hoping upholstery tones harmonize with your flooring, and praying sectionals clear elevator doors. VESTAIA bridges the imagination gap by placing certified showroom digital twins directly inside your space.'}
+                  ? 'لطالما كانت تجربة شراء الأثاث الفاخر محاطة بالتردد: محاولة تخيل تناسق الأقمشة، الخوف من عدم ملائمة الأبعاد للمداخل، والقلق من خيبة الأمل بعد التسليم. تمنحك ڤيستا AI يقيناً تاماً بوضع قطع الأثاث المعتمدة داخل منزلك بضوئها الطبيعي ونسبها الحقيقية.'
+                  : 'For decades, acquiring luxury furniture required a leap of faith: guessing how proportions interact with daylight, hoping upholstery tones harmonize with your flooring, and praying sectionals clear elevator doors. VESTA-AI bridges the imagination gap by placing certified showroom digital twins directly inside your space.'}
               </p>
 
               {/* Upgraded Feature Cards */}
@@ -758,6 +567,51 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* =========================================================================
+          ATELIER NOVA SPATIAL SUITES SHOWCASE (GSAP Animated Architectural Explorer)
+          ========================================================================= */}
+      <section className="py-20 sm:py-28 bg-[#F6F3EE] dark:bg-[#141210] border-t border-[#E2DBD0] dark:border-[#2D2A26] transition-colors">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8 sm:space-y-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-3 max-w-2xl">
+              <div className="bg-[#EAE2D6] dark:bg-[#25211D] text-[#1E1E1E] dark:text-[#F8F7F3] text-[10px] sm:text-[11px] tracking-[0.16em] uppercase px-3 py-1 rounded-md w-fit font-semibold select-none">
+                {isRTL ? 'معرض الأجنحة المكانية الفاخرة' : 'SPATIAL ARCHITECTURAL SUITES'}
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-editorial font-bold tracking-tight text-[#1E1E1E] dark:text-white leading-[1.1]">
+                {isRTL ? (
+                  <>
+                    تصاميم معمارية حقيقية.<br />
+                    <span className="text-[#8C6D45]">مُنسقة لأفخم منازل مصر.</span>
+                  </>
+                ) : (
+                  <>
+                    Curated Spatial Profiles.<br />
+                    <span className="text-[#8C6D45]">Crafted For Architectural Homes.</span>
+                  </>
+                )}
+              </h2>
+              <p className="text-xs sm:text-sm text-[#4A4A4A] dark:text-[#B5B0A8] leading-relaxed max-w-xl font-normal">
+                {isRTL
+                  ? 'تنقل بسلاسة بين ملفات التصميم المعماري للشيخ زايد، التجمع، والساحل الشمالي. انقر على بطاقة المعاينة العائمة للتبديل والتوسع التلقائي.'
+                  : 'Glide effortlessly between spatial profiles across Sheikh Zayed, New Cairo, and Marassi. Click the floating preview card to experience full-frame clip expansion and editorial typography.'}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Link
+                to="/visualizer"
+                className="px-6 py-3 rounded-full bg-[#1E1E1E] text-white dark:bg-[#F8F7F3] dark:text-[#1E1E1E] text-xs font-bold uppercase tracking-wider hover:bg-[#333] transition shadow-md flex items-center gap-2 cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[#B58A54]" />
+                <span>{isRTL ? 'افتح الاستوديو لمساحتك' : 'Launch In Studio'}</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Atelier Nova Luxury Slider Component */}
+          <AtelierSpatialSlider />
+        </div>
+      </section>
 
       {/* =========================================================================
           CINEMATIC BRAND FILM SECTION – STOP IMAGINING. START SEEING.
@@ -790,8 +644,8 @@ export const HomePage: React.FC = () => {
 
             <p className="text-sm sm:text-base text-[#A39E96] max-w-xl mx-auto leading-relaxed font-normal">
               {isRTL
-                ? 'شاهد كيف تلغي فيستايا فجوة التردد والتخمين، محولةً جدران منزلك الفارغة إلى تحف معمارية مؤثثة بقطع حقيقية ومقاسات دقيقة ١:١.'
-                : 'Watch how VESTAIA bridges the imagination gap, transforming bare rooms into architecturally curated sanctuaries with certified showroom pieces at true scale.'}
+                ? 'شاهد كيف تلغي ڤيستا AI فجوة التردد والتخمين، محولةً جدران منزلك الفارغة إلى تحف معمارية مؤثثة بقطع حقيقية ومقاسات دقيقة ١:١.'
+                : 'Watch how VESTA-AI bridges the imagination gap, transforming bare rooms into architecturally curated sanctuaries with certified showroom pieces at true scale.'}
             </p>
           </div>
 
@@ -819,7 +673,7 @@ export const HomePage: React.FC = () => {
                 <span>4K CINEMA · 60 FPS</span>
               </div>
               <div className="hidden sm:flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] tracking-wider uppercase font-semibold text-[#EAE2D6] border border-white/10">
-                <span>VESTAIA SPATIAL PREVIEW</span>
+                <span>VESTA-AI SPATIAL PREVIEW</span>
               </div>
             </div>
 
@@ -878,7 +732,7 @@ export const HomePage: React.FC = () => {
 
                 <div className="flex items-center gap-3">
                   <span className="text-[10px] font-mono text-white/60 tracking-wider">
-                    VESTAIA FILM · 2026
+                    VESTA-AI FILM · 2026
                   </span>
                   <button
                     onClick={toggleFullscreen}
@@ -898,7 +752,7 @@ export const HomePage: React.FC = () => {
               to="/visualizer"
               className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#F6F3EE] hover:bg-white text-[#1E1E1E] text-xs uppercase tracking-[0.12em] font-bold transition shadow-lg flex items-center justify-center gap-2 cursor-pointer group"
             >
-              <span>{isRTL ? 'جرّب استوديو الذكاء الاصطناعي الآن' : 'TRY VESTAIA AI STUDIO'}</span>
+              <span>{isRTL ? 'جرّب استوديو الذكاء الاصطناعي الآن' : 'TRY VESTA-AI STUDIO'}</span>
               <Arrow className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </Link>
 
@@ -955,18 +809,57 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Large Before/After Composition */}
-          <div className="rounded-3xl overflow-hidden border border-[#E2DBD0] dark:border-[#2D2A26] shadow-sm bg-white dark:bg-[#121110]">
-            <BeforeAfterSlider
-              beforeImage="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=2200&q=85"
-              afterImage="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2200&q=85"
-              beforeLabel={isRTL ? 'الغرفة الأصلية الفارغة' : 'RAW CUSTOMER ROOM'}
-              afterLabel={isRTL ? 'مؤثثة بقطع فيستايا المعتمدة' : 'VESTAIA SCALE-PLACED'}
-              hotspots={heroHotspots}
-              onHotspotClick={() => openExperienceA(LUXURY_PRODUCTS[0])}
-              aspectRatio="aspect-[16/10] sm:aspect-[21/10]"
-            />
+          {/* Mode Switcher Toolbar */}
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#EAE2D6] dark:bg-[#25211D] border border-[#E2DBD0] dark:border-[#3D3833]">
+              <button
+                onClick={() => setSection2Mode('drop-physics')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  section2Mode === 'drop-physics'
+                    ? 'bg-[#1E1E1E] text-white dark:bg-[#F8F7F3] dark:text-[#1E1E1E] shadow-sm'
+                    : 'text-[#6E6A63] hover:text-[#1E1E1E] dark:text-[#A39E96] dark:hover:text-white'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[#B58A54]" />
+                <span>{isRTL ? 'محاكاة الإسقاط الفيزيائي (3D Drop)' : 'Staggered Physics Drop Simulator'}</span>
+                <span className="px-1.5 py-0.2 rounded-full bg-[#B58A54] text-white text-[9px]">LIVE</span>
+              </button>
+
+              <button
+                onClick={() => setSection2Mode('before-after')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  section2Mode === 'before-after'
+                    ? 'bg-[#1E1E1E] text-white dark:bg-[#F8F7F3] dark:text-[#1E1E1E] shadow-sm'
+                    : 'text-[#6E6A63] hover:text-[#1E1E1E] dark:text-[#A39E96] dark:hover:text-white'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>{isRTL ? 'مقارنة قبل وبعد (Before & After)' : 'Before & After Slider'}</span>
+              </button>
+            </div>
+
+            <div className="text-xs text-[#8C6D45] dark:text-[#D5C1A7] font-mono flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>{isRTL ? 'فيزياء الجاذبية والظلال التلامسية نشطة' : 'Gravity & Contact Shadow Physics: Active'}</span>
+            </div>
           </div>
+
+          {/* Interactive Simulation Container */}
+          {section2Mode === 'drop-physics' ? (
+            <StaggeredDropSimulator />
+          ) : (
+            <div className="rounded-3xl overflow-hidden border border-[#E2DBD0] dark:border-[#2D2A26] shadow-sm bg-white dark:bg-[#121110]">
+              <BeforeAfterSlider
+                beforeImage="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=2200&q=85"
+                afterImage="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2200&q=85"
+                beforeLabel={isRTL ? 'الغرفة الأصلية الفارغة' : 'RAW CUSTOMER ROOM'}
+                afterLabel={isRTL ? 'مؤثثة بقطع ڤيستا AI المعتمدة' : 'VESTA-AI SCALE-PLACED'}
+                hotspots={heroHotspots}
+                onHotspotClick={() => openExperienceA(LUXURY_PRODUCTS[0])}
+                aspectRatio="aspect-[16/10] sm:aspect-[21/10]"
+              />
+            </div>
+          )}
 
           {/* Under-slider details */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2 text-xs">
@@ -1027,8 +920,8 @@ export const HomePage: React.FC = () => {
 
               <p className="text-sm sm:text-base text-[#4A4A4A] dark:text-[#A39E96] leading-relaxed font-normal">
                 {isRTL
-                  ? 'حوّل أي غرفة إلى تحفة معمارية متناسقة. أدخل مقاسات جدرانك، وحدد ميزانيتك بالجنيه المصري، واكتب رؤيتك بكلماتك البسيطة. يقوم منسق فيستايا الذكي باختيار وترتيب قطع أثاث متوافقة من كتالوج المعرض الفعلي دون تجاوز ميزانيتك.'
-                  : 'Transform an entire empty room or apartment into an architecturally coordinated sanctuary. Enter your room dimensions, state your target budget, and express your stylistic desires in natural language. VESTAIA matches and arranges certified pieces from real showrooms, strictly within budget.'}
+                  ? 'حوّل أي غرفة إلى تحفة معمارية متناسقة. أدخل مقاسات جدرانك، وحدد ميزانيتك بالجنيه المصري، واكتب رؤيتك بكلماتك البسيطة. يقوم منسق ڤيستا AI الذكي باختيار وترتيب قطع أثاث متوافقة من كتالوج المعرض الفعلي دون تجاوز ميزانيتك.'
+                  : 'Transform an entire empty room or apartment into an architecturally coordinated sanctuary. Enter your room dimensions, state your target budget, and express your stylistic desires in natural language. VESTA-AI matches and arranges certified pieces from real showrooms, strictly within budget.'}
               </p>
 
               {/* 4 Steps Checklist in White / Alabaster Cards */}
@@ -1151,8 +1044,8 @@ export const HomePage: React.FC = () => {
             </h2>
             <p className="text-sm sm:text-base text-[#4A4A4A] dark:text-[#A39E96] font-normal max-w-2xl mx-auto leading-relaxed">
               {isRTL
-                ? 'تمنح فيستايا معارض الأثاث والمصنعين بنية تحتية برمجية متطورة تندمج في موقعهم الحالي بسلاسة. اربط كتالوج منتجاتك، ومكن عملاءك من تجربة الأثاث في منازلهم، وضاعف مبيعاتك مع القضاء على مشاكل المرتجعات.'
-                : 'VESTAIA equips luxury showrooms, manufacturers, and design houses with an embeddable spatial infrastructure that integrates into your existing store in minutes. Digitize your catalog, empower customer spatial decisions, and eliminate return friction.'}
+                ? 'تمنح ڤيستا AI معارض الأثاث والمصنعين بنية تحتية برمجية متطورة تندمج في موقعهم الحالي بسلاسة. اربط كتالوج منتجاتك، ومكن عملاءك من تجربة الأثاث في منازلهم، وضاعف مبيعاتك مع القضاء على مشاكل المرتجعات.'
+                : 'VESTA-AI equips luxury showrooms, manufacturers, and design houses with an embeddable spatial infrastructure that integrates into your existing store in minutes. Digitize your catalog, empower customer spatial decisions, and eliminate return friction.'}
             </p>
           </div>
 
@@ -1225,7 +1118,7 @@ export const HomePage: React.FC = () => {
               onClick={openBookDemo}
               className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-[#1E1E1E] hover:bg-[#333333] text-[#F6F3EE] dark:bg-[#F8F7F3] dark:hover:bg-white dark:text-[#1E1E1E] text-xs uppercase tracking-[0.12em] font-bold transition-all shadow-xs group cursor-pointer"
             >
-              <span>{isRTL ? 'انضم إلى شبكة معارض فيستايا' : 'PARTNER WITH VESTAIA'}</span>
+              <span>{isRTL ? 'انضم إلى شبكة معارض ڤيستا AI' : 'PARTNER WITH VESTA-AI'}</span>
               <Arrow className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>

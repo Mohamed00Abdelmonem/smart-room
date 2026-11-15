@@ -61,6 +61,13 @@ export const VisualizerPage: React.FC = () => {
   const { t, isRTL, formatPrice } = useLanguage();
 
   const [currentStep, setCurrentStep] = useState<number>(1);
+
+  // Instantly reset scroll to top on mount and whenever the wizard step changes
+  React.useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }, [currentStep]);
   const [selectedDiagnosticPhoto, setSelectedDiagnosticPhoto] = useState<UploadedRoomPhoto | null>(null);
   const [proposalStyleFilter, setProposalStyleFilter] = useState<string>('all');
   const [suggestedCategoryTab, setSuggestedCategoryTab] = useState<'all' | 'in-concept' | 'sofas' | 'tables' | 'chairs' | 'storage' | 'lighting' | 'rugs'>('all');
@@ -391,17 +398,12 @@ export const VisualizerPage: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#121110] pt-36 sm:pt-40 lg:pt-44 pb-28 transition-colors">
+    <div className="min-h-screen bg-white dark:bg-[#121110] pt-8 sm:pt-12 pb-24 transition-colors">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Top Header - with guaranteed top clearance from fixed navbar */}
-        <div className="text-center max-w-2xl mx-auto mb-10 pt-2 sm:pt-4 space-y-4">
-          <DemoBadge
-            variant="prominent"
-            text={t.visBadge}
-            className="mx-auto shadow-sm"
-          />
-          <h1 className="text-3xl sm:text-5xl font-editorial font-bold text-[#292722] dark:text-[#F8F7F3] tracking-tight">
+        {/* Top Header */}
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-3">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1E1E1E] dark:text-[#F8F7F3] tracking-tight">
             {t.visPageTitle}
           </h1>
           <p className="text-xs sm:text-sm text-[#6E6A63] dark:text-[#A39E96] font-normal max-w-lg mx-auto">
@@ -483,7 +485,7 @@ export const VisualizerPage: React.FC = () => {
                   </div>
                   <p className="text-xs text-[#6E6A63] dark:text-[#A39E96] mt-1 font-normal leading-relaxed">
                     {isRTL 
-                      ? 'يقوم محرك فيستايا الآن بفحص زوايا الغرفة ومستوى استواء الأرضية والتعرف على الجدران ومسارات الضوء الطبيعي لضمان تموضع الأثاث بدقة مليمترية.'
+                      ? 'يقوم محرك ڤيستا AI الآن بفحص زوايا الغرفة ومستوى استواء الأرضية والتعرف على الجدران ومسارات الضوء الطبيعي لضمان تموضع الأثاث بدقة مليمترية.'
                       : "Vestaia's spatial computer vision is currently detecting wall corners, floor plane levelness, daylight exposure, and clearance pathways to ensure millimeter-accurate furniture placement."}
                   </p>
 
@@ -556,45 +558,6 @@ export const VisualizerPage: React.FC = () => {
                 >
                   {t.s1BrowseBtn}
                 </button>
-              </div>
-            </div>
-
-            {/* Test Spatial AI Validation Scenarios Strip */}
-            <div className="p-4 rounded-2xl bg-[#F8F7F3]/70 dark:bg-[#1E1C1A] border border-[#E8E2D9] dark:border-[#2D2A26] space-y-2.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#B58A54] flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>{t.valTestScenariosTitle}</span>
-                </span>
-                <span className="text-[10px] text-[#6E6A63] dark:text-[#A39E96]">
-                  {isRTL ? 'اضغط لتجربة حالات الفحص الذكي' : 'Click to test real validation states'}
-                </span>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {TEST_VALIDATION_SCENARIOS.map((sc) => (
-                  <button
-                    key={sc.id}
-                    type="button"
-                    onClick={() => handleTestValidationScenario(sc)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer border shadow-2xs ${
-                      sc.category === 'valid'
-                        ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100'
-                        : sc.category === 'invalid'
-                        ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300 hover:bg-rose-100'
-                        : 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-300 hover:bg-amber-100'
-                    }`}
-                  >
-                    {sc.category === 'valid' ? (
-                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                    ) : sc.category === 'invalid' ? (
-                      <XCircle className="w-3 h-3 text-rose-600" />
-                    ) : (
-                      <AlertTriangle className="w-3 h-3 text-amber-600" />
-                    )}
-                    <span>{isRTL ? sc.labelAr : sc.label}</span>
-                  </button>
-                ))}
               </div>
             </div>
 
@@ -739,37 +702,6 @@ export const VisualizerPage: React.FC = () => {
                     </div>
                   );
                 })}
-              </div>
-            </div>
-
-            {/* Preloaded Sample Rooms */}
-            <div className="p-5 rounded-2xl bg-[#F8F7F3] dark:bg-[#1E1C1A] border border-[#E8E2D9] dark:border-[#2D2A26] space-y-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#B58A54] dark:text-[#D5C1A7] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>{t.s1PresetsTitle}</span>
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {SAMPLE_ROOM_PRESETS.map((preset) => (
-                  <button
-                    key={preset.id}
-                    onClick={() => handleLoadPresetRoom(preset)}
-                    className="p-2.5 rounded-xl bg-white dark:bg-[#1C1A17] border border-[#E8E2D9] dark:border-[#2D2A26] hover:border-[#B58A54] text-left transition-all cursor-pointer flex items-center gap-3"
-                  >
-                    <img
-                      src={preset.emptyImage}
-                      alt={preset.title}
-                      className="w-12 h-12 rounded-lg object-cover bg-stone-100 shrink-0"
-                    />
-                    <div className="min-w-0">
-                      <p className="text-xs font-bold text-[#292722] dark:text-[#F8F7F3] truncate">
-                        {preset.title}
-                      </p>
-                      <p className="text-[11px] text-[#6E6A63] dark:text-[#A39E96] truncate mt-0.5">
-                        {preset.dimensions} · {preset.style}
-                      </p>
-                    </div>
-                  </button>
-                ))}
               </div>
             </div>
 

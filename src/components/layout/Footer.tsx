@@ -55,7 +55,7 @@ export const Footer: React.FC = () => {
             </div>
             <div>
               <span className="font-editorial text-xl font-black tracking-[0.15em] uppercase text-white block">
-                {isRTL ? 'فيستايا' : 'VESTAIA'}
+                {isRTL ? 'ڤيستا AI' : 'VESTA-AI'}
               </span>
               <span className="text-[10px] tracking-wider uppercase font-semibold text-[#B58A54] block -mt-0.5">
                 {isRTL ? 'عاين أثاثك في غرفتك قبل الشراء' : 'See It Before You Buy It'}
@@ -189,7 +189,7 @@ export const Footer: React.FC = () => {
       <div className="border-t border-[#2D2A26] py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#A39E96] gap-4">
           <p className="font-normal text-[#7A756D]">
-            © {new Date().getFullYear()} VESTAIA Inc. {isRTL ? 'جميع الحقوق محفوظة. منصة التجارة المكانية لمعارض الأثاث.' : 'All rights reserved. Spatial intelligence for furniture retail.'}
+            © {new Date().getFullYear()} VESTA-AI Inc. {isRTL ? 'جميع الحقوق محفوظة. منصة التجارة المكانية لمعارض الأثاث.' : 'All rights reserved. Spatial intelligence for furniture retail.'}
           </p>
           <div className="flex items-center gap-6 text-[11px] font-medium">
             <span className="hover:text-white cursor-pointer transition-colors">{isRTL ? 'سياسة الخصوصية' : 'Privacy Policy'}</span>

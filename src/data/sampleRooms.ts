@@ -28,7 +28,7 @@ export const SAMPLE_ROOM_PRESETS: SampleRoomPreset[] = [
     title: 'New Cairo Open-Concept Lounge & Dining',
     type: 'Open Penthouse',
     dimensions: '6.2m × 4.5m (28 m²)',
-    emptyImage: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80',
+    emptyImage: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1600&q=80',
     furnishedImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80',
     style: 'Modern Architectural',
     description: 'Floor-to-ceiling panoramic glass windows overlooking landscaped gardens.',
@@ -104,7 +104,7 @@ export const DEFAULT_PRESET_PHOTOS: UploadedRoomPhoto[] = [
   },
   {
     id: 'preset-photo-3',
-    url: 'https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=1600&q=80',
+    url: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1600&q=80',
     angleLabel: 'Opposite Wall',
     angleLabelAr: 'الجدار المقابل',
     isPrimary: false,
