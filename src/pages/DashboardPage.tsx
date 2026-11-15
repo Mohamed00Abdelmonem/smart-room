@@ -18,11 +18,15 @@ import {
   CheckCircle2, 
   Clock, 
   Search,
-  RefreshCw
+  RefreshCw,
+  ShieldCheck,
+  Smartphone,
+  Percent,
+  Building
 } from 'lucide-react';
 
 export const DashboardPage: React.FC = () => {
-  const { showToast } = useCart();
+  const { showToast, openPaymentModal } = useCart();
   const { openBookDemo } = useVisualizer();
   const { t, isRTL, formatPrice } = useLanguage();
 
@@ -32,9 +36,9 @@ export const DashboardPage: React.FC = () => {
   const [catalogSearch, setCatalogSearch] = useState('');
   const [activePlan, setActivePlan] = useState('Retailer Scale');
 
-  const apiKey = 'rm_live_cairo_90218_sec_77a91bf9e8a';
+  const apiKey = 'vestaia_live_cairo_90218_sec_77a91bf9e8a';
   const embedCode = `<script 
-  src="https://cdn.roomora.ai/v2/roomora-widget.js" 
+  src="https://cdn.vestaia.ai/v2/vestaia-widget.js" 
   data-retailer-id="eg_cairo_atelier_9021"
   data-theme="modern-luxury"
   async>
@@ -253,7 +257,7 @@ export const DashboardPage: React.FC = () => {
                     {isRTL ? 'تحليل مسار التحويل للشراء' : 'Conversion Funnel Analysis'}
                   </span>
                   <h4 className="text-lg font-editorial font-bold text-[#292722] dark:text-[#F8F7F3]">
-                    {isRTL ? 'مسار الشراء من المعاينة المكانية إلى السلة' : 'Roomora Visualization to Checkout Funnel'}
+                    {isRTL ? 'مسار الشراء من المعاينة المكانية إلى السلة' : 'Vestaia Visualization to Checkout Funnel'}
                   </h4>
                 </div>
                 <span className="text-xs text-[#6E6A63] dark:text-[#A39E96]">{isRTL ? 'عينة من 10,000 زائر للموقع' : 'Sample cohort of 10,000 visitors'}</span>
@@ -280,6 +284,61 @@ export const DashboardPage: React.FC = () => {
                   <span className="text-2xl font-bold font-editorial text-emerald-700 dark:text-emerald-400 block my-1">1,860 (38.6%)</span>
                   <span className="text-[10px] text-emerald-600 dark:text-emerald-300">{isRTL ? 'مقارنة بـ 4.1% تقليدي' : 'vs 4.1% standard e-comm'}</span>
                 </div>
+              </div>
+            </div>
+
+            {/* Egyptian Payment Gateways Merchant Settlement Feed */}
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#1C1A17] border border-[#E8E2D9] dark:border-[#2D2A26] space-y-6 shadow-sm transition-colors">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8E2D9] dark:border-[#2D2A26] pb-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xl font-editorial font-bold text-[#292722] dark:text-[#F8F7F3]">
+                      {isRTL ? 'تسويات بوابات الدفع المصرية المعتمدة' : 'Egyptian Payment Gateways & Merchant Settlements'}
+                    </h3>
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold">
+                      CBE IPN Live
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#6E6A63] dark:text-[#A39E96]">
+                    {isRTL ? 'المبالغ المحصلة من عملاء المعرض عبر إنستاباي، محافظ الكاش، تقسيط ValU، وكروت ميزة' : 'Real-time sales collection via InstaPay, Mobile Wallets, ValU installments & Meeza'}
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => openPaymentModal(15000, isRTL ? 'طلب تسوية فورية عبر إنستاباي' : 'Instant Payout via InstaPay')}
+                  className="px-4 py-2 rounded-xl bg-[#292722] hover:bg-[#3D3A34] dark:bg-[#F8F7F3] dark:hover:bg-white text-white dark:text-[#292722] text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-sm transition-all"
+                >
+                  <RefreshCw className="w-3.5 h-3.5 text-[#B58A54]" />
+                  <span>{isRTL ? 'طلب تسوية فورية إلى CIB' : 'Request Instant Payout (CIB)'}</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                {[
+                  { name: 'InstaPay (IPN)', nameAr: 'إنستاباي لحظي', amount: '842,500 EGP', txCount: '214 معاملة', badge: '0% رسوم', color: '#532677' },
+                  { name: 'ValU BNPL', nameAr: 'تقسيط فاليو', amount: '495,000 EGP', txCount: '86 خطة تقسيط', badge: '0% فوائد', color: '#B58A54' },
+                  { name: 'Mobile Wallets', nameAr: 'محافظ كاش', amount: '218,000 EGP', txCount: '109 معاملة', badge: 'VF/Orange/WE', color: '#E60000' },
+                  { name: 'Meeza & Cards', nameAr: 'كروت ميزة والبنك', amount: '375,000 EGP', txCount: '94 معاملة', badge: 'CBE 3DS', color: '#2563EB' },
+                  { name: 'Fawry Pay', nameAr: 'منافذ فوري', amount: '112,000 EGP', txCount: '48 كود مسدد', badge: 'POS Kiosks', color: '#EAB308' },
+                ].map((gw) => (
+                  <div
+                    key={gw.name}
+                    className="p-4 rounded-2xl bg-[#F8F7F3] dark:bg-[#1E1C1A] border border-[#E8E2D9] dark:border-[#2D2A26] space-y-2 hover:border-[#B58A54] transition-all"
+                  >
+                    <div className="flex justify-between items-center text-[10px]">
+                      <span className="font-bold text-[#6E6A63] dark:text-[#A39E96]">{isRTL ? gw.nameAr : gw.name}</span>
+                      <span className="px-1.5 py-0.5 rounded bg-white dark:bg-[#25211D] font-mono font-bold text-[9px] text-[#292722] dark:text-[#F8F7F3] shadow-xs">
+                        {gw.badge}
+                      </span>
+                    </div>
+                    <span className="font-editorial text-lg font-bold text-[#292722] dark:text-[#F8F7F3] block">
+                      {gw.amount}
+                    </span>
+                    <span className="text-[10px] text-[#6E6A63] dark:text-[#A39E96] block">
+                      {gw.txCount}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -319,7 +378,7 @@ export const DashboardPage: React.FC = () => {
                     <th className="pb-3">{isRTL ? 'السعر' : 'Price (EGP)'}</th>
                     <th className="pb-3 text-center">{isRTL ? 'حالة النموذج 3D' : '3D Spatial Status'}</th>
                     <th className="pb-3 text-center">{isRTL ? 'المستودع' : 'Stock Hub'}</th>
-                    <th className="pb-3 text-end">{isRTL ? 'التفعيل المكاني' : 'Roomora Toggle'}</th>
+                    <th className="pb-3 text-end">{isRTL ? 'التفعيل المكاني' : 'Vestaia Toggle'}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#E8E2D9] dark:divide-[#2D2A26]">
@@ -454,7 +513,7 @@ export const DashboardPage: React.FC = () => {
                   {isRTL ? 'كود التثبيت في الموقع وإعدادات API' : 'Website Widget & API Configuration'}
                 </h3>
                 <p className="text-xs text-[#6E6A63] dark:text-[#A39E96] font-normal">
-                  {isRTL ? 'ادمج رومورا في متجر شوبيفاي أو ووكومرس أو ماجنتو بكود جافاسكريبت واحد فقط.' : 'Embed Roomora into your Shopify, WooCommerce, Magento, or custom React storefront with a single script tag.'}
+                  {isRTL ? 'ادمج فيستايا في متجر شوبيفاي أو ووكومرس أو ماجنتو بكود جافاسكريبت واحد فقط.' : 'Embed Vestaia into your Shopify, WooCommerce, Magento, or custom React storefront with a single script tag.'}
                 </p>
               </div>
 
@@ -514,7 +573,7 @@ export const DashboardPage: React.FC = () => {
                   {isRTL ? 'تخصيص مظهر الزر' : 'Widget Visual Style'}
                 </h4>
                 <p className="text-xs text-[#6E6A63] dark:text-[#A39E96] mb-4 font-normal">
-                  {isRTL ? 'نسق ألوان الزر والخطوط مع هوية معرضك.' : 'Match the Roomora button to your showroom\'s exact brand colors.'}
+                  {isRTL ? 'نسق ألوان الزر والخطوط مع هوية معرضك.' : 'Match the Vestaia button to your showroom\'s exact brand colors.'}
                 </p>
 
                 <div className="p-4 rounded-2xl bg-[#F8F7F3] dark:bg-[#24201C] border border-[#E8E2D9] dark:border-[#2D2A26] mb-6 space-y-3">
@@ -527,7 +586,7 @@ export const DashboardPage: React.FC = () => {
                     {/* The Live Button */}
                     <button className="w-full py-3 rounded-xl bg-[#292722] text-white dark:bg-[#F8F7F3] dark:text-[#292722] text-xs font-bold flex items-center justify-center gap-2 shadow-sm">
                       <Sparkles className="w-3.5 h-3.5 text-[#B58A54]" />
-                      <span>{t.tryInRoomBtn} (Roomora)</span>
+                      <span>{t.tryInRoomBtn} (VESTAIA)</span>
                     </button>
                     <button className="w-full py-3 rounded-xl bg-[#E9DFD0] dark:bg-[#24201C] text-[#292722] dark:text-[#F8F7F3] text-xs font-bold border border-[#CDBBA5]/70">
                       {isRTL ? 'أضف لسلة المعرض' : 'Add to Showroom Cart'}
@@ -608,19 +667,31 @@ export const DashboardPage: React.FC = () => {
                       </ul>
                     </div>
 
-                    <button
-                      onClick={() => {
-                        setActivePlan(plan.name);
-                        showToast(isRTL ? `تم اختيار باقة ${plan.name}` : `Selected ${plan.name} subscription plan`);
-                      }}
-                      className={`w-full py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                        plan.highlighted
-                          ? 'bg-[#B58A54] text-white hover:bg-[#a17743] shadow-sm'
-                          : 'bg-[#292722] text-white dark:bg-[#F8F7F3] dark:text-[#292722] hover:bg-[#3D3A34] dark:hover:bg-white'
-                      }`}
-                    >
-                      {isCurrent ? (isRTL ? 'الباقة الحالية للمعرض' : 'Current Showroom Plan') : (isRTL ? 'اختيار هذه الباقة' : plan.cta)}
-                    </button>
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => {
+                          setActivePlan(plan.name);
+                          showToast(isRTL ? `تم اعتماد باقة ${plan.name} كباقة مفضلة` : `Selected ${plan.name} plan`);
+                        }}
+                        className={`w-full py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                          plan.highlighted
+                            ? 'bg-[#B58A54] text-white hover:bg-[#a17743] shadow-sm'
+                            : 'bg-[#292722] text-white dark:bg-[#F8F7F3] dark:text-[#292722] hover:bg-[#3D3A34] dark:hover:bg-white'
+                        }`}
+                      >
+                        {isCurrent ? (isRTL ? 'الباقة الحالية للمعرض' : 'Current Showroom Plan') : (isRTL ? 'تفعيل هذه الباقة' : plan.cta)}
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          const planPriceNumeric = parseInt(plan.price.replace(/[^\d]/g, ''), 10) || 12000;
+                          openPaymentModal(planPriceNumeric, `${isRTL ? 'سداد اشتراك المعرض:' : 'Showroom Plan Subscription:'} ${plan.name}`);
+                        }}
+                        className="w-full py-2 rounded-xl bg-white/10 hover:bg-white/15 text-[11px] font-bold text-center border border-[#E8E2D9] dark:border-white/15 cursor-pointer transition-all"
+                      >
+                        {isRTL ? 'سداد عبر إنستاباي / الدفع المصري' : 'Pay via InstaPay / Egyptian Gateways'}
+                      </button>
+                    </div>
                   </div>
                 );
               })}

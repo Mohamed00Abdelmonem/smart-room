@@ -184,3 +184,43 @@ export interface FurnishedRoomDesignResult {
     labelAr?: string;
   }[];
 }
+
+// ============================================================================
+// EGYPTIAN PAYMENT GATEWAYS TYPES (INSTAPAY, WALLETS, MEEZA/CARDS, VALU, FAWRY)
+// ============================================================================
+
+export type EgyptPaymentMethod = 
+  | 'instapay'       // Instant Payment Network (IPN) - Egypt
+  | 'wallet'         // Vodafone Cash, Orange Money, Etisalat Cash, WE Pay
+  | 'card'           // Meeza / Visa / Mastercard / Egyptian Banks
+  | 'valu'           // ValU / Sympl Installments (تقسيط بدون فوائد)
+  | 'fawry';         // Fawry Pay / Aman Kiosks (فوري وأمان)
+
+export type EgyptWalletProvider = 'vodafone' | 'orange' | 'etisalat' | 'we';
+
+export type EgyptBnplProvider = 'valu' | 'sympl' | 'tabby';
+
+export interface EgyptPaymentTransaction {
+  transactionId: string;
+  referenceNumber: string;
+  method: EgyptPaymentMethod;
+  amountEgp: number;
+  currency: 'EGP';
+  timestamp: string;
+  status: 'pending' | 'processing' | 'success' | 'failed';
+  customerName?: string;
+  customerPhone?: string;
+  customerEmail?: string;
+  orderNumber: string;
+  gatewayMetadata: {
+    ipaAddress?: string; // e.g. vestaia@instapay
+    walletProvider?: EgyptWalletProvider;
+    fawryReference?: string;
+    fawryExpiresAt?: string;
+    cardLast4?: string;
+    cardNetwork?: 'meeza' | 'visa' | 'mastercard';
+    installmentMonths?: number;
+    monthlyEgp?: number;
+    bnplProvider?: EgyptBnplProvider;
+  };
+}

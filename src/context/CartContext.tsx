@@ -13,6 +13,13 @@ interface CartContextType {
   subtotalEgp: number;
   toast: { message: string; type?: 'success' | 'info' } | null;
   showToast: (message: string, type?: 'success' | 'info') => void;
+  // Egyptian Virtual Payment Gateway State
+  isPaymentOpen: boolean;
+  setIsPaymentOpen: (open: boolean) => void;
+  paymentAmount: number;
+  paymentTitle: string;
+  openPaymentModal: (amount?: number, title?: string) => void;
+  closePaymentModal: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -29,6 +36,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [toast, setToast] = useState<{ message: string; type?: 'success' | 'info' } | null>(null);
+
+  // Egyptian Payment Modal State
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState<number>(0);
+  const [paymentTitle, setPaymentTitle] = useState<string>('');
+
+  const openPaymentModal = (amount?: number, title?: string) => {
+    setPaymentAmount(amount !== undefined ? amount : (subtotalEgp > 50000 ? subtotalEgp : subtotalEgp + 1500));
+    setPaymentTitle(title || '');
+    setIsPaymentOpen(true);
+  };
+
+  const closePaymentModal = () => {
+    setIsPaymentOpen(false);
+  };
 
   useEffect(() => {
     try {
@@ -97,6 +119,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         subtotalEgp,
         toast,
         showToast,
+        isPaymentOpen,
+        setIsPaymentOpen,
+        paymentAmount,
+        paymentTitle,
+        openPaymentModal,
+        closePaymentModal,
       }}
     >
       {children}

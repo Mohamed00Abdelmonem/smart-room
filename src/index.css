@@ -1,51 +1,70 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-editorial: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   :root {
-    --font-serif-en: 'Cormorant Garamond', Georgia, serif;
-    --font-sans-en: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-serif-en: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-sans-en: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-heading-ar: 'Alexandria', system-ui, sans-serif;
-    --font-sans-ar: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    --font-sans-ar: 'Alexandria', 'IBM Plex Sans Arabic', system-ui, sans-serif;
 
-    /* White-First + Warm Beige System (60% White / 25% Ivory / 10% Soft Beige / 5% Sand) */
-    --color-bg-main: #FFFFFF;
-    --color-bg-secondary: #F8F7F3;
+    /* VESTAIA Color Palette Specification */
+    --color-bg-primary: #F6F3EE;      /* Warm Alabaster */
+    --color-bg-secondary: #EBE5DC;    /* Soft Warm Sand */
+    --color-badge-pill: #EAE2D6;      /* Badge Pill Background */
+    --color-text-primary: #1E1E1E;    /* Deep Charcoal */
+    --color-text-muted: #4A4A4A;      /* Secondary Muted Text */
+    --color-border: #E2DBD0;          /* Border / Divider Lines */
+
+    /* Extended System Tokens */
+    --color-bg-main: #F6F3EE;
     --color-bg-surface: #FFFFFF;
-    --color-soft-sand: #E9DFD0;
-    --color-warm-sand: #CDBBA5;
+    --color-soft-sand: #EAE2D6;
+    --color-warm-sand: #EBE5DC;
     --color-sand-accent: #B58A54;
-    --color-text-primary: #292722;
-    --color-text-secondary: #6E6A63;
-    --color-border: #E8E2D9;
+    --color-text-secondary: #4A4A4A;
     --color-border-strong: #CDBBA5;
   }
 
   .dark {
-    /* Luxury Dark Palette (Charcoal Sand) */
-    --color-bg-main: #121110;
-    --color-bg-secondary: #181614;
+    /* Luxury Charcoal Dark Palette */
+    --color-bg-primary: #141210;
+    --color-bg-secondary: #1A1815;
+    --color-badge-pill: #25211D;
+    --color-text-primary: #F8F7F3;
+    --color-text-muted: #A39E96;
+    --color-border: #2D2A26;
+
+    --color-bg-main: #141210;
     --color-bg-surface: #1E1C1A;
-    --color-soft-sand: #2A2621;
+    --color-soft-sand: #25211D;
     --color-warm-sand: #3A342E;
     --color-sand-accent: #C9A474;
-    --color-text-primary: #F8F7F3;
     --color-text-secondary: #A39E96;
-    --color-border: #2D2A26;
     --color-border-strong: #453F39;
   }
 
-  body {
+  html, body {
     font-family: var(--font-sans-en);
     background-color: var(--color-bg-main);
     color: var(--color-text-primary);
     overflow-x: hidden;
   }
 
-  /* English Typography */
-  h1, h2, h3, h4, .font-editorial {
-    font-family: var(--font-serif-en);
+  button, input, optgroup, select, textarea {
+    font-family: inherit;
+  }
+
+  /* English & Main Headings Typography - Unified with Navbar Plus Jakarta Sans */
+  h1, h2, h3, h4, h5, h6, .font-editorial {
+    font-family: var(--font-sans-en);
     letter-spacing: -0.015em;
   }
 
@@ -133,4 +152,139 @@
 
 .animate-laser-scan {
   animation: laserScan 1.6s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   taste-skill 2.5 Motion Layer & Anti-Slop Architectural Rules
+   ========================================================================== */
+
+/* 1. Button Press & Step (Rule 5: buttons step on hover, press on click) */
+button:not(:disabled), .btn-step {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+button:not(:disabled):hover, .btn-step:hover {
+  transform: translateY(-1px);
+}
+button:not(:disabled):active, .btn-step:active {
+  transform: translateY(0.5px) scale(0.985);
+}
+
+/* 2. Photo Zoom (Rule 5: photo zooms 1.02-1.03 inside its frame) */
+.taste-frame {
+  overflow: hidden;
+  position: relative;
+}
+.taste-frame img, .taste-zoom {
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.taste-frame:hover img, .group:hover .taste-zoom {
+  transform: scale(1.025);
+}
+
+/* 3. Linked Card Lift (Rule 5: linked card lifts 2px) */
+.taste-card {
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s ease, border-color 0.2s ease;
+  will-change: transform;
+}
+.taste-card:hover {
+  transform: translateY(-2px);
+}
+
+/* 4. Hero Entrance (Rule 5: every hero enters once on load) */
+[data-enter] {
+  animation: heroEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes heroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 5. In-Image Property Information Card: Cinematic Slide-In from Side & Idle Float */
+@keyframes propertyCardSlideInRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(36px, 0, 0) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes propertyCardSlideInLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(-36px, 0, 0) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes propertyCardGentleFloat {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -5px, 0);
+  }
+}
+
+.animate-property-card-float {
+  animation: propertyCardSlideInRight 0.85s cubic-bezier(0.22, 1, 0.36, 1) both,
+             propertyCardGentleFloat 5.5s ease-in-out 0.9s infinite;
+  will-change: transform, opacity;
+}
+
+[dir="rtl"] .animate-property-card-float {
+  animation: propertyCardSlideInLeft 0.85s cubic-bezier(0.22, 1, 0.36, 1) both,
+             propertyCardGentleFloat 5.5s ease-in-out 0.9s infinite;
+}
+
+/* 6. In-Image Prompt Card Entrance */
+@keyframes cardSlideUpFromInside {
+  0% {
+    opacity: 0;
+    transform: translate3d(24px, 0, 0) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.animate-in-image-card {
+  animation: cardSlideUpFromInside 0.85s cubic-bezier(0.22, 1, 0.36, 1) both,
+             propertyCardGentleFloat 5.5s ease-in-out 0.9s infinite;
+  will-change: transform, opacity;
+}
+
+/* 7. Underline micro-draw on hover */
+.taste-link {
+  position: relative;
+  display: inline-block;
+}
+.taste-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.taste-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }

@@ -22,9 +22,9 @@ export const IntegrationPage: React.FC = () => {
   const [interactiveButtonText, setInteractiveButtonText] = useState(isRTL ? 'عاين في غرفتك' : 'See It in My Room');
   const [interactiveColor, setInteractiveColor] = useState('#292722');
 
-  const widgetSnippet = `<!-- 1. Include Roomora Spatial Web Component -->
+  const widgetSnippet = `<!-- 1. Include Vestaia Spatial Web Component -->
 <script 
-  src="https://cdn.roomora.ai/v2/roomora-widget.js" 
+  src="https://cdn.vestaia.ai/v2/vestaia-widget.js" 
   data-retailer-id="eg_cairo_atelier_9021"
   data-accent-color="${interactiveColor}"
   async>
@@ -32,16 +32,16 @@ export const IntegrationPage: React.FC = () => {
 
 <!-- 2. Target Button Injected into Your Product Page -->
 <div 
-  id="roomora-visualize-trigger"
-  data-product-sku="RM-SOF-8821"
-  data-product-name="Caelum Curved L-Sectional"
-  data-product-price="48500"
-  data-dimensions="285x165x82"
+  id="vestaia-visualize-trigger"
+  data-product-sku="IK-CHR-4029"
+  data-product-name="Kivik Lounge Armchair"
+  data-product-price="12200"
+  data-dimensions="88x95x83"
   data-currency="EGP">
 </div>`;
 
   const apiSnippet = `// POST /api/v2/spatial/place-furniture
-const response = await fetch("https://api.roomora.ai/v2/spatial/place", {
+const response = await fetch("https://api.vestaia.ai/v2/spatial/place", {
   method: "POST",
   headers: {
     "Authorization": "Bearer rm_live_cairo_90218_sec...",
@@ -82,8 +82,8 @@ console.log(result.renderedImageUrl, result.fitClearancePassed);`;
 
           <p className="text-sm sm:text-base text-[#6E6A63] dark:text-[#A39E96] leading-relaxed max-w-2xl mx-auto font-normal">
             {isRTL
-              ? 'سواء كان متجرك يعمل على شوبيفاي، ووكومرس، ماجنتو، أو بنية برمجية خاصة، يندمج رومورا دون الحاجة لإعادة كتابة كود الخادم، مع الحفاظ الكامل على بوابات الدفع ومخزونك الحالي.'
-              : 'Whether you run on Shopify, WooCommerce, Magento, or a custom headless stack, Roomora embeds with zero backend rewrites. Keep your existing payment gateway and fulfillment workflows intact.'}
+              ? 'سواء كان متجرك يعمل على شوبيفاي، ووكومرس، ماجنتو، أو بنية برمجية خاصة، يندمج فيستايا دون الحاجة لإعادة كتابة كود الخادم، مع الحفاظ الكامل على بوابات الدفع ومخزونك الحالي.'
+              : 'Whether you run on Shopify, WooCommerce, Magento, or a custom headless stack, Vestaia embeds with zero backend rewrites. Keep your existing payment gateway and fulfillment workflows intact.'}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
@@ -384,12 +384,12 @@ console.log(result.renderedImageUrl, result.fitClearancePassed);`;
               {isRTL ? 'دراسة حالة واقعية لمعرض في مصر' : 'Egyptian Showroom Case Study'}
             </span>
             <h3 className="text-2xl sm:text-3xl font-editorial font-bold text-[#292722] dark:text-[#F8F7F3]">
-              {isRTL ? '"ساعدتنا رومورا في بيع 4 أضعاف الكنب والركنات عبر موقعنا في الشيخ زايد."' : '"Roomora helped our Sheikh Zayed showroom close 4x more sectionals online."'}
+              {isRTL ? '"ساعدتنا فيستايا في بيع 4 أضعاف الكنب والركنات عبر موقعنا في الشيخ زايد."' : '"Vestaia helped our Sheikh Zayed showroom close 4x more sectionals online."'}
             </h3>
             <p className="text-xs sm:text-sm text-[#6E6A63] dark:text-[#A39E96] leading-relaxed font-normal">
               {isRTL
-                ? '"تصميمات الشقق في مصر تتنوع بشدة. كان عملاؤنا يترددون خوفاً من عدم ملائمة الركنة ذات الـ 3 أمتار لمدخل الشقة أو مصعد العمارة. مع فحص المقاسات المكاني في رومورا، انخفضت نسبة الإرجاع إلى أقل من 1.5%."'
-                : '"Egyptian apartment layouts vary tremendously. Our clients used to worry about fitting 3-meter sectionals past tight elevator shafts. With Roomora\'s dimensional checks, our return rate dropped to under 1.5%."'}
+                ? '"تصميمات الشقق في مصر تتنوع بشدة. كان عملاؤنا يترددون خوفاً من عدم ملائمة الركنة ذات الـ 3 أمتار لمدخل الشقة أو مصعد العمارة. مع فحص المقاسات المكاني في فيستايا، انخفضت نسبة الإرجاع إلى أقل من 1.5%."'
+                : '"Egyptian apartment layouts vary tremendously. Our clients used to worry about fitting 3-meter sectionals past tight elevator shafts. With Vestaia\'s dimensional checks, our return rate dropped to under 1.5%."'}
             </p>
             <p className="text-xs font-bold text-[#B58A54]">
               {isRTL ? '— م. كريم الجوهري، العضو المنتدب لمعرض لاتيلييه دي موبل - القاهرة' : '— Karim El-Gohary, Managing Director, L\'Atelier Du Meuble Cairo'}

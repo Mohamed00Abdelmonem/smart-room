@@ -10,6 +10,7 @@ import { STYLES, LUXURY_PRODUCTS } from '../data/products';
 import { DEFAULT_PRESET_PHOTOS, SAMPLE_ROOM_PRESETS } from '../data/sampleRooms';
 import { TEST_VALIDATION_SCENARIOS } from '../utils/roomValidation';
 import { generateArchitecturalSpecSheetPdf } from '../utils/pdfGenerator';
+import Antigravity from '../components/common/Antigravity';
 import type { RoomStyle, RoomType, UploadedRoomPhoto, DesignProposal, FurnitureProduct } from '../types';
 import { 
   Upload, 
@@ -56,7 +57,7 @@ export const VisualizerPage: React.FC = () => {
     isValidatingPhoto,
   } = useVisualizer();
 
-  const { addToCart, setIsCartOpen, showToast } = useCart();
+  const { addToCart, setIsCartOpen, showToast, openPaymentModal } = useCart();
   const { t, isRTL, formatPrice } = useLanguage();
 
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -289,6 +290,16 @@ export const VisualizerPage: React.FC = () => {
     setIsCartOpen(true);
   };
 
+  const handlePayProposalWithEgyptGateways = (proposal: DesignProposal) => {
+    proposal.selectedProducts.forEach((prod) => {
+      addToCart(prod, 1);
+    });
+    openPaymentModal(
+      proposal.totalCostEgp,
+      isRTL ? `سداد مقترح ديكور: ${proposal.titleAr || proposal.title}` : `Proposal Checkout: ${proposal.title}`
+    );
+  };
+
   const handleDownloadProposalSpecSheet = (proposalToDownload?: DesignProposal) => {
     const targetProposal = proposalToDownload || currentDetailProposal;
     if (!targetProposal) return;
@@ -472,8 +483,8 @@ export const VisualizerPage: React.FC = () => {
                   </div>
                   <p className="text-xs text-[#6E6A63] dark:text-[#A39E96] mt-1 font-normal leading-relaxed">
                     {isRTL 
-                      ? 'يقوم محرك رومورا الآن بفحص زوايا الغرفة ومستوى استواء الأرضية والتعرف على الجدران ومسارات الضوء الطبيعي لضمان تموضع الأثاث بدقة مليمترية.'
-                      : "Roomora's spatial computer vision is currently detecting wall corners, floor plane levelness, daylight exposure, and clearance pathways to ensure millimeter-accurate furniture placement."}
+                      ? 'يقوم محرك فيستايا الآن بفحص زوايا الغرفة ومستوى استواء الأرضية والتعرف على الجدران ومسارات الضوء الطبيعي لضمان تموضع الأثاث بدقة مليمترية.'
+                      : "Vestaia's spatial computer vision is currently detecting wall corners, floor plane levelness, daylight exposure, and clearance pathways to ensure millimeter-accurate furniture placement."}
                   </p>
 
                   {/* Animated Progress Bar */}
@@ -1166,43 +1177,61 @@ export const VisualizerPage: React.FC = () => {
           <div className="space-y-10 animate-in fade-in">
             {/* Generating State Overlay */}
             {isGenerating ? (
-              <div className="bg-white dark:bg-[#1C1A17] rounded-3xl border border-[#E8E2D9] dark:border-[#2D2A26] p-12 text-center space-y-6 shadow-sm transition-colors">
-                <div className="relative w-20 h-20 mx-auto">
-                  <div className="absolute inset-0 rounded-full border-4 border-[#B58A54]/20"></div>
-                  <div className="absolute inset-0 rounded-full border-4 border-[#292722] dark:border-[#F8F7F3] border-t-transparent animate-spin"></div>
-                  <Sparkles className="absolute inset-0 m-auto w-8 h-8 text-[#B58A54] animate-pulse" />
+              <div className="relative overflow-hidden bg-white dark:bg-[#1C1A17] rounded-3xl border border-[#E8E2D9] dark:border-[#2D2A26] p-12 text-center shadow-sm transition-colors">
+                {/* Antigravity Spatial Particle Synthesis Field */}
+                <div className="absolute inset-0 pointer-events-none opacity-40">
+                  <Antigravity
+                    colors={['#CDBBA5', '#B58A54', '#E9DFD0', '#292722']}
+                    count={750}
+                    magnetRadius={8}
+                    ringRadius={6}
+                    particleSize={0.8}
+                    autoAnimate={true}
+                    interactive={false}
+                    pulseSpeed={3.5}
+                    waveSpeed={0.5}
+                    ambient={0.25}
+                  />
                 </div>
 
-                <div className="space-y-2">
-                  <h3 className="text-2xl font-editorial font-bold text-[#292722] dark:text-[#F8F7F3]">
-                    {t.s5GenTitle}
-                  </h3>
-                  <p className="text-xs text-[#6E6A63] dark:text-[#A39E96] max-w-md mx-auto font-normal">
-                    {isRTL
-                      ? (generationStep === 1 ? 'المرحلة 1/4: تحليل أبعاد الجدران والأرضية وزوايا الضوء الطبيعي...' :
-                         generationStep === 2 ? `المرحلة 2/4: مطابقة قطع الكتالوج لمقترحات متعددة تحت ميزانية ${formatPrice(roomDesignState.budgetEgp)}...` :
-                         generationStep === 3 ? 'المرحلة 3/4: حساب مسارات الحركة والمقاسات ومسافة الأبواب...' :
-                         'المرحلة 4/4: صياغة مفاهيم ديكور متعددة للمقارنة دون فرض اختيار مسبق...')
-                      : (generationStep === 1 ? 'Step 1/4: Segmenting walls, floors, and daylight vectors from uploaded photo...' :
-                         generationStep === 2 ? `Step 2/4: Querying showroom catalog for multiple concepts under ${roomDesignState.budgetEgp.toLocaleString()} EGP...` :
-                         generationStep === 3 ? 'Step 3/4: Calculating spatial clearances and pathway traffic flow (1.1m standard)...' :
-                         'Step 4/4: Formulating multiple distinct design proposals without imposing default selections...')}
-                  </p>
-                </div>
+                <div className="relative z-10 space-y-6">
+                  <div className="relative w-20 h-20 mx-auto">
+                    <div className="absolute inset-0 rounded-full border-4 border-[#B58A54]/20"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-[#292722] dark:border-[#F8F7F3] border-t-transparent animate-spin"></div>
+                    <Sparkles className="absolute inset-0 m-auto w-8 h-8 text-[#B58A54] animate-pulse" />
+                  </div>
 
-                {/* Progress bar */}
-                <div className="w-full max-w-md mx-auto bg-[#F8F7F3] dark:bg-[#1E1C1A] rounded-full h-2 overflow-hidden border border-[#E8E2D9] dark:border-[#2D2A26]">
-                  <div
-                    className="bg-[#292722] dark:bg-[#F8F7F3] h-full transition-all duration-300 rounded-full"
-                    style={{ width: `${generationProgress}%` }}
-                  ></div>
-                </div>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-editorial font-bold text-[#292722] dark:text-[#F8F7F3]">
+                      {t.s5GenTitle}
+                    </h3>
+                    <p className="text-xs text-[#6E6A63] dark:text-[#A39E96] max-w-md mx-auto font-normal">
+                      {isRTL
+                        ? (generationStep === 1 ? 'المرحلة 1/4: تحليل أبعاد الجدران والأرضية وزوايا الضوء الطبيعي...' :
+                           generationStep === 2 ? `المرحلة 2/4: مطابقة قطع الكتالوج لمقترحات متعددة تحت ميزانية ${formatPrice(roomDesignState.budgetEgp)}...` :
+                           generationStep === 3 ? 'المرحلة 3/4: حساب مسارات الحركة والمقاسات ومسافة الأبواب...' :
+                           'المرحلة 4/4: صياغة مفاهيم ديكور متعددة للمقارنة دون فرض اختيار مسبق...')
+                        : (generationStep === 1 ? 'Step 1/4: Segmenting walls, floors, and daylight vectors from uploaded photo...' :
+                           generationStep === 2 ? `Step 2/4: Querying showroom catalog for multiple concepts under ${roomDesignState.budgetEgp.toLocaleString()} EGP...` :
+                           generationStep === 3 ? 'Step 3/4: Calculating spatial clearances and pathway traffic flow (1.1m standard)...' :
+                           'Step 4/4: Formulating multiple distinct design proposals without imposing default selections...')}
+                    </p>
+                  </div>
 
-                <DemoBadge
-                  variant="card"
-                  text={isRTL ? 'توليد متعدد المقترحات: يمنح العميل التحكم التام في استكشاف ومقارنة عدة بدائل قبل اعتماد التصميم.' : 'Generating distinct design directions. Roomora never auto-selects; you maintain complete choice.'}
-                  className="max-w-md mx-auto"
-                />
+                  {/* Progress bar */}
+                  <div className="w-full max-w-md mx-auto bg-[#F8F7F3] dark:bg-[#1E1C1A] rounded-full h-2 overflow-hidden border border-[#E8E2D9] dark:border-[#2D2A26]">
+                    <div
+                      className="bg-[#292722] dark:bg-[#F8F7F3] h-full transition-all duration-300 rounded-full"
+                      style={{ width: `${generationProgress}%` }}
+                    ></div>
+                  </div>
+
+                  <DemoBadge
+                    variant="card"
+                    text={isRTL ? 'توليد متعدد المقترحات: يمنح العميل التحكم التام في استكشاف ومقارنة عدة بدائل قبل اعتماد التصميم.' : 'Generating distinct design directions. Vestaia never auto-selects; you maintain complete choice.'}
+                    className="max-w-md mx-auto"
+                  />
+                </div>
               </div>
             ) : (
               <div className="space-y-10">
@@ -1554,7 +1583,7 @@ export const VisualizerPage: React.FC = () => {
 
                       <DemoBadge
                         variant="card"
-                        text={isRTL ? 'إشعار المحاكاة التجريبية: هذا النموذج يوضح تجربة العميل الكاملة مع تعدد المقترحات. في التطبيق الواقعي، يربط النظام كتالوج معرضك الفعلي بالذكاء الاصطناعي دون فرض خيار افتراضي.' : 'Demo Simulation Note: This visualization models the complete customer experience with multiple proposals. In production, Roomora maps your showroom\'s actual inventory without auto-selecting on user\'s behalf.'}
+                        text={isRTL ? 'إشعار المحاكاة التجريبية: هذا النموذج يوضح تجربة العميل الكاملة مع تعدد المقترحات. في التطبيق الواقعي، يربط النظام كتالوج معرضك الفعلي بالذكاء الاصطناعي دون فرض خيار افتراضي.' : 'Demo Simulation Note: This visualization models the complete customer experience with multiple proposals. In production, Vestaia maps your showroom\'s actual inventory without auto-selecting on user\'s behalf.'}
                       />
                     </div>
 
@@ -1699,16 +1728,24 @@ export const VisualizerPage: React.FC = () => {
                         {/* CTAs */}
                         <div className="pt-6 border-t border-[#E8E2D9] dark:border-[#2D2A26] space-y-2">
                           <button
-                            onClick={() => handleAddProposalToCart(currentDetailProposal)}
-                            className="w-full py-3.5 rounded-xl bg-[#292722] hover:bg-[#3D3A34] dark:bg-[#F8F7F3] dark:hover:bg-white text-[#F8F7F3] dark:text-[#292722] text-xs font-bold uppercase tracking-wider shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
+                            onClick={() => handlePayProposalWithEgyptGateways(currentDetailProposal)}
+                            className="w-full py-3.5 rounded-xl bg-[#292722] hover:bg-[#3D3A34] dark:bg-[#F8F7F3] dark:hover:bg-white text-white dark:text-[#292722] text-xs font-bold uppercase tracking-wider shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
                           >
-                            <ShoppingBag className="w-4 h-4 text-[#B58A54] dark:text-[#292722]" />
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                            <span>{isRTL ? 'سداد المقترح بالبوابات المصرية (إنستاباي / ValU)' : 'Pay via Egyptian Gateways (InstaPay / ValU)'}</span>
+                          </button>
+
+                          <button
+                            onClick={() => handleAddProposalToCart(currentDetailProposal)}
+                            className="w-full py-2.5 rounded-xl bg-[#E9DFD0] hover:bg-[#DDD0BE] border border-[#CDBBA5]/70 text-xs font-bold text-[#292722] flex items-center justify-center gap-2 cursor-pointer transition-all"
+                          >
+                            <ShoppingBag className="w-4 h-4 text-[#B58A54]" />
                             <span>{t.s5AddAllToBag}</span>
                           </button>
 
                           <button
                             onClick={() => handleDownloadProposalSpecSheet(currentDetailProposal)}
-                            className="w-full py-2.5 rounded-xl bg-[#E9DFD0] hover:bg-[#DDD0BE] border border-[#CDBBA5]/70 text-xs font-bold text-[#292722] flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-xs"
+                            className="w-full py-2.5 rounded-xl bg-white dark:bg-[#1E1C1A] hover:bg-[#F8F7F3] dark:hover:bg-[#25211D] border border-[#E8E2D9] dark:border-[#2D2A26] text-xs font-bold text-[#292722] dark:text-[#F8F7F3] flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-xs"
                           >
                             <Download className="w-4 h-4 text-[#B58A54]" />
                             <span>{t.cartDownloadSpec}</span>

@@ -6,7 +6,7 @@ import { X, Sparkles, ShoppingBag, Ruler, ShieldCheck, MapPin, Layers } from 'lu
 
 export const ProductDetailModal: React.FC = () => {
   const { quickViewProduct, setQuickViewProduct, openExperienceA } = useVisualizer();
-  const { addToCart } = useCart();
+  const { addToCart, openPaymentModal } = useCart();
   const { t, isRTL, formatPrice } = useLanguage();
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -49,9 +49,13 @@ export const ProductDetailModal: React.FC = () => {
         <div className="md:w-1/2 bg-[#F8F7F3] dark:bg-[#121110] p-6 flex flex-col justify-between transition-colors">
           <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-white dark:bg-[#1E1C1A] shadow-sm mb-4 border border-[#E8E2D9] dark:border-[#2D2A26]">
             <img
-              src={allImages[activeImageIndex]}
+              src={allImages[activeImageIndex] || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80'}
               alt={displayName}
               className="w-full h-full object-cover transition-all duration-300"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80';
+              }}
             />
             <div className={`absolute top-3 ${isRTL ? 'right-3' : 'left-3'}`}>
               <span className="px-3 py-1 rounded-full bg-[#292722]/85 dark:bg-[#121110]/90 text-[#F8F7F3] text-[10px] font-bold uppercase tracking-wider">
@@ -182,23 +186,37 @@ export const ProductDetailModal: React.FC = () => {
           </div>
 
           {/* Action CTAs */}
-          <div className="mt-auto pt-4 border-t border-[#E8E2D9] dark:border-[#2D2A26] flex flex-col sm:flex-row gap-3">
-            {/* Experience A: See It in My Room */}
-            <button
-              onClick={handleLaunchExperienceA}
-              className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#292722] hover:bg-[#3D3A34] dark:bg-[#F8F7F3] dark:hover:bg-white text-white dark:text-[#292722] text-xs font-bold tracking-wide shadow-sm transition-all cursor-pointer group"
-            >
-              <Sparkles className="w-4 h-4 text-[#B58A54] dark:text-[#292722] group-hover:rotate-12 transition-transform" />
-              <span>{t.tryInRoomBtn}</span>
-            </button>
+          <div className="mt-auto pt-4 border-t border-[#E8E2D9] dark:border-[#2D2A26] flex flex-col gap-2.5">
+            <div className="flex flex-col sm:flex-row gap-2.5">
+              {/* Experience A: See It in My Room */}
+              <button
+                onClick={handleLaunchExperienceA}
+                className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#292722] hover:bg-[#3D3A34] dark:bg-[#F8F7F3] dark:hover:bg-white text-white dark:text-[#292722] text-xs font-bold tracking-wide shadow-sm transition-all cursor-pointer group"
+              >
+                <Sparkles className="w-4 h-4 text-[#B58A54] dark:text-[#292722] group-hover:rotate-12 transition-transform" />
+                <span>{t.tryInRoomBtn}</span>
+              </button>
 
-            {/* Add to Cart */}
+              {/* Add to Cart */}
+              <button
+                onClick={handleAddToCart}
+                className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#E9DFD0] hover:bg-[#DDD0BE] text-[#292722] border border-[#CDBBA5]/70 text-xs font-bold tracking-wide transition-all cursor-pointer"
+              >
+                <ShoppingBag className="w-4 h-4 text-[#B58A54]" />
+                <span>{isRTL ? 'أضف للسلة' : 'Add to Cart'}</span>
+              </button>
+            </div>
+
+            {/* Direct Instant Checkout with Egyptian Gateways */}
             <button
-              onClick={handleAddToCart}
-              className="flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#E9DFD0] hover:bg-[#DDD0BE] text-[#292722] border border-[#CDBBA5]/70 text-xs font-bold tracking-wide transition-all cursor-pointer"
+              onClick={() => {
+                setQuickViewProduct(null);
+                openPaymentModal(product.priceEgp, `${isRTL ? 'شراء فوري:' : 'Direct Purchase:'} ${displayName}`);
+              }}
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#F8F7F3] hover:bg-[#EAE4DC] dark:bg-[#1E1C1A] dark:hover:bg-[#2A2621] border border-[#B58A54]/40 text-[#292722] dark:text-[#F8F7F3] text-xs font-bold transition-all cursor-pointer"
             >
-              <ShoppingBag className="w-4 h-4 text-[#B58A54]" />
-              <span>{isRTL ? 'أضف للسلة' : 'Add to Cart'}</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>{isRTL ? 'دفع فوري عبر إنستاباي أو تقسيط ValU (0% فوائد)' : 'Instant Buy via InstaPay or ValU (0% Interest)'}</span>
             </button>
           </div>
         </div>

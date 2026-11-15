@@ -7,7 +7,18 @@ import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, ArrowLeft, CheckCircle
 import { Link } from 'react-router-dom';
 
 export const CartDrawer: React.FC = () => {
-  const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, clearCart, subtotalEgp, totalItems, showToast } = useCart();
+  const { 
+    cart, 
+    isCartOpen, 
+    setIsCartOpen, 
+    removeFromCart, 
+    updateQuantity, 
+    clearCart, 
+    subtotalEgp, 
+    totalItems, 
+    showToast,
+    openPaymentModal
+  } = useCart();
   const { roomDesignState, proposals, selectedProposalId, activeProposalForDetail } = useVisualizer();
   const { t, isRTL, formatPrice } = useLanguage();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -213,19 +224,30 @@ export const CartDrawer: React.FC = () => {
                 </div>
               </div>
 
+              {/* Accepted Egyptian Payment Gateways Pill Strip */}
+              <div className="p-2.5 rounded-xl bg-white dark:bg-[#1E1C1A] border border-[#E8E2D9] dark:border-[#2D2A26] space-y-1.5">
+                <div className="flex items-center justify-between text-[10px] text-[#6E6A63] dark:text-[#A39E96]">
+                  <span className="font-bold">{isRTL ? 'طرق الدفع المصرية المعتمدة:' : 'Accepted Egyptian Gateways:'}</span>
+                  <span className="text-[#B58A54] font-semibold">{isRTL ? '0% رسوم إضافية' : '0% Extra Fees'}</span>
+                </div>
+                <div className="flex items-center justify-between gap-1 text-[9px] font-bold text-[#292722] dark:text-[#F8F7F3]">
+                  <span className="px-1.5 py-0.5 rounded bg-[#532677]/10 text-[#532677] dark:text-[#C59BFF]">إنستاباي IPN</span>
+                  <span className="px-1.5 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400">فودافون كاش</span>
+                  <span className="px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">ميزة / فيزا</span>
+                  <span className="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-400">تقسيط ValU</span>
+                  <span className="px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-800 dark:text-yellow-400">فوري Pay</span>
+                </div>
+              </div>
+
               <button
-                onClick={handleCheckout}
-                disabled={isCheckingOut}
-                className="w-full py-3.5 rounded-xl bg-[#292722] hover:bg-[#3D3A34] dark:bg-[#F8F7F3] dark:hover:bg-white text-white dark:text-[#292722] text-xs font-bold uppercase tracking-wider shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
+                onClick={() => {
+                  setIsCartOpen(false);
+                  openPaymentModal(totalEgp, isRTL ? 'سداد طلبية أثاث المعرض' : 'Furniture Showroom Order Payment');
+                }}
+                className="w-full py-3.5 rounded-xl bg-[#292722] hover:bg-[#3D3A34] dark:bg-[#F8F7F3] dark:hover:bg-white text-white dark:text-[#292722] text-xs font-bold uppercase tracking-wider shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all"
               >
-                {isCheckingOut ? (
-                  <span>{isRTL ? 'جاري تأكيد الحجز المكاني...' : 'Processing Spatial Reservation...'}</span>
-                ) : (
-                  <>
-                    <span>{t.cartCheckoutBtn}</span>
-                    <ArrowIcon className="w-4 h-4 text-[#B58A54] dark:text-[#292722]" />
-                  </>
-                )}
+                <span>{isRTL ? 'إتمام الدفع بالبوابات المصرية (إنستاباي / كاش / ميزة)' : 'Pay with Egyptian Gateways (InstaPay / Cards / ValU)'}</span>
+                <ArrowIcon className="w-4 h-4 text-[#B58A54] dark:text-[#292722]" />
               </button>
 
               <button

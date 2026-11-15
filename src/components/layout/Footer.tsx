@@ -15,9 +15,9 @@ export const Footer: React.FC = () => {
   const { isRTL } = useLanguage();
 
   return (
-    <footer className="bg-[#141210] text-[#F8F7F3] border-t border-[#2D2A26] transition-colors duration-300">
+    <footer className="bg-[#1C1814] text-[#F8F7F3] border-t border-[#2E2822] transition-colors duration-300">
       {/* Top Banner / Showroom CTA */}
-      <div className="border-b border-[#2D2A26] relative overflow-hidden">
+      <div className="border-b border-[#2E2822] relative overflow-hidden">
         {/* Subtle warm glow in background */}
         <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#B58A54]/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -31,8 +31,8 @@ export const Footer: React.FC = () => {
             </h3>
             <p className="text-xs sm:text-sm text-[#A39E96] max-w-xl font-normal">
               {isRTL
-                ? 'ادمج ويدجت رومورا الذكي في كتالوج متجرك خلال ١٥ دقيقة. ارفع نسبة الشراء بنسبة +٣٨٪ وخفّض المرتجعات بنسبة -٤١٪.'
-                : 'Integrate Roomora’s 3D AI spatial widget into your e-commerce catalog in under 15 minutes. Boost conversions by +38% and cut returns by -41%.'}
+                ? 'ادمج ويدجت فيستايا الذكي في كتالوج متجرك خلال ١٥ دقيقة. ارفع نسبة الشراء بنسبة +٣٨٪ وخفّض المرتجعات بنسبة -٤١٪.'
+                : 'Integrate Vestaia’s 3D AI spatial widget into your e-commerce catalog in under 15 minutes. Boost conversions by +38% and cut returns by -41%.'}
             </p>
           </div>
           <button
@@ -50,12 +50,12 @@ export const Footer: React.FC = () => {
         {/* Brand Column */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-white/10 text-white flex items-center justify-center font-editorial font-bold text-lg border border-white/15 shadow-xs">
-              R
+            <div className="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center font-editorial font-bold text-base border border-white/15 shadow-xs">
+              V
             </div>
             <div>
               <span className="font-editorial text-xl font-black tracking-[0.15em] uppercase text-white block">
-                {isRTL ? 'رومورا' : 'ROOMORA'}
+                {isRTL ? 'فيستايا' : 'VESTAIA'}
               </span>
               <span className="text-[10px] tracking-wider uppercase font-semibold text-[#B58A54] block -mt-0.5">
                 {isRTL ? 'عاين أثاثك في غرفتك قبل الشراء' : 'See It Before You Buy It'}
@@ -153,11 +153,43 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
+      {/* Egyptian Payment Gateways Accepted Bar */}
+      <div className="border-t border-[#2E2822] py-6 bg-[#16120E]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-xs text-[#A39E96]">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="font-bold text-white">
+              {isRTL ? 'بوابات السداد والتقسيط المعتمدة في مصر:' : 'Certified Egyptian Payment & BNPL Gateways:'}
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-2 text-[10px] font-bold">
+            <span className="px-2.5 py-1 rounded-lg bg-[#532677]/20 border border-[#532677]/40 text-[#D5A5FF]">
+              InstaPay (IPN Egypt)
+            </span>
+            <span className="px-2.5 py-1 rounded-lg bg-red-950/40 border border-red-800/40 text-red-400">
+              Vodafone Cash
+            </span>
+            <span className="px-2.5 py-1 rounded-lg bg-orange-950/40 border border-orange-800/40 text-orange-400">
+              Orange Money
+            </span>
+            <span className="px-2.5 py-1 rounded-lg bg-blue-950/40 border border-blue-800/40 text-blue-400">
+              Meeza National Card
+            </span>
+            <span className="px-2.5 py-1 rounded-lg bg-amber-950/40 border border-amber-800/40 text-amber-400">
+              ValU 0% Installments
+            </span>
+            <span className="px-2.5 py-1 rounded-lg bg-yellow-950/40 border border-yellow-800/40 text-yellow-400">
+              Fawry Pay Kiosks
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Bottom Legal & Copyright Bar */}
       <div className="border-t border-[#2D2A26] py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#A39E96] gap-4">
           <p className="font-normal text-[#7A756D]">
-            © {new Date().getFullYear()} ROOMORA Inc. {isRTL ? 'جميع الحقوق محفوظة. منصة التجارة المكانية لمعارض الأثاث.' : 'All rights reserved. Spatial intelligence for furniture retail.'}
+            © {new Date().getFullYear()} VESTAIA Inc. {isRTL ? 'جميع الحقوق محفوظة. منصة التجارة المكانية لمعارض الأثاث.' : 'All rights reserved. Spatial intelligence for furniture retail.'}
           </p>
           <div className="flex items-center gap-6 text-[11px] font-medium">
             <span className="hover:text-white cursor-pointer transition-colors">{isRTL ? 'سياسة الخصوصية' : 'Privacy Policy'}</span>

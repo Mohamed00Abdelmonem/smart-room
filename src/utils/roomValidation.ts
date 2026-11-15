@@ -110,8 +110,8 @@ export async function validateRoomImage(
       obstructionLevel: 'Heavy',
       title: 'Human Portrait Detected',
       titleAr: 'تم رصد صورة شخصية / بورتريه',
-      message: 'This image appears to be a portrait or person. ROOMORA requires an interior room space to visualize furniture.',
-      messageAr: 'الصورة المرفوعة تبدو شخصية وليست غرفة. يتطلب نظام رومورا صورة لمساحة داخلية لتوزيع الأثاث بدقة.',
+      message: 'This image appears to be a portrait or person. VESTAIA requires an interior room space to visualize furniture.',
+      messageAr: 'الصورة المرفوعة تبدو شخصية وليست غرفة. يتطلب نظام فيستايا صورة لمساحة داخلية لتوزيع الأثاث بدقة.',
       rejectionReason: 'portrait_or_person',
       details: {
         category: 'Portrait / Human Subject',
@@ -158,8 +158,8 @@ export async function validateRoomImage(
       obstructionLevel: 'Low',
       title: 'Outdoor Landscape Detected',
       titleAr: 'تم رصد منظر طبيعي خارجي',
-      message: 'This is an exterior outdoor scene. ROOMORA is an interior architectural staging engine requiring indoor walls and flooring.',
-      messageAr: 'هذه صورة لبيئة طبيعية خارجية. رومورا محرك تأثيث داخلي يحتاج إلى أرضيات وجدران داخلية.',
+      message: 'This is an exterior outdoor scene. VESTAIA is an interior architectural staging engine requiring indoor walls and flooring.',
+      messageAr: 'هذه صورة لبيئة طبيعية خارجية. فيستايا محرك تأثيث داخلي يحتاج إلى أرضيات وجدران داخلية.',
       rejectionReason: 'outdoor_landscape',
       details: {
         category: 'Exterior Landscape',

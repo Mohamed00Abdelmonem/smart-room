@@ -9,6 +9,8 @@ interface ProductCardProps {
   product: FurnitureProduct;
 }
 
+const FALLBACK_PRODUCT_IMAGE = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80';
+
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { openExperienceA, setQuickViewProduct } = useVisualizer();
   const { addToCart } = useCart();
@@ -21,14 +23,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const displayLocation = isRTL && product.stockLocationAr ? product.stockLocationAr : product.stockLocation;
 
   return (
-    <div className="group relative flex flex-col bg-white dark:bg-[#1C1A17] rounded-2xl border border-[#E8E2D9] dark:border-[#2D2A26] overflow-hidden hover:border-[#CDBBA5] dark:hover:border-[#CDBBA5]/60 transition-all duration-300 hover:shadow-md">
+    <div className="taste-card group relative flex flex-col bg-white dark:bg-[#1C1A17] rounded-2xl border border-[#E8E2D9] dark:border-[#2D2A26] overflow-hidden hover:border-[#CDBBA5] dark:hover:border-[#CDBBA5]/60 transition-all duration-300 hover:shadow-md">
       {/* Image Container with Badges */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F8F7F3] dark:bg-[#141210]">
         <img
-          src={product.image}
+          src={product.image || FALLBACK_PRODUCT_IMAGE}
           alt={displayName}
-          className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+          className="taste-zoom h-full w-full object-cover object-center transition-transform duration-700 ease-out"
           loading="lazy"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            if (target.src !== FALLBACK_PRODUCT_IMAGE) {
+              target.src = FALLBACK_PRODUCT_IMAGE;
+            }
+          }}
         />
 
         {/* Floating Badges */}
