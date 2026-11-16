@@ -16,12 +16,65 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
   onNavigate,
   viewport = 'desktop',
 }) => {
-  const { content, design } = section;
+  const { content, design, variant } = section;
 
   const isMobile = viewport === 'mobile';
   const isTablet = viewport === 'tablet';
 
-  // Responsive grid based on simulated viewport or desktop breakpoint
+  // VARIANT: MINIMAL SINGLE-BAND SCANDINAVIAN / STUDIO FOOTER
+  if (variant === 'footer-minimal') {
+    return (
+      <footer
+        className="w-full py-10 sm:py-12 transition-colors border-t"
+        style={{
+          backgroundColor: design.backgroundColor || '#1C1A17',
+          color: design.textColor || '#D6D1C9',
+          borderColor: theme.colors.border,
+        }}
+      >
+        <div
+          className="mx-auto px-4 sm:px-6 lg:px-8 space-y-6"
+          style={{
+            maxWidth: theme.layout.containerMaxWidth === 'full' ? '100%' : theme.layout.containerMaxWidth,
+          }}
+        >
+          <div className={`flex ${isMobile ? 'flex-col text-center gap-4' : 'flex-col md:flex-row items-center justify-between gap-6'} pb-6 border-b border-white/10`}>
+            <div className="flex items-center gap-2.5">
+              <span
+                className="font-bold text-base sm:text-lg tracking-[0.2em] uppercase"
+                style={{ fontFamily: theme.typography.headingFont }}
+              >
+                {theme.brandName}
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-7 text-xs uppercase tracking-wider">
+              {pages.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => onNavigate && onNavigate(p.id)}
+                  className="hover:opacity-100 opacity-80 transition cursor-pointer"
+                >
+                  {p.title}
+                </button>
+              ))}
+            </div>
+
+            <div className="text-[11px] opacity-75">
+              Cairo · Sheikh Zayed · Alexandria
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] opacity-70">
+            <span>© {new Date().getFullYear()} {theme.brandName}. Curated Spatial Furniture.</span>
+            <span>InstaPay · ValU 0% · Meeza</span>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
+  // STANDARD MULTI-COLUMN LUXURY FOOTER
   const gridClasses = isMobile
     ? 'grid grid-cols-1 gap-8 pb-10'
     : isTablet
@@ -44,7 +97,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
         }}
       >
         <div className={`${gridClasses} border-b border-white/10 text-start`}>
-          {/* Brand Info (2 cols on desktop/tablet) */}
+          {/* Brand Info */}
           <div className={!isMobile ? 'lg:col-span-2 space-y-4' : 'space-y-4'}>
             <div className="flex items-center gap-2.5">
               <div 
@@ -108,7 +161,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
               <p className="leading-relaxed">InstaPay (IPN) · Meeza · ValU 0% · Fawry</p>
               <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-[10px] space-y-1">
                 <span className="text-emerald-400 font-bold block">✓ CBE Certified Gateway</span>
-                <span className="text-stone-300 leading-snug block">White-glove delivery & in-home spatial assembly included.</span>
+                <span className="text-stone-300 leading-snug block">White-glove delivery &amp; in-home spatial assembly included.</span>
               </div>
             </div>
           </div>

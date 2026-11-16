@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VESTA-AI — See it. Sell it. Live it. | Client Presentation Deck</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Alexandria', 'Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+            mono: ['Courier New', 'monospace'],
+          },
+          colors: {
+            linen: {
+              50: '#FAF8F5',
+              100: '#F5F1EA',
+              200: '#EBE4D8',
+              300: '#DDD2BF',
+              400: '#C8B79B',
+            },
+            bronze: {
+              300: '#DFBF84',
+              400: '#C59A4E',
+              500: '#AF8439',
+              600: '#926C2A',
+              700: '#75541E',
+            },
+            charcoal: {
+              900: '#1C1917',
+              800: '#292524',
+              700: '#44403C',
+              600: '#57534E',
+              500: '#78716C',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Alexandria', 'Plus Jakarta Sans', sans-serif;
+      background-color: #FAF8F5;
+      color: #1C1917;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .editorial-bg {
+      background-color: #FAF8F5;
+      background-image:
+        radial-gradient(at 15% 15%, rgba(197, 154, 78, 0.08) 0px, transparent 50%),
+        radial-gradient(at 85% 85%, rgba(28, 25, 23, 0.04) 0px, transparent 50%);
+    }
+
+    .slide {
+      display: none;
+      opacity: 0;
+      transform: scale(0.99) translateY(6px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .light-card {
+      background: #FFFFFF;
+      border: 1px solid #E5DDD0;
+      box-shadow: 0 6px 24px -4px rgba(28, 25, 23, 0.05), 0 2px 6px -1px rgba(28, 25, 23, 0.03);
+    }
+
+    .photo-frame {
+      background: #FFFFFF;
+      border: 1px solid #DDD2BF;
+      box-shadow: 0 18px 40px -12px rgba(28, 25, 23, 0.14);
+    }
+
+    .bronze-gradient-text {
+      background: linear-gradient(135deg, #1C1917 0%, #AF8439 55%, #75541E 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gold-badge {
+      background: linear-gradient(135deg, #FDF9F0 0%, #F4E9D4 100%);
+      border: 1px solid #DEC087;
+      color: #855F20;
+    }
+
+    .print-chrome {
+      display: none;
+    }
+
+    /* =====================================================================
+       PRECISION A4 LANDSCAPE PRINT ENGINE (DETERMINISTIC GRIDS, ZERO CLIP)
+       ===================================================================== */
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+      html, body {
+        width: 297mm !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: #FAF8F5 !important;
+        color: #1C1917 !important;
+        overflow: visible !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      header, footer, #progress-wrap, .no-print {
+        display: none !important;
+      }
+      main {
+        display: block !important;
+        overflow: visible !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 297mm !important;
+      }
+      .slide {
+        display: flex !important;
+        opacity: 1 !important;
+        transform: none !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        max-width: 297mm !important;
+        max-height: 210mm !important;
+        margin: 0 !important;
+        padding: 18mm 15mm 16mm 15mm !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        overflow: hidden !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        justify-content: center !important;
+        align-items: center !important;
+        background-color: #FAF8F5 !important;
+      }
+      .slide:last-of-type {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 5.5mm;
+        border: 0.75pt solid #DFD4C2;
+        border-radius: 9pt;
+        pointer-events: none;
+      }
+      .print-chrome {
+        display: flex !important;
+      }
+      .light-card {
+        background: #FFFFFF !important;
+        border: 1px solid #DFD5C5 !important;
+        box-shadow: none !important;
+      }
+      .photo-frame {
+        border: 1px solid #D5C8B2 !important;
+        box-shadow: 0 4px 12px rgba(28, 25, 23, 0.08) !important;
+      }
+      a {
+        text-decoration: none !important;
+      }
+
+      /* Deterministic print grids (independent of viewport breakpoint widths) */
+      .print-cols-2 { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+      .print-cols-3 { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+      .print-cols-5 { display: grid !important; grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+      .print-cols-12 { display: grid !important; grid-template-columns: repeat(12, minmax(0, 1fr)) !important; }
+      .print-span-5 { grid-column: span 5 / span 5 !important; }
+      .print-span-6 { grid-column: span 6 / span 6 !important; }
+      .print-span-7 { grid-column: span 7 / span 7 !important; }
+      .print-order-1 { order: 1 !important; }
+      .print-order-2 { order: 2 !important; }
+    }
+  </style>
+</head>
+<body class="w-screen h-screen flex flex-col justify-between editorial-bg antialiased selection:bg-bronze-400 selection:text-white">
+
+  <!-- =========================================================================
+       TOP LUXURY APP BAR (Screen Only)
+       ========================================================================= -->
+  <header class="h-14 border-b border-linen-200 px-4 sm:px-8 flex items-center justify-between shrink-0 z-30 bg-white/95 backdrop-blur-md shadow-xs">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-charcoal-900 text-linen-100 flex items-center justify-center font-serif font-bold text-sm tracking-wider shadow-sm shrink-0">
+        V
+      </div>
+      <div>
+        <span class="font-serif font-bold text-base sm:text-lg tracking-wider text-charcoal-900">VESTA-AI</span>
+        <span class="text-xs text-bronze-600 mx-2 hidden sm:inline">|</span>
+        <span dir="ltr" class="text-xs text-charcoal-600 font-medium hidden md:inline">See it. Sell it. Live it.</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <span id="slide-number" dir="ltr" class="text-xs font-mono font-bold text-charcoal-800 px-3 py-1 rounded-full bg-linen-100 border border-linen-300 shadow-2xs">
+        01 / 16
+      </span>
+    </div>
+
+    <div class="flex items-center gap-2 sm:gap-2.5">
+      <a href="https://smart-room-eta.vercel.app/visualizer" target="_blank" rel="noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-linen-100 hover:bg-linen-200 text-charcoal-900 font-bold text-xs transition border border-linen-300">
+        <span>AI Studio</span>
+        <span class="text-bronze-600">↗</span>
+      </a>
+      <a href="https://smart-room-eta.vercel.app/" target="_blank" rel="noreferrer" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-charcoal-900 hover:bg-charcoal-800 text-white font-bold text-xs transition shadow-xs">
+        <span>Live Demo</span>
+        <span>↗</span>
+      </a>
+      <button onclick="window.print()" class="px-3 py-1.5 rounded-xl text-xs font-bold border border-bronze-400 bg-amber-50/70 hover:bg-amber-100/80 text-bronze-700 transition cursor-pointer flex items-center gap-1" title="تحميل أو طباعة العرض كملف PDF">
+        <span>📄 PDF</span>
+      </button>
+      <button id="lang-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold border border-linen-300 bg-white hover:bg-linen-100 text-charcoal-800 transition cursor-pointer">
+        English
+      </button>
+      <button onclick="toggleFullScreen()" class="p-1.5 rounded-xl border border-linen-300 bg-white hover:bg-linen-100 text-charcoal-700 transition cursor-pointer text-xs" title="ملء الشاشة (F)">
+        ⛶
+      </button>
+    </div>
+  </header>
+
+  <!-- LUXURY GOLD PROGRESS BAR -->
+  <div id="progress-wrap" class="w-full h-1 bg-linen-200 shrink-0">
+    <div id="progress-bar" class="h-full bg-gradient-to-r from-bronze-600 via-bronze-400 to-amber-300 transition-all duration-300" style="width: 6.25%;"></div>
+  </div>
+
+  <!-- =========================================================================
+       MAIN SLIDES CONTAINER (16 Gallery-Grade A4 Landscape Slides)
+       ========================================================================= -->
+  <main class="flex-1 overflow-y-auto px-4 py-4 sm:px-10 sm:py-6 flex items-center justify-center relative">
+
+    <!-- ----------------------------------------------------
+         SLIDE 01: EDITORIAL HERO COVER (SIDE-BY-SIDE SHOWROOM VISUAL)
+         ---------------------------------------------------- -->
+    <section class="slide active w-full max-w-6xl mx-auto items-center justify-center">
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-5 lg:gap-7 w-full items-center">
+        <!-- Editorial Copy Column -->
+        <div class="lg:col-span-6 print-span-6 text-start space-y-4 order-2 lg:order-1 print-order-1">
+          <div dir="ltr" class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+            <span>VESTA-AI · Architectural Spatial Commerce</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold tracking-tight text-charcoal-900 leading-[1.2]">
+            خلّي عملاءك يشوفوا الأثاث <br />
+            <span class="bronze-gradient-text">في بيوتهم قبل ما يشتروه.</span>
+          </h1>
+
+          <p class="text-xs sm:text-sm text-charcoal-600 leading-relaxed">
+            أول منصة مكانية ذكية تجمع بين <strong class="text-charcoal-900">تجربة الأثاث بالذكاء الاصطناعي (1:1)</strong>، <strong class="text-charcoal-900">منشئ المتاجر الإلكتروني الذاتي</strong>، وبوابات الدفع والتقسيط لتسريع قرار الشراء داخل المعرض وأونلاين.
+          </p>
+
+          <div class="grid grid-cols-3 print-cols-3 gap-2.5 pt-1">
+            <div class="light-card p-3 rounded-xl text-center">
+              <div dir="ltr" class="text-lg font-serif font-bold text-bronze-600">+200%</div>
+              <div class="text-[10px] text-charcoal-600 font-semibold">زيادة المبيعات</div>
+            </div>
+            <div class="light-card p-3 rounded-xl text-center">
+              <div dir="ltr" class="text-lg font-serif font-bold text-charcoal-900">1:1</div>
+              <div class="text-[10px] text-charcoal-600 font-semibold">مقاس حقيقي دقيق</div>
+            </div>
+            <div class="light-card p-3 rounded-xl text-center">
+              <div dir="ltr" class="text-lg font-serif font-bold text-emerald-700">-78%</div>
+              <div class="text-[10px] text-charcoal-600 font-semibold">تقليل المرتجعات</div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5 pt-1">
+            <a href="https://smart-room-eta.vercel.app/" target="_blank" rel="noreferrer" class="px-4 py-2 rounded-full bg-charcoal-900 text-white font-bold text-xs tracking-wide shadow-sm hover:bg-charcoal-800 transition inline-flex items-center gap-1.5">
+              <span>تصفح الديمو الحي</span>
+              <span class="text-bronze-400">↗</span>
+            </a>
+            <a href="https://smart-room-eta.vercel.app/visualizer" target="_blank" rel="noreferrer" class="px-4 py-2 rounded-full bg-white border border-linen-300 text-charcoal-900 font-bold text-xs tracking-wide hover:bg-linen-100 transition inline-flex items-center gap-1.5">
+              <span>استوديو الذكاء الاصطناعي</span>
+              <span class="text-bronze-600">↗</span>
+            </a>
+          </div>
+
+          <div dir="ltr" class="text-[10px] font-mono uppercase tracking-[0.2em] text-bronze-600 font-bold text-start">
+            VESTA-AI — See it. Sell it. Live it.
+          </div>
+        </div>
+
+        <!-- Luxury Showroom Hero Photograph -->
+        <div class="lg:col-span-6 print-span-6 order-1 lg:order-2 print-order-2">
+          <div class="relative photo-frame rounded-3xl overflow-hidden p-2 bg-white">
+            <img
+              src="./presentation/hero_luxury_showroom.jpg"
+              alt="VESTA-AI Luxury Architectural Showroom"
+              class="w-full h-56 sm:h-72 lg:h-[370px] object-cover rounded-2xl"
+            />
+            <div dir="ltr" class="absolute bottom-4 right-4 left-4 flex items-center justify-between bg-white/95 border border-linen-200 rounded-xl px-4 py-2 shadow-sm">
+              <div>
+                <span class="text-[9px] font-mono uppercase tracking-wider text-bronze-600 font-bold block">Spatial Platform 2026</span>
+                <span class="text-[11px] font-bold text-charcoal-900">Your Furniture. More Customers. Better Experiences.</span>
+              </div>
+              <span class="w-7 h-7 rounded-full bg-charcoal-900 text-bronze-300 flex items-center justify-center font-serif font-bold text-xs shrink-0">V</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 02: COMPANY INTRO & OFFICIAL INFOGRAPHIC POSTER
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-3">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-linen-200 pb-2 gap-2 w-full">
+        <div class="space-y-0.5 text-start">
+          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+            <span>02 — Company Intro · هوية ورؤية الشركة</span>
+          </div>
+          <h2 dir="ltr" class="text-xl sm:text-2xl font-serif font-bold text-charcoal-900 text-start">
+            VESTA-AI — <span class="bronze-gradient-text">See it. Sell it. Live it.</span>
+          </h2>
+        </div>
+        <p class="text-[11px] font-semibold text-charcoal-600 text-start sm:text-end">
+          المنصة الذكية الكاملة لأثاث المستقبل<br/>
+          <span class="text-bronze-600">تجربة ثلاثية الأبعاد · متجر إلكتروني احترافي · مبيعات أعلى</span>
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-4 w-full items-center">
+        <!-- Official Poster Frame -->
+        <div class="lg:col-span-7 print-span-7">
+          <div class="relative photo-frame rounded-2xl overflow-hidden bg-white p-1.5">
+            <img
+              src="./vesta_company_intro.jpg"
+              alt="VESTA-AI Official Company Poster"
+              class="w-full max-h-[300px] sm:max-h-[340px] object-contain rounded-xl bg-charcoal-900"
+            />
+            <a href="./vesta_company_intro.jpg" target="_blank" rel="noreferrer" class="no-print absolute bottom-3 left-3 bg-charcoal-900/90 text-white text-[10px] font-bold px-3 py-1 rounded-lg hover:bg-charcoal-900 transition">
+              تكبير الملصق ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Dual Value Summary Cards -->
+        <div class="lg:col-span-5 print-span-5 space-y-2.5 text-start">
+          <div class="light-card p-3 rounded-xl border-r-4 border-bronze-500 space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-charcoal-900">👤 للعميل النهائي</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">مجاني 100%</span>
+            </div>
+            <p class="text-xs font-bold text-charcoal-800">شاهد الأثاث في منزلك قبل الشراء</p>
+            <p class="text-[10.5px] text-charcoal-600 leading-relaxed">
+              معاينة بمقاسات حقيقية <strong>(1:1 Scale)</strong>، تجربة ألوان متعددة، وشراء بثقة وراحة بال بدون خطأ.
+            </p>
+          </div>
+
+          <div class="light-card p-3 rounded-xl border-r-4 border-charcoal-900 space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-charcoal-900">🏬 لصاحب المعرض</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">زيادة مبيعات حتى 200%</span>
+            </div>
+            <p class="text-xs font-bold text-charcoal-800">متجر إلكتروني متكامل يبيع لك أكثر</p>
+            <p class="text-[10.5px] text-charcoal-600 leading-relaxed">
+              يبدأ من <strong>3,000 ج.م شهرياً</strong> (إعداد 5,000 ج.م لمرة واحدة) مع تقليل المرتجعات بنسبة تصل إلى <strong>78%</strong>.
+            </p>
+          </div>
+
+          <div class="p-2.5 rounded-xl bg-linen-100 border border-linen-300 space-y-1">
+            <div class="font-bold text-bronze-700 text-[11px]">✦ 7 مزايا متكاملة في منصة واحدة:</div>
+            <div class="grid grid-cols-2 print-cols-2 gap-x-2 gap-y-0.5 text-[10px] text-charcoal-700 font-medium">
+              <div>✓ تصميمات متعددة تناسب ذوقك</div>
+              <div>✓ معاينة داخل الغرفة (1:1)</div>
+              <div>✓ معرض تفاعلي 3D مع الفيزياء</div>
+              <div>✓ متجر إلكتروني بدون برمجة</div>
+              <div>✓ عروض مواصفات PDF احترافية</div>
+              <div>✓ دفع مرن (InstaPay / ValU)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full py-2 px-4 rounded-xl bg-charcoal-900 text-linen-100 text-xs flex items-center justify-between">
+        <span class="font-bold text-amber-300">🚀 دعنا نطور عملك معاً</span>
+        <span class="text-[11px] text-linen-200">ابدأ الآن ... وكن من رواد التحول الرقمي في صناعة الأثاث</span>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 03: THE CHALLENGE (EMPTY ROOM + HESITATION FACTORS)
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-linen-200 pb-2 w-full">
+        <div class="space-y-0.5 text-start">
+          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+            <span>03 — The Challenge · تحديات البيع التقليدي</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+            هل الصور التقليدية كافية لبيع الأثاث اليوم؟
+          </h2>
+        </div>
+        <span dir="ltr" class="text-xs font-mono font-bold text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">The Hesitation Gap</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-5 items-center w-full">
+        <div class="lg:col-span-5 print-span-5">
+          <div class="relative photo-frame rounded-2xl overflow-hidden bg-white p-1.5">
+            <img
+              src="./furniture/empty_living_room.jpg"
+              alt="Empty Living Room Before Furniture Visualization"
+              class="w-full h-56 sm:h-[310px] object-cover rounded-xl"
+            />
+            <div class="absolute inset-3 rounded-xl border-2 border-dashed border-amber-400/70 pointer-events-none flex items-center justify-center">
+              <div class="bg-charcoal-900/85 text-white px-4 py-2 rounded-xl text-center shadow-lg">
+                <div class="text-xs font-bold text-amber-300">؟ مساحة فارغة بلا تصور</div>
+                <div class="text-[10px] text-linen-200">هل المقاس واللون مناسبين هنا؟</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 print-span-7 grid grid-cols-1 sm:grid-cols-2 print-cols-2 gap-3 text-start">
+          <div class="light-card p-3.5 rounded-2xl border-r-4 border-amber-500 space-y-1">
+            <div class="text-xs font-bold text-amber-700">01. المساحة وممرات الحركة</div>
+            <h4 class="text-xs font-bold text-charcoal-900">هل القطعة مناسبة للمساحة؟</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">العميل يخاف أن تكون الكنبة أكبر من الصالون أو تعيق حركة الأبواب والممرات اليومية.</p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl border-r-4 border-amber-500 space-y-1">
+            <div class="text-xs font-bold text-amber-700">02. تناسق الألوان والإضاءة</div>
+            <h4 class="text-xs font-bold text-charcoal-900">هل اللون يناسب ديكور بيته؟</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">إضاءة المعرض تختلف عن إضاءة المنزل، مما يجعل اختيار لون القماش أو الخشب قراراً مقلقاً.</p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl border-r-4 border-amber-500 space-y-1">
+            <div class="text-xs font-bold text-amber-700">03. الحجم والارتفاع الحقيقي</div>
+            <h4 class="text-xs font-bold text-charcoal-900">هل النسب الهندسية مريحة؟</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">الصور الكتالوجية لا تعبر عن العمق الحقيقي للكنبة أو ارتفاعها مقارنة بالسقف والشبابيك.</p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl border-r-4 border-amber-500 space-y-1">
+            <div class="text-xs font-bold text-amber-700">04. محدودية زيارة المعرض</div>
+            <h4 class="text-xs font-bold text-charcoal-900">الزيارات الفعلية مكلفة وقتياً</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">معارضك ممتازة، لكن آلاف العملاء في مدن ومحافظات أخرى لا يستطيعون زيارتك شخصياً.</p>
+          </div>
+
+          <div class="col-span-2 p-3 rounded-xl bg-charcoal-900 text-linen-100 text-xs flex items-center justify-between">
+            <span dir="ltr" class="font-semibold italic">"The problem isn't always the product. Sometimes, it's the shopping experience."</span>
+            <span class="text-amber-300 font-bold text-[11px] shrink-0">الحل في VESTA-AI ◄</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 04: MEET VESTA-AI (3 PILLARS SIDE-BY-SIDE + PRODUCT ASSETS)
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="text-center space-y-1">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+          <span>04 — Meet VESTA-AI · المنصة الشاملة</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+          مش مجرد Website جديد لمعرضك
+        </h2>
+        <p class="text-xs sm:text-sm text-charcoal-600 max-w-2xl mx-auto">
+          منظومة متكاملة تمنحك ثلاث ركائز للنمو الرقمي وزيادة المبيعات داخل المعرض وعبر الإنترنت:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 print-cols-3 gap-4 w-full">
+        <!-- Pillar 1 -->
+        <div class="light-card rounded-2xl overflow-hidden flex flex-col justify-between">
+          <div class="h-40 bg-linen-100 flex items-center justify-center p-3 border-b border-linen-200 relative">
+            <img src="./furniture/armchair_1.png" alt="AI Furniture Armchair" class="h-32 object-contain drop-shadow-md" />
+            <span dir="ltr" class="absolute top-2.5 right-2.5 text-[10px] font-mono font-bold bg-white px-2 py-0.5 rounded-full border border-linen-300 text-bronze-700">1:1 AI Fit</span>
+          </div>
+          <div class="p-4 text-start space-y-1.5">
+            <h3 class="font-bold text-sm text-charcoal-900">1. المعاينة المكانية بالـ AI</h3>
+            <p class="text-xs text-charcoal-600 leading-relaxed">
+              العميل يرفع صورة غرفته من هاتفه، ويضع أثاث معرضك فيها بمقياس حقيقي 1:1 وإضاءة متطابقة في 15 ثانية.
+            </p>
+          </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="light-card rounded-2xl overflow-hidden flex flex-col justify-between border-bronze-400">
+          <div class="h-40 bg-linen-100 flex items-center justify-center p-3 border-b border-linen-200 relative">
+            <img src="./furniture/leather_sofa.png" alt="Luxury Leather Sofa" class="h-32 object-contain drop-shadow-md" />
+            <span dir="ltr" class="absolute top-2.5 right-2.5 text-[10px] font-mono font-bold bg-charcoal-900 text-white px-2 py-0.5 rounded-full">No-Code Builder</span>
+          </div>
+          <div class="p-4 text-start space-y-1.5">
+            <h3 class="font-bold text-sm text-charcoal-900">2. متجرك الإلكتروني المستقل</h3>
+            <p class="text-xs text-charcoal-600 leading-relaxed">
+              أنشئ موقعاً إلكترونياً كاملاً باسم معرضك وألوان هويتك عبر محرر السحب والإفلات الاحترافي وبدون أي برمجة.
+            </p>
+          </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="light-card rounded-2xl overflow-hidden flex flex-col justify-between">
+          <div class="h-40 bg-linen-100 flex items-center justify-center p-3 border-b border-linen-200 relative">
+            <img src="./furniture/credenza_frames.png" alt="Credenza and Frames Collection" class="h-32 object-contain drop-shadow-md" />
+            <span dir="ltr" class="absolute top-2.5 right-2.5 text-[10px] font-mono font-bold bg-white px-2 py-0.5 rounded-full border border-linen-300 text-emerald-700">B2C Reach</span>
+          </div>
+          <div class="p-4 text-start space-y-1.5">
+            <h3 class="font-bold text-sm text-charcoal-900">3. سوق فيستا (Marketplace)</h3>
+            <p class="text-xs text-charcoal-600 leading-relaxed">
+              اعرض تشكيلاتك وسط نخبة معارض الأثاث واستقبل طلبات فورية من آلاف الباحثين عن تأثيث منازلهم.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div dir="ltr" class="text-center text-xs font-mono font-bold text-bronze-600 uppercase tracking-[0.2em]">
+        One Platform. Multiple Ways to Grow Your Business.
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 05: SERVICE 1 — AI SPATIAL VISUALIZER & ROOM STUDIO
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-linen-200 pb-2 w-full">
+        <div class="space-y-0.5 text-start">
+          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+            <span>05 — Service 1 · AI Spatial Visualizer</span>
+          </div>
+          <h2 dir="ltr" class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900 text-start">
+            AI Spatial Visualizer &amp; Room Studio
+          </h2>
+        </div>
+        <a href="https://smart-room-eta.vercel.app/visualizer" target="_blank" rel="noreferrer" class="no-print text-xs font-bold text-bronze-700 hover:underline">
+          جرّب الأداة الآن ↗
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-5 items-center w-full">
+        <div class="lg:col-span-6 print-span-6">
+          <div class="photo-frame rounded-2xl overflow-hidden bg-white p-1.5 relative">
+            <img
+              src="./presentation/ai_visualizer_studio.jpg"
+              alt="AI Spatial Visualizer Tablet Demo"
+              class="w-full h-56 sm:h-[315px] object-cover rounded-xl"
+            />
+            <div dir="ltr" class="absolute bottom-4 right-4 bg-charcoal-900/90 text-white px-3 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>1:1 Scale Architectural Alignment</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 print-span-6 grid grid-cols-1 sm:grid-cols-2 print-cols-2 gap-3 text-start">
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <span class="text-lg block">📷</span>
+            <h4 class="font-bold text-xs text-charcoal-900">تشخيص الغرفة والضوء التلقائي</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              تحليل ذكي لزوايا الجدران ومصادر الإضاءة من النوافذ والأرضيات خلال 15 ثانية فقط من صورة الهاتف.
+            </p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <span class="text-lg block">📐</span>
+            <h4 class="font-bold text-xs text-charcoal-900">معايرة الأبعاد بالسنتيمتر</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              تظهر مؤشرات قياس تفاعلية للقطعة وممرات الحركة (مثل: عرض 220 سم، ممر 1.45 م، ارتفاع سقف 2.9 م).
+            </p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <span class="text-lg block">🎨</span>
+            <h4 class="font-bold text-xs text-charcoal-900">مقارنة تفاعلية Before / After</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              توليد عدة مقترحات ديكورية (مودرن، إسكندنافي، كلاسيك) مع شريط سحب للمقارنة قبل وبعد.
+            </p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <span class="text-lg block">🛋️</span>
+            <h4 class="font-bold text-xs text-charcoal-900">تبديل الأقمشة والقطع بنقرة</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              تجربة تغيير لون القماش، الرخام، أو إضافة طاولة قهوة وسجادة مكملة لنفس التكوين فوراً.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 06: SERVICE 2 — INTERACTIVE SHOWROOM & 3D PHYSICS
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="text-center space-y-1">
+        <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+          <span>06 — Service 2 · Interactive Showroom &amp; Physics</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+          المعرض التفاعلي ومحاكاة الجاذبية والظلال الواقعية
+        </h2>
+      </div>
+
+      <div class="photo-frame rounded-2xl bg-gradient-to-b from-linen-100 to-white p-4 w-full">
+        <div class="grid grid-cols-2 sm:grid-cols-5 print-cols-5 gap-3 items-end">
+          <div class="text-center space-y-1">
+            <div class="h-28 bg-white rounded-xl border border-linen-200 flex items-center justify-center p-2 relative">
+              <img src="./furniture/credenza_frames.png" alt="Credenza" class="h-24 object-contain" />
+              <span class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-charcoal-900 text-white text-[9px] font-mono flex items-center justify-center">01</span>
+            </div>
+            <span class="text-[10px] font-bold text-charcoal-700 block">الكونسول واللوحات</span>
+          </div>
+          <div class="text-center space-y-1">
+            <div class="h-28 bg-white rounded-xl border border-linen-200 flex items-center justify-center p-2 relative">
+              <img src="./furniture/indoor_plant.png" alt="Plant" class="h-24 object-contain" />
+              <span class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-charcoal-900 text-white text-[9px] font-mono flex items-center justify-center">02</span>
+            </div>
+            <span class="text-[10px] font-bold text-charcoal-700 block">العناصر النباتية</span>
+          </div>
+          <div class="text-center space-y-1">
+            <div class="h-28 bg-white rounded-xl border-2 border-bronze-400 flex items-center justify-center p-2 relative shadow-sm">
+              <img src="./furniture/leather_sofa.png" alt="Sofa" class="h-24 object-contain" />
+              <span class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-bronze-600 text-white text-[9px] font-mono flex items-center justify-center">03</span>
+            </div>
+            <span class="text-[10px] font-bold text-bronze-700 block">الكنبة الرئيسية (Drop)</span>
+          </div>
+          <div class="text-center space-y-1">
+            <div class="h-28 bg-white rounded-xl border border-linen-200 flex items-center justify-center p-2 relative">
+              <img src="./furniture/coffee_table.png" alt="Coffee Table" class="h-24 object-contain" />
+              <span class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-charcoal-900 text-white text-[9px] font-mono flex items-center justify-center">04</span>
+            </div>
+            <span class="text-[10px] font-bold text-charcoal-700 block">طاولة الوسط</span>
+          </div>
+          <div class="text-center space-y-1">
+            <div class="h-28 bg-white rounded-xl border border-linen-200 flex items-center justify-center p-2 relative">
+              <img src="./furniture/armchair_2.png" alt="Armchair" class="h-24 object-contain" />
+              <span class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-charcoal-900 text-white text-[9px] font-mono flex items-center justify-center">05</span>
+            </div>
+            <span class="text-[10px] font-bold text-charcoal-700 block">فوتيه مكمل</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 print-cols-3 gap-4 w-full text-start">
+        <div class="light-card p-4 rounded-2xl space-y-1.5">
+          <div class="text-xl">⚡</div>
+          <h4 class="font-bold text-sm text-charcoal-900">محاكي سقوط الجاذبية الموجه</h4>
+          <p class="text-[11px] text-charcoal-600 leading-relaxed">
+            نزول متدرج للقطع (Ease-Out Bounce) واحدة تلو الأخرى مع تأثير غبار خفيف يبرز فخامة وثقل التصميم.
+          </p>
+        </div>
+        <div class="light-card p-4 rounded-2xl space-y-1.5">
+          <div class="text-xl">🌑</div>
+          <h4 class="font-bold text-sm text-charcoal-900">ظلال الارتكاز الواقعية (Contact Shadows)</h4>
+          <p class="text-[11px] text-charcoal-600 leading-relaxed">
+            محاكاة دقيقة لملامسة أرجل الأثاث للسجاد والباركيه لتأكيد استقرار القطعة وتناسقها البصري في الغرفة.
+          </p>
+        </div>
+        <div class="light-card p-4 rounded-2xl space-y-1.5">
+          <div class="text-xl">🏷️</div>
+          <h4 class="font-bold text-sm text-charcoal-900">دبابيس القياس التفاعلية (Spatial Pins)</h4>
+          <p class="text-[11px] text-charcoal-600 leading-relaxed">
+            دبابيس مرقمة تظهر فور استقرار القطع لعرض السعر، المقاسات، الخامات، وزر الإضافة للسلة فوراً.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 07: SERVICE 3 — AUTONOMOUS STORE BUILDER
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-linen-200 pb-2 w-full">
+        <div class="space-y-0.5 text-start">
+          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+            <span>07 — Service 3 · Autonomous Store Builder</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+            منشئ المتاجر المرئي بالسحب والإفلات (بدون برمجة)
+          </h2>
+        </div>
+        <span dir="ltr" class="text-xs font-mono font-bold text-charcoal-600">My Furniture Store Module</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-5 items-center w-full">
+        <div class="lg:col-span-6 print-span-6">
+          <div class="photo-frame rounded-2xl overflow-hidden bg-white p-1.5 relative">
+            <img
+              src="./presentation/store_builder_mockup.jpg"
+              alt="VESTA-AI Furniture Website Builder Laptop Mockup"
+              class="w-full h-56 sm:h-[315px] object-cover rounded-xl"
+            />
+            <div dir="ltr" class="absolute top-4 left-4 bg-white/95 text-charcoal-900 border border-linen-300 px-3 py-1 rounded-full text-[10px] font-bold shadow-sm">
+              Desktop · Tablet · Mobile Ready
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 print-span-6 grid grid-cols-1 sm:grid-cols-2 print-cols-2 gap-3 text-start">
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <h4 class="font-bold text-xs text-bronze-700">1. محرر مرئي 3-Panel Editor</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              قائمة صفحات وأقسام + كانفاس تفاعلي حي + مفتش خصائص لتغيير الألوان والخطوط والصور بدون لمس أي كود.
+            </p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <h4 class="font-bold text-xs text-bronze-700">2. مكتبة أقسام أثاث احترافية</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              قوالب جاهزة للهيدر، الأبطال السينمائيين، شبكات المنتجات، كتالوج الخامات، وضمان 25 عاماً.
+            </p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <h4 class="font-bold text-xs text-bronze-700">3. استجابة كاملة لكل الشاشات</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              معاينة فورية لشاشات الكمبيوتر، التابلت، والهاتف المحمول مع أدوات إخفاء وإظهار القوائم بسلاسة.
+            </p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <h4 class="font-bold text-xs text-bronze-700">4. نشر فوري ومساعد ذكي (AI)</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              بنقرة واحدة ينشر متجرك برابط مستقل، مع مساعد AI يعدل لك التصميم وألوان الهوية بأوامر نصية.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 08: SERVICE 4 — WEBSITE INTEGRATION SDK & API
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="text-center space-y-1">
+        <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+          <span>08 — Service 4 · Integration SDK &amp; REST API</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+          طوّر موقعك الحالي بسطر كود واحد — بدون إعادة بنائه
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-5 items-center w-full">
+        <div class="lg:col-span-5 print-span-5">
+          <div class="photo-frame rounded-2xl bg-white p-4 space-y-3 text-start">
+            <div dir="ltr" class="flex items-center justify-between text-[10px] font-mono text-charcoal-500 border-b border-linen-200 pb-2">
+              <span>your-existing-store.com/sofa</span>
+              <span class="text-emerald-700 font-bold">● Widget Active</span>
+            </div>
+            <div class="h-44 bg-linen-100 rounded-xl flex items-center justify-center p-3">
+              <img src="./furniture/armchair_2.png" alt="Product Page Preview" class="h-36 object-contain" />
+            </div>
+            <div class="flex items-center justify-between">
+              <div dir="ltr">
+                <div class="text-xs font-bold text-charcoal-900">Signature Linen Armchair</div>
+                <div class="text-[11px] text-charcoal-500">18,500 EGP</div>
+              </div>
+              <div class="px-3.5 py-2 rounded-full bg-charcoal-900 text-amber-300 text-[11px] font-bold shadow-sm">
+                ✨ عاين في غرفتك
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 print-span-7 space-y-3.5 text-start">
+          <div class="light-card p-4 rounded-2xl space-y-2 bg-white">
+            <span dir="ltr" class="text-[11px] font-mono text-bronze-600 font-bold uppercase tracking-wider block">// 1-Line Integration Script</span>
+            <div class="p-3.5 rounded-xl bg-charcoal-900 text-linen-100 font-mono text-[11px] leading-relaxed overflow-x-auto" dir="ltr">
+              &lt;script src="https://cdn.vestaia.ai/v2/vestaia-widget.js"<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-retailer-id="your_showroom_id" async&gt;&lt;/script&gt;
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 print-cols-3 gap-3">
+            <div class="light-card p-3.5 rounded-xl space-y-1">
+              <h4 class="font-bold text-xs text-charcoal-900">توافق تام</h4>
+              <p class="text-[11px] text-charcoal-600">Shopify, WooCommerce, Magento, أو مواقع مبرمجة خصيصاً.</p>
+            </div>
+            <div class="light-card p-3.5 rounded-xl space-y-1">
+              <h4 class="font-bold text-xs text-charcoal-900">الحفاظ على هويتك</h4>
+              <p class="text-[11px] text-charcoal-600">الدومين والتصميم الحالي كما هما مع مضاعفة التفاعل فوراً.</p>
+            </div>
+            <div class="light-card p-3.5 rounded-xl space-y-1">
+              <h4 class="font-bold text-xs text-charcoal-900">REST API للموبايل</h4>
+              <p class="text-[11px] text-charcoal-600">ربط مباشر لتطبيقات iOS و Android الخاصة بمعرضك.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 09: SERVICE 5 — ARCHITECTURAL SPEC SHEET PDF
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-linen-200 pb-2 w-full">
+        <div class="space-y-0.5 text-start">
+          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+            <span>09 — Service 5 · Architectural Spec Sheet PDF</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+            عروض ومخططات معمارية احترافية (PDF) بنقرة واحدة
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-5 items-center w-full">
+        <div class="lg:col-span-6 print-span-6">
+          <div class="photo-frame rounded-2xl overflow-hidden bg-white p-1.5 relative">
+            <img
+              src="./presentation/architectural_spec_flatlay.jpg"
+              alt="Architectural Spec Sheets and Material Swatches"
+              class="w-full h-56 sm:h-[315px] object-cover rounded-xl"
+            />
+            <div dir="ltr" class="absolute bottom-4 right-4 bg-white/95 border border-linen-200 text-charcoal-900 px-3 py-1.5 rounded-xl text-[11px] font-bold shadow-sm">
+              📐 B2B Interior Designer &amp; Villa Ready
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 print-span-6 grid grid-cols-1 sm:grid-cols-2 print-cols-2 gap-3 text-start">
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <span class="text-lg block">📄</span>
+            <h4 class="font-bold text-xs text-charcoal-900">ملف مواصفات معتمد للطباعة</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              تقرير PDF فاخر يضم الرندر ثلاثي الأبعاد، شعار معرضك، التاريخ، وكود العرض المرجعي للعميل.
+            </p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <span class="text-lg block">📐</span>
+            <h4 class="font-bold text-xs text-charcoal-900">مخطط 2D لممرات الحركة</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              خريطة ثنائية الأبعاد توضح مساحات المرور الآمنة حول الصالون والأبواب لضمان راحة الحركة.
+            </p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <span class="text-lg block">📋</span>
+            <h4 class="font-bold text-xs text-charcoal-900">جدول حصر الكميات والخامات</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              الأبعاد بالسنتيمتر، أكواد SKU، نوعية خشب الزان أو الرخام، وخامات التنجيد والضمان.
+            </p>
+          </div>
+          <div class="light-card p-3.5 rounded-2xl space-y-1">
+            <span class="text-lg block">⚖️</span>
+            <h4 class="font-bold text-xs text-charcoal-900">مقارنة مقترحات B2B</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              مقارنة المقترح (أ) والمقترح (ب) لمساعدة مهندسي الديكور ومشتري المشاريع في اعتماد الطلبية.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 10: SERVICE 6 — REGIONAL PAYMENTS & BNPL
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="text-center space-y-1">
+        <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+          <span>10 — Service 6 · CBE Certified Egyptian Payments</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+          دفع آمن ومرن: InstaPay · ValU 0% · Meeza · Visa
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-5 items-center w-full">
+        <div class="lg:col-span-5 print-span-5">
+          <div class="rounded-2xl bg-charcoal-900 text-white p-5 space-y-4 shadow-xl border border-charcoal-700 text-start">
+            <div class="flex items-center justify-between border-b border-charcoal-700 pb-3">
+              <div>
+                <span dir="ltr" class="text-[10px] font-mono text-bronze-400 uppercase block">CBE Certified Checkout</span>
+                <span class="text-sm font-bold">إتمام طلب المعرض</span>
+              </div>
+              <span dir="ltr" class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">🔒 256-Bit SSL</span>
+            </div>
+
+            <div class="flex items-center gap-3 bg-charcoal-800/80 p-3 rounded-xl border border-charcoal-700">
+              <img src="./furniture/leather_sofa.png" alt="Order Item" class="w-16 h-12 object-contain bg-linen-100 rounded-lg p-1" />
+              <div class="flex-1">
+                <div class="text-xs font-bold">كنبة صالون جلد طبيعي 3 مقاعد</div>
+                <div class="text-[10px] text-linen-300">220 × 95 سم · توصيل وتركيب</div>
+              </div>
+              <div class="text-sm font-mono font-bold text-amber-300">30,000 ج.م</div>
+            </div>
+
+            <div dir="ltr" class="grid grid-cols-2 print-cols-2 gap-2 text-[11px]">
+              <div class="p-2.5 rounded-xl bg-purple-950/60 border border-purple-500/40 font-bold text-center">⚡ InstaPay (0% Fee)</div>
+              <div class="p-2.5 rounded-xl bg-amber-950/60 border border-amber-500/40 font-bold text-center">💳 ValU 0% × 36M</div>
+              <div class="p-2.5 rounded-xl bg-blue-950/60 border border-blue-500/40 font-bold text-center">🏦 Meeza / Visa</div>
+              <div class="p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 font-bold text-center">🏪 Fawry / COD</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 print-span-7 grid grid-cols-1 sm:grid-cols-2 print-cols-2 gap-3 text-start">
+          <div class="light-card p-4 rounded-2xl border-t-4 border-purple-500 space-y-1">
+            <span class="text-[11px] font-bold text-purple-700 block">إنستاباي IPN</span>
+            <h4 dir="ltr" class="font-bold text-sm text-charcoal-900 text-start">InstaPay Dynamic QR</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">تحويل بنكي فوري بعمولة 0% عبر رمز QR الديناميكي وعنوان IPA المربوط مباشرة بحساب المعرض.</p>
+          </div>
+          <div class="light-card p-4 rounded-2xl border-t-4 border-amber-500 space-y-1">
+            <span class="text-[11px] font-bold text-amber-700 block">تقسيط بدون فوائد</span>
+            <h4 dir="ltr" class="font-bold text-sm text-charcoal-900 text-start">ValU &amp; Souhoola BNPL</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">تقسيط مرن حتى 36 شهراً يضاعف القدرة الشرائية للعميل ويرفع قيمة الفاتورة المتوسطة.</p>
+          </div>
+          <div class="light-card p-4 rounded-2xl border-t-4 border-blue-500 space-y-1">
+            <span class="text-[11px] font-bold text-blue-700 block">البطاقات البنكية</span>
+            <h4 dir="ltr" class="font-bold text-sm text-charcoal-900 text-start">Meeza · Visa · Mastercard</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">قبول جميع البطاقات المحلية والدولية مع تأكيد لحظي وتحصيل آمن وفق معايير البنك المركزي.</p>
+          </div>
+          <div class="light-card p-4 rounded-2xl border-t-4 border-emerald-500 space-y-1">
+            <span class="text-[11px] font-bold text-emerald-700 block">دفع نقدي وتحصيل</span>
+            <h4 dir="ltr" class="font-bold text-sm text-charcoal-900 text-start">Fawry &amp; Deposit COD</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">أكواد فوري عبر 150 ألف منفذ، أو دفع عربون أونلاين وتحصيل الباقي عند التسليم والتركيب.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 11: SERVICE 7 — WHITE-GLOVE LOGISTICS & ASSEMBLY
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-linen-200 pb-2 w-full">
+        <div class="space-y-0.5 text-start">
+          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+            <span>11 — Service 7 · White-Glove Delivery &amp; Assembly</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+            توصيل احترافي مع خدمة الفك والتركيب داخل المنزل
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-5 items-center w-full">
+        <div class="lg:col-span-6 print-span-6">
+          <div class="photo-frame rounded-2xl overflow-hidden bg-white p-1.5 relative">
+            <img
+              src="./presentation/white_glove_delivery.jpg"
+              alt="White-Glove Furniture Delivery in Cairo"
+              class="w-full h-56 sm:h-[315px] object-cover rounded-xl"
+            />
+            <div class="absolute bottom-4 right-4 bg-charcoal-900/90 text-white px-3 py-1.5 rounded-xl text-[11px] font-bold">
+              🚚 نقل مؤمّن + تركيب احترافي + إزالة التغليف
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 print-span-6 space-y-3 text-start">
+          <div class="light-card p-4 rounded-2xl border-r-4 border-emerald-500 space-y-1">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-sm text-charcoal-900">القاهرة الكبرى · الشيخ زايد · التجمع</h4>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">مجاناً فوق 15,000 ج.م</span>
+            </div>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              توصيل حتى باب الشقة، صعود الأدوار بأمان، تركيب القطع في مكانها وتفريغ وإزالة كامل مواد التغليف.
+            </p>
+          </div>
+
+          <div class="light-card p-4 rounded-2xl border-r-4 border-blue-500 space-y-1">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-sm text-charcoal-900">الإسكندرية والساحل الشمالي</h4>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">رحلات أسبوعية منتظمة</span>
+            </div>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              أسطول سيارات مغلقة ومجهزة خصيصاً لحماية الأثاث الفاخر لفيلات الساحل وسيدي عبد الرحمن ورأس الحكمة.
+            </p>
+          </div>
+
+          <div class="light-card p-4 rounded-2xl border-r-4 border-amber-500 space-y-1">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-sm text-charcoal-900">الجونة · البحر الأحمر · الصعيد</h4>
+              <span dir="ltr" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800">Crated Shipping</span>
+            </div>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              تغليف خشبي واقي للقطع الرخامية والأخشاب الحساسة لضمان وصول الأثاث بحالة المعرض تماماً.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 12: IN-SHOWROOM SALES MULTIPLIER
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="text-center space-y-1">
+        <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+          <span>12 — In-Showroom Sales Multiplier</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+          أداة إغلاق الصفقات الفورية على التابلت داخل معرضك
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-5 items-center w-full">
+        <div class="lg:col-span-7 print-span-7 light-card p-5 rounded-3xl space-y-3 text-start">
+          <div class="flex items-start gap-3 pb-2.5 border-b border-linen-200">
+            <span class="w-6 h-6 rounded-full bg-charcoal-900 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
+            <div>
+              <div class="text-xs font-bold text-charcoal-900">العميل يزور المعرض ومعه صورة غرفته</div>
+              <div class="text-[11px] text-charcoal-600">بدل التخمين بالعين، يُخرج هاتفه ويعرض صورة الصالون لمسؤول المبيعات.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 pb-2.5 border-b border-linen-200">
+            <span class="w-6 h-6 rounded-full bg-charcoal-900 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
+            <div>
+              <div class="text-xs font-bold text-charcoal-900">تجربة فورية على iPad المبيعات في 15 ثانية</div>
+              <div class="text-[11px] text-charcoal-600">البائع يختار الكنبة أو السفرة ويُسقطها في الغرفة بأبعادها وألوانها الحقيقية.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 pb-2.5 border-b border-linen-200">
+            <span class="w-6 h-6 rounded-full bg-charcoal-900 text-white text-xs font-bold flex items-center justify-center shrink-0">3</span>
+            <div>
+              <div class="text-xs font-bold text-charcoal-900">طباعة عرض السعر PDF ومخطط المساحة</div>
+              <div class="text-[11px] text-charcoal-600">العميل يتأكد من ممرات الحركة وياخد عرض سعر رسمي على الواتساب في لحظتها.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-full bg-bronze-600 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>
+            <div>
+              <div class="text-xs font-bold text-bronze-700">حسم التردد وتوقيع أمر الشراء من الزيارة الأولى!</div>
+              <div class="text-[11px] text-charcoal-600">دفع العربون بـ InstaPay أو تقسيط ValU فوراً قبل مغادرة صالة العرض.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 print-span-5 space-y-3">
+          <div class="photo-frame rounded-2xl overflow-hidden bg-white p-1.5">
+            <img src="./presentation/ai_visualizer_studio.jpg" alt="Showroom Tablet Consultation" class="w-full h-48 object-cover rounded-xl" />
+          </div>
+          <div class="rounded-2xl bg-charcoal-900 text-white p-4 text-center space-y-1">
+            <span dir="ltr" class="text-[10px] font-mono uppercase tracking-widest text-bronze-400 block">Measured Showroom Impact</span>
+            <p dir="ltr" class="text-3xl font-serif font-bold text-amber-300">+42% Close Rate</p>
+            <p class="text-[11px] text-linen-200">تحويل الزوار المترددين داخل المعرض إلى مشترين مؤكدين دون تأجيل.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 13: THREE FLEXIBLE PARTNERSHIP MODELS (SIDE-BY-SIDE CARDS)
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="text-center space-y-1">
+        <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+          <span>13 — Three Ways to Join VESTA-AI</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+          ثلاث طرق مرنة تناسب حجم ومرحلة معرضك
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 print-cols-3 gap-4 w-full text-start">
+        <div class="light-card rounded-2xl overflow-hidden flex flex-col justify-between border-t-4 border-bronze-500">
+          <img src="./presentation/store_builder_mockup.jpg" alt="Independent Store" class="w-full h-40 object-cover border-b border-linen-200" />
+          <div class="p-4 space-y-2 flex-1">
+            <span dir="ltr" class="text-[10px] font-mono font-bold text-bronze-600 uppercase block">Option 01 · Build Your Store</span>
+            <h4 class="font-bold text-sm text-charcoal-900">امتلك متجرك الإلكتروني الخاص</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              معندكش موقع؟ ابنِ متجراً كاملاً باسم معرضك وهويتك، بصفحات متعددة وإدارة مخزون وطلبات ودفع إلكتروني متكامل.
+            </p>
+          </div>
+        </div>
+
+        <div class="light-card rounded-2xl overflow-hidden flex flex-col justify-between border-t-4 border-blue-500">
+          <img src="./presentation/ai_visualizer_studio.jpg" alt="Website Upgrade" class="w-full h-40 object-cover border-b border-linen-200" />
+          <div class="p-4 space-y-2 flex-1">
+            <span dir="ltr" class="text-[10px] font-mono font-bold text-blue-600 uppercase block">Option 02 · Integrate Website</span>
+            <h4 class="font-bold text-sm text-charcoal-900">طوّر موقعك الحالي بالـ AI</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              عندك موقع بالفعل؟ احتفظ بتصميمك ودومينك وأضف تجربة "شاهدها في غرفتك" فوراً عبر سطر تكامل بسيط.
+            </p>
+          </div>
+        </div>
+
+        <div class="light-card rounded-2xl overflow-hidden flex flex-col justify-between border-t-4 border-emerald-500">
+          <img src="./presentation/hero_luxury_showroom.jpg" alt="VESTA Marketplace" class="w-full h-40 object-cover border-b border-linen-200" />
+          <div class="p-4 space-y-2 flex-1">
+            <span dir="ltr" class="text-[10px] font-mono font-bold text-emerald-600 uppercase block">Option 03 · Join Marketplace</span>
+            <h4 class="font-bold text-sm text-charcoal-900">انضم لسوق فيستا (Marketplace)</h4>
+            <p class="text-[11px] text-charcoal-600 leading-relaxed">
+              اعرض منتجات معرضك على صفحتك الخاصة داخل منصة VESTA-AI وتلقّ طلبات من آلاف العملاء الجاهزين للشراء.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 14: TRANSPARENT PRICING & PACKAGES (SIDE-BY-SIDE TIERS)
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="text-center space-y-1">
+        <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+          <span>14 — Investment &amp; Packages · باقات واضحة بعائد كبير</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+          تكلفة استثمار بسيطة .. بعائد يتضاعف شهرياً
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 print-cols-3 gap-4 w-full text-start pt-2">
+        <!-- Package 1 -->
+        <div class="light-card p-5 rounded-2xl flex flex-col justify-between border-t-4 border-bronze-500 space-y-3">
+          <div class="space-y-2">
+            <span dir="ltr" class="text-xs font-bold text-bronze-600 uppercase block text-start">01. Marketplace Partner</span>
+            <h3 class="text-lg font-bold text-charcoal-900">سوق فيستا</h3>
+            <p class="text-xs text-charcoal-600">ابدأ البيع أونلاين بدون أي اشتراك ثابت</p>
+            <div class="pt-2">
+              <span dir="ltr" class="text-3xl font-bold font-mono text-charcoal-900">6%</span>
+              <span class="text-xs text-charcoal-500 block mt-0.5">عمولة فقط على الطلبات المكتملة</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-linen-200 text-xs text-charcoal-600 space-y-1.5">
+            <div>✓ 0 ج.م رسوم إعداد أولي</div>
+            <div>✓ 0 ج.م اشتراك شهري</div>
+            <div>✓ تفعيل معاينة AI للمنتجات</div>
+          </div>
+        </div>
+
+        <!-- Package 2 (Flagship Featured) -->
+        <div class="rounded-2xl bg-charcoal-900 text-white p-5 flex flex-col justify-between border-2 border-bronze-400 shadow-lg space-y-3 relative">
+          <span class="absolute -top-3 left-4 bg-bronze-500 text-white text-[10px] font-bold px-3 py-0.5 rounded-full">الأكثر اختياراً للمعارض</span>
+          <div class="space-y-2">
+            <span dir="ltr" class="text-xs font-bold text-bronze-300 uppercase block text-start">02. Independent Store</span>
+            <h3 class="text-lg font-bold text-white">متجرك الإلكتروني المتكامل</h3>
+            <p class="text-xs text-linen-300">امتلك متجرك الكامل + استوديو الـ AI</p>
+            <div class="pt-2">
+              <span dir="ltr" class="text-3xl font-bold font-mono text-amber-300">3,000</span>
+              <span class="text-xs text-linen-200"> ج.م / شهرياً</span>
+              <span class="text-xs text-emerald-300 block mt-1 font-semibold">+ 5,000 ج.م إعداد أولي لمرة واحدة فقط</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-charcoal-700 text-xs text-linen-200 space-y-1.5">
+            <div>✓ 0% عمولة مبيعات على متجرك</div>
+            <div>✓ منشئ صفحات مرئي غير محدود</div>
+            <div>✓ دعم InstaPay · ValU · Meeza · PDF</div>
+          </div>
+        </div>
+
+        <!-- Package 3 -->
+        <div class="light-card p-5 rounded-2xl flex flex-col justify-between border-t-4 border-blue-500 space-y-3">
+          <div class="space-y-2">
+            <span dir="ltr" class="text-xs font-bold text-blue-700 uppercase block text-start">03. Existing Site Upgrade</span>
+            <h3 class="text-lg font-bold text-charcoal-900">تطوير موقعك الحالي</h3>
+            <p class="text-xs text-charcoal-600">دمج VESTA AI داخل متجرك القائم</p>
+            <div class="pt-2">
+              <span dir="ltr" class="text-3xl font-bold font-mono text-charcoal-900">2,500</span>
+              <span class="text-xs text-charcoal-500"> ج.م / شهرياً</span>
+              <span class="text-xs text-blue-700 block mt-1">+ 7,500 ج.م ربط وتكامل تقني</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-linen-200 text-xs text-charcoal-600 space-y-1.5">
+            <div>✓ تفعيل زر "شاهدها في غرفتك"</div>
+            <div>✓ دعم كامل لـ API و SDK</div>
+            <div>✓ دعم فني وصيانة مستمرة</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-center text-xs text-emerald-900 font-semibold">
+        👤 <strong>للعميل النهائي (المشتري):</strong> استخدام منصة المعاينة مجاني 100% — تجربة أفضل .. قرار أذكى!
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 15: UNIT ECONOMICS & REAL SHOWROOM RESULTS
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center space-y-4">
+      <div class="text-center space-y-1">
+        <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+          <span>15 — Real Results &amp; Unit Economics</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal-900">
+          نتائج حقيقية لصاحب المعرض وعائد استثمار مضمون
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-5 items-center w-full">
+        <div class="lg:col-span-7 print-span-7 light-card p-5 rounded-3xl space-y-3 text-start">
+          <div class="text-xs font-bold text-bronze-700 uppercase tracking-wider">مثال عملي لربحية طلب واحد من معرضك:</div>
+          <div class="flex items-center justify-between pb-2.5 border-b border-linen-200 text-xs">
+            <span class="text-charcoal-600">متوسط قيمة الطلب الواحد من المعرض:</span>
+            <span class="text-base font-bold font-mono text-charcoal-900">30,000 ج.م</span>
+          </div>
+          <div class="flex items-center justify-between pb-2.5 border-b border-linen-200 text-xs">
+            <span class="text-charcoal-600">هامش الربح الإجمالي التقديري (25%):</span>
+            <span class="text-base font-bold font-mono text-emerald-700">+ 7,500 ج.م</span>
+          </div>
+          <div class="flex items-center justify-between pb-2.5 border-b border-linen-200 text-xs">
+            <span class="text-charcoal-600">عمولة Marketplace (أو 0 ج.م بالمتجر الخاص):</span>
+            <span class="text-base font-bold font-mono text-rose-600">- 1,800 ج.م</span>
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-charcoal-900 font-bold text-sm">صافي العائد الصافي لمعرضك من طلب واحد:</span>
+            <span class="text-2xl font-serif font-bold font-mono text-bronze-600">5,700 ج.م</span>
+          </div>
+          <div class="p-3 rounded-xl bg-linen-100 border border-linen-300 text-xs text-charcoal-700">
+            <strong>الخلاصة:</strong> طلب بيع واحد إضافي شهرياً يغطي اشتراك المنصة بالكامل، وكل طلب بعده هو ربح خالص ونمو مستمر لمعرضك.
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 print-span-5 space-y-3 text-start">
+          <div class="light-card p-4 rounded-2xl bg-linen-100 flex items-center justify-center">
+            <img src="./furniture/coffee_table.png" alt="Signature Furniture Piece" class="h-36 object-contain" />
+          </div>
+          <div class="grid grid-cols-2 print-cols-2 gap-2.5">
+            <div class="light-card p-3.5 rounded-xl border-r-4 border-emerald-500">
+              <div dir="ltr" class="text-xl font-bold font-mono text-emerald-700">+50–200%</div>
+              <div class="text-[11px] font-bold text-charcoal-800">زيادة المبيعات الكلية</div>
+            </div>
+            <div class="light-card p-3.5 rounded-xl border-r-4 border-bronze-500">
+              <div dir="ltr" class="text-xl font-bold font-mono text-bronze-700">-78%</div>
+              <div class="text-[11px] font-bold text-charcoal-800">تقليل المرتجعات</div>
+            </div>
+            <div class="light-card p-3 rounded-xl col-span-2 text-xs font-semibold text-charcoal-700">
+              ✓ إدارة أسهل للطلبات + تعزيز مكانة علامتك التجارية في السوق
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------
+         SLIDE 16: 30-DAY PILOT & CALL TO ACTION (SIDE-BY-SIDE CLOSING)
+         ---------------------------------------------------- -->
+    <section class="slide w-full max-w-6xl mx-auto flex-col justify-center">
+      <div class="grid grid-cols-1 lg:grid-cols-12 print-cols-12 gap-6 items-center w-full">
+        <!-- CTA Text & Roadmap -->
+        <div class="lg:col-span-7 print-span-7 text-start space-y-4">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full gold-badge text-[10px] font-bold uppercase tracking-wider">
+            <span>16 — Action Plan · ابدأ خلال 30 يوماً</span>
+          </div>
+
+          <h2 dir="ltr" class="text-3xl sm:text-4xl font-serif font-bold text-charcoal-900 leading-tight text-start">
+            Don't Just Show Your Furniture. <br />
+            <span class="bronze-gradient-text">Let Customers Experience It.</span>
+          </h2>
+
+          <p class="text-xs sm:text-sm text-charcoal-600 leading-relaxed">
+            ابدأ الآن بخطة تجريبية واضحة لمدة 30 يوماً لمعرضك بدون تعقيد تقني:
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 print-cols-3 gap-2.5">
+            <div class="light-card p-3 rounded-xl">
+              <span dir="ltr" class="text-[10px] font-mono font-bold text-bronze-600 block">WEEK 01</span>
+              <div class="text-xs font-bold text-charcoal-900">اختيار 10 قطع مميزة</div>
+              <div class="text-[10px] text-charcoal-600">رفع الكتالوج والمقاسات والألوان.</div>
+            </div>
+            <div class="light-card p-3 rounded-xl">
+              <span dir="ltr" class="text-[10px] font-mono font-bold text-bronze-600 block">WEEK 02</span>
+              <div class="text-xs font-bold text-charcoal-900">تفعيل المتجر والـ AI</div>
+              <div class="text-[10px] text-charcoal-600">تجهيز هوية معرضك ومعاينة الغرف.</div>
+            </div>
+            <div class="light-card p-3 rounded-xl">
+              <span dir="ltr" class="text-[10px] font-mono font-bold text-bronze-600 block">WEEK 03–04</span>
+              <div class="text-xs font-bold text-charcoal-900">قياس العائد الفعلي</div>
+              <div class="text-[10px] text-charcoal-600">تفعيل تابلت المعرض وبدء المبيعات.</div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5 pt-1">
+            <a href="https://smart-room-eta.vercel.app/visualizer" target="_blank" rel="noreferrer" class="px-5 py-2.5 rounded-full bg-charcoal-900 text-white font-bold text-xs shadow-md hover:bg-charcoal-800 transition inline-flex items-center gap-1.5">
+              <span>AI Studio (استوديو المعاينة)</span>
+              <span class="text-bronze-400">↗</span>
+            </a>
+            <a href="https://smart-room-eta.vercel.app/" target="_blank" rel="noreferrer" class="px-5 py-2.5 rounded-full border border-charcoal-900 text-charcoal-900 font-bold text-xs hover:bg-charcoal-900 hover:text-white transition inline-flex items-center gap-1.5">
+              <span>Live Demo (المعرض الحي)</span>
+              <span>↗</span>
+            </a>
+            <button onclick="window.print()" class="no-print px-4 py-2.5 rounded-full bg-linen-100 border border-linen-300 text-charcoal-800 font-bold text-xs hover:bg-linen-200 transition cursor-pointer">
+              📄 تحميل PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Closing Architectural Visual -->
+        <div class="lg:col-span-5 print-span-5">
+          <div class="photo-frame rounded-3xl overflow-hidden bg-white p-2 relative">
+            <img
+              src="./presentation/hero_luxury_showroom.jpg"
+              alt="VESTA-AI Closing Showcase"
+              class="w-full h-56 sm:h-[295px] object-cover rounded-2xl"
+            />
+            <div class="mt-2 p-3 rounded-xl bg-charcoal-900 text-center">
+              <div dir="ltr" class="font-serif font-bold text-base text-white tracking-wider">VESTA-AI</div>
+              <div dir="ltr" class="text-[11px] font-mono text-amber-300 tracking-widest uppercase">See it. Sell it. Live it.</div>
+              <div class="text-[10px] text-linen-300 mt-0.5">دعنا نطور عملك معاً 🚀</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       BOTTOM EDITORIAL NAVIGATION TOOLBAR (Screen Only)
+       ========================================================================= -->
+  <footer class="h-14 border-t border-linen-200 px-6 flex items-center justify-between shrink-0 z-30 bg-white/95 backdrop-blur-md shadow-2xs">
+    <div class="flex items-center gap-2">
+      <button onclick="prevSlide()" class="px-4 py-1.5 rounded-xl bg-linen-100 hover:bg-linen-200 text-charcoal-800 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer border border-linen-300">
+        <span>السابق</span>
+        <span class="font-mono">←</span>
+      </button>
+      <button onclick="nextSlide()" class="px-5 py-1.5 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+        <span class="font-mono">→</span>
+        <span>التالي</span>
+      </button>
+      <button onclick="window.print()" class="hidden sm:inline-flex px-3 py-1.5 rounded-xl bg-linen-100 hover:bg-linen-200 text-bronze-700 font-bold text-xs transition items-center gap-1 border border-linen-300 cursor-pointer ml-2">
+        <span>📄 PDF</span>
+      </button>
+    </div>
+
+    <div class="hidden md:flex items-center gap-1.5" id="slide-dots"></div>
+
+    <div class="text-[11px] text-charcoal-500 hidden sm:block">
+      استخدم الأسهم ◄ ► في لوحة المفاتيح للتنقل بين الـ 16 شريحة
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       INTERACTIVE DECK ENGINE + AUTOMATIC PRINT RUNNING CHROME INJECTION
+       ========================================================================= -->
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let isEnglish = false;
+
+    // Inject discrete gallery running header & footer inside every slide for print/PDF export
+    slides.forEach((slide, index) => {
+      const topChrome = document.createElement('div');
+      topChrome.setAttribute('dir', 'ltr');
+      topChrome.className = 'print-chrome absolute top-3 left-6 right-6 items-center justify-between text-[9px] font-mono text-charcoal-500 border-b border-linen-200 pb-1.5';
+      topChrome.innerHTML = `
+        <span class="font-bold tracking-widest text-charcoal-800 uppercase">VESTA-AI · ARCHITECTURAL SPATIAL COMMERCE</span>
+        <span class="text-bronze-700 font-semibold">SEE IT. SELL IT. LIVE IT.</span>
+      `;
+      slide.prepend(topChrome);
+
+      const bottomChrome = document.createElement('div');
+      bottomChrome.setAttribute('dir', 'ltr');
+      bottomChrome.className = 'print-chrome absolute bottom-2.5 left-6 right-6 items-center justify-between text-[9px] font-mono text-charcoal-500 border-t border-linen-200 pt-1.5';
+      const pageLabel = `${String(index + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+      bottomChrome.innerHTML = `
+        <span>Demo: https://smart-room-eta.vercel.app/ · AI Studio: /visualizer</span>
+        <span class="font-bold text-charcoal-800">${pageLabel}</span>
+      `;
+      slide.append(bottomChrome);
+    });
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === currentSlide);
+      });
+      const numStr = (currentSlide + 1).toString().padStart(2, '0');
+      const totStr = totalSlides.toString().padStart(2, '0');
+      document.getElementById('slide-number').innerText = `${numStr} / ${totStr}`;
+      const progress = ((currentSlide + 1) / totalSlides) * 100;
+      document.getElementById('progress-bar').style.width = `${progress}%`;
+      renderDots();
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(idx) {
+      if (idx >= 0 && idx < totalSlides) {
+        currentSlide = idx;
+        updateSlide();
+      }
+    }
+
+    function renderDots() {
+      const dotsContainer = document.getElementById('slide-dots');
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.className = `w-2 h-2 rounded-full transition cursor-pointer ${i === currentSlide ? 'bg-charcoal-900 w-5' : 'bg-linen-300 hover:bg-linen-400'}`;
+        dot.title = `انتقل إلى شريحة ${i + 1}`;
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    function toggleLanguage() {
+      isEnglish = !isEnglish;
+      const htmlTag = document.documentElement;
+      const btn = document.getElementById('lang-btn');
+      if (isEnglish) {
+        htmlTag.setAttribute('dir', 'ltr');
+        htmlTag.setAttribute('lang', 'en');
+        btn.innerText = 'عربي';
+      } else {
+        htmlTag.setAttribute('dir', 'rtl');
+        htmlTag.setAttribute('lang', 'ar');
+        btn.innerText = 'English';
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        const dir = document.documentElement.getAttribute('dir');
+        if (dir === 'rtl') prevSlide(); else nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        const dir = document.documentElement.getAttribute('dir');
+        if (dir === 'rtl') nextSlide(); else prevSlide();
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullScreen();
+      } else if (e.key.toLowerCase() === 'p' && (e.ctrlKey || e.metaKey)) {
+        window.print();
+      }
+    });
+
+    renderDots();
+    updateSlide();
+  </script>
+</body>
+</html>

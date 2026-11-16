@@ -1,9 +1,10 @@
 import React from 'react';
 import { useStoreBuilder } from '../context/StoreBuilderContext';
+import { STORE_TEMPLATES } from '../data/defaultTemplates';
 import { Palette, Type, Layout, Sparkles, Check } from 'lucide-react';
 
 export const DesignBrandingView: React.FC = () => {
-  const { store, updateTheme } = useStoreBuilder();
+  const { store, updateTheme, applyTemplate } = useStoreBuilder();
   const { theme } = store;
 
   return (
@@ -15,6 +16,47 @@ export const DesignBrandingView: React.FC = () => {
         <p className="text-xs text-stone-500 mt-1">
           Customize your furniture store's visual identity, palette, typography, and container metrics.
         </p>
+      </div>
+
+      {/* Curated Store Themes (5 Presets) */}
+      <div className="p-6 rounded-3xl bg-white dark:bg-[#1A1815] border border-[#E2DBD0] dark:border-[#2D2A26] shadow-xs space-y-4">
+        <div className="flex items-center justify-between border-b pb-2">
+          <h3 className="font-bold text-sm uppercase tracking-wider text-stone-400">
+            0. Curated Store Themes ({STORE_TEMPLATES.length})
+          </h3>
+          <span className="text-[11px] font-mono text-stone-400">1-Click Theme Switcher</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+          {STORE_TEMPLATES.map((t) => {
+            const isActive = theme.brandName === t.theme.brandName;
+            return (
+              <button
+                key={t.id}
+                onClick={() => applyTemplate(t.id)}
+                className={`p-3.5 rounded-2xl border text-start transition cursor-pointer flex flex-col justify-between gap-2.5 ${
+                  isActive
+                    ? 'bg-amber-50/70 dark:bg-amber-950/20 border-amber-500 ring-1 ring-amber-400/50'
+                    : 'bg-stone-50 dark:bg-stone-900 border-stone-200 dark:border-stone-800 hover:border-amber-500'
+                }`}
+              >
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-bold text-xs text-[#1E1E1E] dark:text-white truncate">{t.name}</span>
+                    {isActive && <Check className="w-3.5 h-3.5 text-amber-600 shrink-0" />}
+                  </div>
+                  <span className="text-[10px] text-stone-500 block truncate">{t.category}</span>
+                </div>
+                <div className="flex items-center gap-1.5 pt-1">
+                  <span className="w-4 h-4 rounded-full border border-stone-300" style={{ backgroundColor: t.theme.colors.background }} title="Background" />
+                  <span className="w-4 h-4 rounded-full border border-stone-300" style={{ backgroundColor: t.theme.colors.primary }} title="Primary" />
+                  <span className="w-4 h-4 rounded-full border border-stone-300" style={{ backgroundColor: t.theme.colors.accent }} title="Accent" />
+                  <span className="text-[9px] font-mono text-stone-400 ml-auto">{t.theme.typography.headingFont}</span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Brand Identity */}

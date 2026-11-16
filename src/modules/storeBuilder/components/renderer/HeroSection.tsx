@@ -32,6 +32,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         xl: 'py-20 sm:py-32',
       }[design.paddingTop || 'lg'];
 
+  const btnRadiusClass =
+    theme.layout.buttonStyle === 'sharp'
+      ? 'rounded-none'
+      : theme.layout.buttonStyle === 'pill'
+      ? 'rounded-full'
+      : 'rounded-xl';
+
+  const cardRadiusClass =
+    theme.layout.borderRadius === 'none'
+      ? 'rounded-none'
+      : theme.layout.borderRadius === 'sm'
+      ? 'rounded-lg'
+      : theme.layout.borderRadius === 'full'
+      ? 'rounded-3xl'
+      : 'rounded-2xl';
+
   // 1. FULL WIDTH CINEMATIC VARIANT
   if (variant === 'hero-full') {
     return (
@@ -42,7 +58,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           color: design.textColor || '#FFFFFF',
         }}
       >
-        {/* Background Image with Overlay */}
         {content.imageUrl && (
           <div className="absolute inset-0 z-0">
             <img 
@@ -52,17 +67,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             />
             <div 
               className="absolute inset-0 bg-black" 
-              style={{ opacity: design.overlayOpacity ?? 0.5 }}
+              style={{ opacity: design.overlayOpacity ?? 0.45 }}
             />
           </div>
         )}
 
-        <div 
-          className="relative z-10 mx-auto px-4 sm:px-6 text-center max-w-3xl"
-        >
+        <div className="relative z-10 mx-auto px-4 sm:px-6 text-center max-w-3xl">
           {content.tag && (
             <span 
-              className="inline-block px-3 py-1 rounded-full text-[9px] sm:text-[10px] tracking-[0.2em] font-bold uppercase mb-3 sm:mb-4 shadow-xs"
+              className={`inline-block px-3.5 py-1 ${btnRadiusClass} text-[9px] sm:text-[10px] tracking-[0.2em] font-bold uppercase mb-3 sm:mb-4 shadow-xs`}
               style={{
                 backgroundColor: theme.colors.accent,
                 color: '#FFFFFF',
@@ -76,9 +89,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             className={`${
               isMobile ? 'text-2xl leading-tight' : 'text-3xl sm:text-5xl lg:text-6xl leading-[1.12]'
             } font-bold tracking-tight mb-4 sm:mb-5 text-white`}
-            style={{
-              fontFamily: theme.typography.headingFont,
-            }}
+            style={{ fontFamily: theme.typography.headingFont }}
           >
             {content.title || 'Architectural Living Spaces'}
           </h1>
@@ -95,7 +106,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {content.primaryButtonText && (
               <button
                 onClick={onNavigateToShop}
-                className="px-6 sm:px-7 py-3 sm:py-3.5 rounded-full text-xs uppercase tracking-[0.14em] font-bold transition shadow-lg flex items-center gap-2 cursor-pointer hover:scale-105"
+                className={`px-6 sm:px-7 py-3 sm:py-3.5 ${btnRadiusClass} text-xs uppercase tracking-[0.14em] font-bold transition shadow-lg flex items-center gap-2 cursor-pointer hover:scale-105`}
                 style={{
                   backgroundColor: theme.colors.accent,
                   color: '#FFFFFF',
@@ -109,7 +120,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {content.secondaryButtonText && (
               <button
                 onClick={onNavigateToAbout}
-                className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-full text-xs uppercase tracking-[0.14em] font-semibold transition border border-white/40 hover:bg-white/10 text-white cursor-pointer"
+                className={`px-5 sm:px-6 py-3 sm:py-3.5 ${btnRadiusClass} text-xs uppercase tracking-[0.14em] font-semibold transition border border-white/40 hover:bg-white/10 text-white cursor-pointer`}
               >
                 {content.secondaryButtonText}
               </button>
@@ -120,7 +131,145 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     );
   }
 
-  // 2. SPLIT IMAGE & EDITORIAL TEXT VARIANT (Default)
+  // 2. AVANT-GARDE EDITORIAL LOOKBOOK (Image Panorama Top + Split Exhibition Typographic Band Bottom)
+  if (variant === 'hero-editorial-lookbook') {
+    return (
+      <section
+        className="w-full overflow-hidden py-8 sm:py-12 transition-colors"
+        style={{
+          backgroundColor: design.backgroundColor || theme.colors.background,
+          color: design.textColor || theme.colors.text,
+        }}
+      >
+        <div
+          className="mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8"
+          style={{
+            maxWidth: theme.layout.containerMaxWidth === 'full' ? '100%' : theme.layout.containerMaxWidth,
+          }}
+        >
+          {/* Wide Gallery Canvas Image */}
+          <div
+            className={`relative w-full ${isMobile ? 'aspect-[16/10]' : 'aspect-[21/9]'} overflow-hidden border`}
+            style={{ borderColor: theme.colors.border }}
+          >
+            <img
+              src={content.imageUrl || 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace'}
+              alt={content.title || 'Editorial Exhibition'}
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20" />
+            <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.22em] text-white/80">
+              <span>{content.tag || 'EXHIBITION 01'}</span>
+              <span>LIMITED GALLERY EDITION</span>
+            </div>
+          </div>
+
+          {/* Asymmetrical Exhibition Footer Caption Row */}
+          <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-1 lg:grid-cols-12 gap-8 items-end'} text-start pt-2 border-b pb-8`} style={{ borderColor: theme.colors.border }}>
+            <div className={!isMobile ? 'lg:col-span-7' : ''}>
+              <h1
+                className={`${isMobile ? 'text-2xl' : 'text-3xl sm:text-5xl'} font-bold leading-[1.08] tracking-tight`}
+                style={{ fontFamily: theme.typography.headingFont }}
+              >
+                {content.title}
+              </h1>
+            </div>
+            <div className={`${!isMobile ? 'lg:col-span-5' : ''} space-y-4`}>
+              {content.subtitle && (
+                <p className="text-xs sm:text-sm leading-relaxed" style={{ color: theme.colors.mutedText }}>
+                  {content.subtitle}
+                </p>
+              )}
+              <div className="flex flex-wrap items-center gap-3">
+                {content.primaryButtonText && (
+                  <button
+                    onClick={onNavigateToShop}
+                    className={`px-6 py-3 ${btnRadiusClass} text-xs uppercase tracking-[0.16em] font-bold transition flex items-center gap-2 cursor-pointer hover:opacity-90`}
+                    style={{
+                      backgroundColor: theme.colors.primary,
+                      color: theme.colors.background,
+                    }}
+                  >
+                    <span>{content.primaryButtonText}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // 3. MINIMAL TYPOGRAPHIC MANIFESTO HERO (Catalog-First Storefront Band)
+  if (variant === 'hero-minimal-band') {
+    return (
+      <section
+        className="w-full py-12 sm:py-16 border-b transition-colors"
+        style={{
+          backgroundColor: design.backgroundColor || theme.colors.background,
+          color: design.textColor || theme.colors.text,
+          borderColor: theme.colors.border,
+        }}
+      >
+        <div
+          className="mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl space-y-5"
+        >
+          {content.tag && (
+            <span
+              className="inline-block text-[10px] font-bold uppercase tracking-[0.25em]"
+              style={{ color: theme.colors.secondary }}
+            >
+              — {content.tag} —
+            </span>
+          )}
+          <h1
+            className={`${isMobile ? 'text-2xl' : 'text-4xl sm:text-5xl'} font-bold tracking-tight leading-[1.12]`}
+            style={{ fontFamily: theme.typography.headingFont }}
+          >
+            {content.title}
+          </h1>
+          {content.subtitle && (
+            <p className="text-xs sm:text-base max-w-2xl mx-auto leading-relaxed" style={{ color: theme.colors.mutedText }}>
+              {content.subtitle}
+            </p>
+          )}
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            {content.primaryButtonText && (
+              <button
+                onClick={onNavigateToShop}
+                className={`px-6 py-3 ${btnRadiusClass} text-xs uppercase tracking-[0.14em] font-bold transition shadow-xs cursor-pointer flex items-center gap-2 hover:opacity-90`}
+                style={{
+                  backgroundColor: theme.colors.primary,
+                  color: theme.colors.background,
+                }}
+              >
+                <span>{content.primaryButtonText}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+            {content.secondaryButtonText && (
+              <button
+                onClick={onNavigateToAbout}
+                className={`px-6 py-3 ${btnRadiusClass} text-xs uppercase tracking-[0.14em] font-semibold transition border cursor-pointer hover:opacity-80`}
+                style={{
+                  borderColor: theme.colors.border,
+                  color: theme.colors.text,
+                }}
+              >
+                {content.secondaryButtonText}
+              </button>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // 4 & 5. SPLIT IMAGE & EDITORIAL TEXT (Supports both standard & 'hero-split-reversed')
+  const isReversed = variant === 'hero-split-reversed';
+
   return (
     <section 
       className={`w-full overflow-hidden ${paddingClasses} transition-colors`}
@@ -139,7 +288,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           isMobile ? 'grid-cols-1 gap-6' : isTablet ? 'grid-cols-1 md:grid-cols-2 gap-8 items-center' : 'grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center'
         }`}>
           {/* Text Column */}
-          <div className={`${!isMobile && !isTablet ? 'lg:col-span-5' : ''} space-y-4 sm:space-y-6 text-start`}>
+          <div className={`${!isMobile && !isTablet ? `lg:col-span-5 ${isReversed ? 'lg:order-2' : 'lg:order-1'}` : ''} space-y-4 sm:space-y-6 text-start`}>
             {content.tag && (
               <span 
                 className="inline-block px-3 py-1 rounded-md text-[9px] sm:text-[10px] tracking-[0.18em] font-bold uppercase"
@@ -157,9 +306,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               className={`${
                 isMobile ? 'text-2xl leading-tight' : 'text-3xl sm:text-4xl lg:text-5xl leading-[1.12]'
               } font-bold tracking-tight`}
-              style={{
-                fontFamily: theme.typography.headingFont,
-              }}
+              style={{ fontFamily: theme.typography.headingFont }}
             >
               {content.title || 'Modern Architecture Crafted for Bespoke Living.'}
             </h1>
@@ -177,7 +324,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {content.primaryButtonText && (
                 <button
                   onClick={onNavigateToShop}
-                  className="px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full text-xs uppercase tracking-[0.14em] font-bold transition shadow-md flex items-center gap-2 cursor-pointer hover:opacity-90"
+                  className={`px-5 sm:px-7 py-2.5 sm:py-3.5 ${btnRadiusClass} text-xs uppercase tracking-[0.14em] font-bold transition shadow-md flex items-center gap-2 cursor-pointer hover:opacity-90`}
                   style={{
                     backgroundColor: theme.colors.primary,
                     color: theme.colors.background,
@@ -191,7 +338,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {content.secondaryButtonText && (
                 <button
                   onClick={onNavigateToAbout}
-                  className="px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-xs uppercase tracking-[0.14em] font-semibold transition border cursor-pointer hover:bg-black/5 dark:hover:bg-white/5"
+                  className={`px-4 sm:px-6 py-2.5 sm:py-3.5 ${btnRadiusClass} text-xs uppercase tracking-[0.14em] font-semibold transition border cursor-pointer hover:bg-black/5 dark:hover:bg-white/5`}
                   style={{
                     borderColor: theme.colors.border,
                     color: theme.colors.text,
@@ -203,11 +350,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
           </div>
 
-          {/* Right Image Frame Column */}
-          <div className={`${!isMobile && !isTablet ? 'lg:col-span-7' : ''} relative`}>
+          {/* Image Frame Column */}
+          <div className={`${!isMobile && !isTablet ? `lg:col-span-7 ${isReversed ? 'lg:order-1' : 'lg:order-2'}` : ''} relative`}>
             <div 
               className={`w-full ${
-                isMobile ? 'aspect-[16/10] rounded-xl' : 'aspect-[4/3] sm:aspect-[16/10] rounded-2xl sm:rounded-3xl'
+                isMobile ? 'aspect-[16/10] rounded-xl' : `aspect-[4/3] sm:aspect-[16/10] ${cardRadiusClass}`
               } overflow-hidden shadow-xl sm:shadow-2xl border`}
               style={{ borderColor: theme.colors.border }}
             >
@@ -218,20 +365,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               />
             </div>
 
-            {/* Subtle Floating Feature Badge (Shown on non-mobile viewports or compact on mobile) */}
+            {/* Subtle Floating Feature Badge (Theme Surface Aware) */}
             <div 
               className={`${
                 isMobile 
-                  ? 'mt-3 p-2.5 rounded-xl border bg-white/90 dark:bg-[#1C1A17]/90 text-[10px]' 
-                  : 'absolute -bottom-5 -left-5 p-4 rounded-2xl bg-white dark:bg-[#1C1A17] border shadow-xl max-w-xs'
+                  ? 'mt-3 p-2.5 rounded-xl border text-[10px]' 
+                  : `absolute -bottom-5 ${isReversed ? '-right-5' : '-left-5'} p-4 ${cardRadiusClass} border shadow-xl max-w-xs`
               } text-start`}
-              style={{ borderColor: theme.colors.border }}
+              style={{
+                backgroundColor: theme.colors.surface,
+                borderColor: theme.colors.border,
+              }}
             >
               <span className="text-[9px] uppercase tracking-wider font-bold block" style={{ color: theme.colors.accent }}>
                 AUTHENTIC CRAFT
               </span>
-              <span className="text-[11px] font-medium leading-tight block text-stone-600 dark:text-stone-300">
-                100% Solid Kiln-Dried Beechwood & Italian Aniline Leathers
+              <span className="text-[11px] font-medium leading-tight block" style={{ color: theme.colors.mutedText }}>
+                100% Solid Kiln-Dried Beechwood &amp; Italian Aniline Leathers
               </span>
             </div>
           </div>

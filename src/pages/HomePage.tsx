@@ -5,7 +5,6 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCart } from '../context/CartContext';
 import { BeforeAfterSlider } from '../components/common/BeforeAfterSlider';
 import { AtelierSpatialSlider } from '../components/common/AtelierSpatialSlider';
-import { StaggeredDropSimulator } from '../components/common/StaggeredDropSimulator';
 import { SpatialLivingRoomHero } from '../components/common/SpatialLivingRoomHero';
 import { LUXURY_PRODUCTS } from '../data/products';
 import Antigravity from '../components/common/Antigravity';
@@ -26,8 +25,7 @@ import {
   Play,
   Pause,
   Volume2,
-  VolumeX,
-  Layers
+  VolumeX
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
@@ -65,7 +63,6 @@ export const HomePage: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [showMeasurements, setShowMeasurements] = useState(true);
-  const [section2Mode, setSection2Mode] = useState<'drop-physics' | 'before-after'>('drop-physics');
 
   const roomSlides = [
     {
@@ -111,13 +108,13 @@ export const HomePage: React.FC = () => {
           boxW: 28,
           boxH: 30,
           material: isRTL ? 'جلد طبيعي ناعم مع وسائد ريش وداعم معدني' : 'Top-Grain Cognac Leather with High Resilience Foam',
-          clearance: isRTL ? 'ارتفاع السقف: 1.75 متر فوق الجلسة' : 'Datum Height: 1.75m Above Floor',
+          clearance: isRTL ? 'ارتفاع الكنبة الكلي: 78 سم' : 'Sofa Height: 78 cm · Seat 44 cm',
         },
       ],
       measurements: [
         { x1: 28, y1: 64, x2: 54, y2: 74, label: '1.45 m Walkway', midX: 41, midY: 67 },
         { x1: 44, y1: 82, x2: 64, y2: 82, label: '140 cm Width', midX: 54, midY: 82 },
-        { x1: 82, y1: 30, x2: 82, y2: 76, label: '1.75 m Height', midX: 84, midY: 53 },
+        { x1: 82, y1: 46, x2: 82, y2: 74, label: '78 cm Height', midX: 77, midY: 53 },
       ],
     },
     {
@@ -809,57 +806,18 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Mode Switcher Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#EAE2D6] dark:bg-[#25211D] border border-[#E2DBD0] dark:border-[#3D3833]">
-              <button
-                onClick={() => setSection2Mode('drop-physics')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  section2Mode === 'drop-physics'
-                    ? 'bg-[#1E1E1E] text-white dark:bg-[#F8F7F3] dark:text-[#1E1E1E] shadow-sm'
-                    : 'text-[#6E6A63] hover:text-[#1E1E1E] dark:text-[#A39E96] dark:hover:text-white'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-[#B58A54]" />
-                <span>{isRTL ? 'محاكاة الإسقاط الفيزيائي (3D Drop)' : 'Staggered Physics Drop Simulator'}</span>
-                <span className="px-1.5 py-0.2 rounded-full bg-[#B58A54] text-white text-[9px]">LIVE</span>
-              </button>
-
-              <button
-                onClick={() => setSection2Mode('before-after')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  section2Mode === 'before-after'
-                    ? 'bg-[#1E1E1E] text-white dark:bg-[#F8F7F3] dark:text-[#1E1E1E] shadow-sm'
-                    : 'text-[#6E6A63] hover:text-[#1E1E1E] dark:text-[#A39E96] dark:hover:text-white'
-                }`}
-              >
-                <Layers className="w-3.5 h-3.5" />
-                <span>{isRTL ? 'مقارنة قبل وبعد (Before & After)' : 'Before & After Slider'}</span>
-              </button>
-            </div>
-
-            <div className="text-xs text-[#8C6D45] dark:text-[#D5C1A7] font-mono flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>{isRTL ? 'فيزياء الجاذبية والظلال التلامسية نشطة' : 'Gravity & Contact Shadow Physics: Active'}</span>
-            </div>
-          </div>
-
           {/* Interactive Simulation Container */}
-          {section2Mode === 'drop-physics' ? (
-            <StaggeredDropSimulator />
-          ) : (
-            <div className="rounded-3xl overflow-hidden border border-[#E2DBD0] dark:border-[#2D2A26] shadow-sm bg-white dark:bg-[#121110]">
-              <BeforeAfterSlider
-                beforeImage="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=2200&q=85"
-                afterImage="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2200&q=85"
-                beforeLabel={isRTL ? 'الغرفة الأصلية الفارغة' : 'RAW CUSTOMER ROOM'}
-                afterLabel={isRTL ? 'مؤثثة بقطع ڤيستا AI المعتمدة' : 'VESTA-AI SCALE-PLACED'}
-                hotspots={heroHotspots}
-                onHotspotClick={() => openExperienceA(LUXURY_PRODUCTS[0])}
-                aspectRatio="aspect-[16/10] sm:aspect-[21/10]"
-              />
-            </div>
-          )}
+          <div className="rounded-3xl overflow-hidden border border-[#E2DBD0] dark:border-[#2D2A26] shadow-sm bg-white dark:bg-[#121110]">
+            <BeforeAfterSlider
+              beforeImage="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=2200&q=85"
+              afterImage="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2200&q=85"
+              beforeLabel={isRTL ? 'الغرفة الأصلية الفارغة' : 'RAW CUSTOMER ROOM'}
+              afterLabel={isRTL ? 'مؤثثة بقطع ڤيستا AI المعتمدة' : 'VESTA-AI SCALE-PLACED'}
+              hotspots={heroHotspots}
+              onHotspotClick={() => openExperienceA(LUXURY_PRODUCTS[0])}
+              aspectRatio="aspect-[16/10] sm:aspect-[21/10]"
+            />
+          </div>
 
           {/* Under-slider details */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2 text-xs">
@@ -1089,26 +1047,6 @@ export const HomePage: React.FC = () => {
                   ? 'زوال الشكوك والمخاوف يحول التردد إلى شراء فوري، رافعاً متوسط سلة المشتريات ومقلصاً المرتجعات.'
                   : 'Eliminating spatial anxiety drives higher basket conversions and protects margins against rejection costs.'}
               </p>
-            </div>
-          </div>
-
-          {/* Metric KPI Numbers in Crisp White Surface */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-2xl bg-white dark:bg-[#1A1815] border border-[#E2DBD0] dark:border-[#2D2A26] text-center shadow-xs">
-            <div className="space-y-1">
-              <span className="text-4xl sm:text-5xl font-bold tracking-tight text-[#8C6D45]">+38%</span>
-              <p className="text-[11px] text-[#6E6A63] dark:text-[#A39E96] uppercase tracking-[0.14em] font-semibold">{isRTL ? 'نسبة التحويل للشراء' : 'Conversion Lift'}</p>
-            </div>
-            <div className="space-y-1">
-              <span className="text-4xl sm:text-5xl font-bold tracking-tight text-[#1E1E1E] dark:text-[#F8F7F3]">-41%</span>
-              <p className="text-[11px] text-[#6E6A63] dark:text-[#A39E96] uppercase tracking-[0.14em] font-semibold">{isRTL ? 'انخفاض المرتجعات' : 'Return Reduction'}</p>
-            </div>
-            <div className="space-y-1">
-              <span className="text-4xl sm:text-5xl font-bold tracking-tight text-[#8C6D45]">+52%</span>
-              <p className="text-[11px] text-[#6E6A63] dark:text-[#A39E96] uppercase tracking-[0.14em] font-semibold">{isRTL ? 'متوسط قيمة السلة' : 'Average Basket'}</p>
-            </div>
-            <div className="space-y-1">
-              <span className="text-4xl sm:text-5xl font-bold tracking-tight text-[#1E1E1E] dark:text-[#F8F7F3]">3.4x</span>
-              <p className="text-[11px] text-[#6E6A63] dark:text-[#A39E96] uppercase tracking-[0.14em] font-semibold">{isRTL ? 'وقت تصفح الكتالوج' : 'Catalog Dwell Time'}</p>
             </div>
           </div>
 

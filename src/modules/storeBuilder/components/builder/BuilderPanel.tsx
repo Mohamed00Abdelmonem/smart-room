@@ -441,20 +441,50 @@ export const BuilderPanel: React.FC<BuilderPanelProps> = ({ onClose }) => {
               <p className="text-[10px] text-stone-500">Colors, typography, and container width</p>
             </div>
 
-            {/* Template Switcher */}
-            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1815] border border-[#E2DBD0] dark:border-[#2D2A26] space-y-2">
-              <span className="text-[11px] font-bold block">Apply Store Template</span>
-              <div className="grid grid-cols-2 gap-2">
-                {STORE_TEMPLATES.map((t) => (
-                  <button
-                    key={t.id}
-                    onClick={() => applyTemplate(t.id)}
-                    className="p-2 rounded-xl border text-start hover:border-amber-500 transition cursor-pointer bg-stone-50 dark:bg-stone-900 border-stone-200 dark:border-stone-800"
-                  >
-                    <span className="font-bold text-[10px] block truncate">{t.name}</span>
-                    <span className="text-[8px] text-stone-400 block truncate">{t.category}</span>
-                  </button>
-                ))}
+            {/* Template Switcher (5 Curated Furniture Themes) */}
+            <div className="p-3 rounded-2xl bg-white dark:bg-[#1A1815] border border-[#E2DBD0] dark:border-[#2D2A26] space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold block">Apply Store Theme</span>
+                <span className="text-[9px] font-mono text-stone-400">{STORE_TEMPLATES.length} themes</span>
+              </div>
+              <div className="grid grid-cols-1 gap-2">
+                {STORE_TEMPLATES.map((t) => {
+                  const isActive = store.theme.brandName === t.theme.brandName;
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => applyTemplate(t.id)}
+                      className={`p-2.5 rounded-xl border text-start transition cursor-pointer flex items-center justify-between gap-2 ${
+                        isActive
+                          ? 'bg-amber-50/70 dark:bg-amber-950/20 border-amber-500 ring-1 ring-amber-400/50'
+                          : 'bg-stone-50 dark:bg-stone-900 border-stone-200 dark:border-stone-800 hover:border-amber-500'
+                      }`}
+                    >
+                      <div className="min-w-0 flex-1">
+                        <span className="font-bold text-[10px] block truncate text-[#1E1E1E] dark:text-white">{t.name}</span>
+                        <span className="text-[8px] text-stone-400 block truncate">{t.category}</span>
+                      </div>
+                      {/* Live Color Swatch Preview */}
+                      <div className="flex items-center -space-x-1 shrink-0">
+                        <span
+                          className="w-3.5 h-3.5 rounded-full border border-white dark:border-stone-800 shadow-2xs"
+                          style={{ backgroundColor: t.theme.colors.background }}
+                          title="Background"
+                        />
+                        <span
+                          className="w-3.5 h-3.5 rounded-full border border-white dark:border-stone-800 shadow-2xs"
+                          style={{ backgroundColor: t.theme.colors.primary }}
+                          title="Primary"
+                        />
+                        <span
+                          className="w-3.5 h-3.5 rounded-full border border-white dark:border-stone-800 shadow-2xs"
+                          style={{ backgroundColor: t.theme.colors.accent }}
+                          title="Accent"
+                        />
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

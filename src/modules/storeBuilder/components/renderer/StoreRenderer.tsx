@@ -148,6 +148,8 @@ export const StoreRenderer: React.FC<StoreRendererProps> = ({
       case 'faq':
       case 'newsletter':
       case 'contact':
+      case 'features':
+      case 'gallery':
         return <MarketingSection section={sec} theme={theme} viewport={viewport} />;
       case 'footer':
         return (
@@ -288,8 +290,11 @@ export const StoreRenderer: React.FC<StoreRendererProps> = ({
           onClick={() => setInspectProduct(null)}
         >
           <div 
-            className="w-full max-w-2xl bg-white dark:bg-[#1A1815] rounded-3xl overflow-hidden shadow-2xl border text-start animate-in zoom-in-95"
-            style={{ borderColor: theme.colors.border }}
+            className="w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl border text-start animate-in zoom-in-95"
+            style={{
+              backgroundColor: theme.colors.surface,
+              borderColor: theme.colors.border,
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="grid grid-cols-1 sm:grid-cols-2">

@@ -15,10 +15,103 @@ export const BrandSection: React.FC<BrandSectionProps> = ({
   onNavigateToAbout,
   viewport = 'desktop',
 }) => {
-  const { content, design } = section;
+  const { content, design, variant } = section;
 
   const isMobile = viewport === 'mobile';
   const isTablet = viewport === 'tablet';
+
+  const cardRadiusClass =
+    theme.layout.borderRadius === 'none'
+      ? 'rounded-none'
+      : theme.layout.borderRadius === 'sm'
+      ? 'rounded-lg'
+      : theme.layout.borderRadius === 'full'
+      ? 'rounded-3xl'
+      : 'rounded-2xl';
+
+  const btnRadiusClass =
+    theme.layout.buttonStyle === 'sharp'
+      ? 'rounded-none'
+      : theme.layout.buttonStyle === 'pill'
+      ? 'rounded-full'
+      : 'rounded-xl';
+
+  // VARIANT: CENTERED MANIFESTO STORY BAND
+  if (variant === 'brand-centered-manifesto') {
+    return (
+      <section
+        className={`w-full ${isMobile ? 'py-10' : 'py-16 sm:py-24'} transition-colors`}
+        style={{
+          backgroundColor: design.backgroundColor || theme.colors.background,
+          color: design.textColor || theme.colors.text,
+        }}
+      >
+        <div
+          className="mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12"
+          style={{
+            maxWidth: theme.layout.containerMaxWidth === 'full' ? '100%' : theme.layout.containerMaxWidth,
+          }}
+        >
+          <div className="max-w-3xl mx-auto text-center space-y-4">
+            {content.tag && (
+              <span className="text-[10px] tracking-[0.22em] font-bold uppercase block" style={{ color: theme.colors.accent }}>
+                {content.tag}
+              </span>
+            )}
+            <h2
+              className={`${isMobile ? 'text-2xl' : 'text-3xl sm:text-5xl'} font-bold tracking-tight leading-tight`}
+              style={{ fontFamily: theme.typography.headingFont }}
+            >
+              {content.title || 'Rooted in Heritage. Engineered for Spatial Majesty.'}
+            </h2>
+            <p className="text-xs sm:text-base leading-relaxed" style={{ color: theme.colors.mutedText }}>
+              {content.description}
+            </p>
+          </div>
+
+          {content.imageUrl && (
+            <div className={`w-full ${isMobile ? 'aspect-[16/10]' : 'aspect-[21/9]'} overflow-hidden border ${cardRadiusClass} shadow-lg`} style={{ borderColor: theme.colors.border }}>
+              <img
+                src={content.imageUrl}
+                alt={content.title || 'Workshop'}
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+          )}
+
+          <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-1 md:grid-cols-3 gap-6'} text-start`}>
+            {[
+              { num: '01', title: '25-Year Kiln-Dried Frame', desc: 'Seasoned European beechwood & solid walnut mortise joinery.' },
+              { num: '02', title: 'Natural Raw Finishes', desc: 'Hand-rubbed organic oils & low-VOC architectural lacquers.' },
+              { num: '03', title: 'White-Glove Installation', desc: 'Scheduled in-home delivery, room setup & packaging removal.' },
+            ].map((item) => (
+              <div
+                key={item.num}
+                className={`p-5 border ${cardRadiusClass} space-y-2`}
+                style={{
+                  backgroundColor: theme.colors.surface,
+                  borderColor: theme.colors.border,
+                }}
+              >
+                <span className="text-[10px] font-mono font-bold block" style={{ color: theme.colors.accent }}>
+                  {item.num}
+                </span>
+                <h4 className="font-bold text-sm" style={{ color: theme.colors.text }}>
+                  {item.title}
+                </h4>
+                <p className="text-xs leading-relaxed" style={{ color: theme.colors.mutedText }}>
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // STANDARD OR REVERSED SPLIT BRAND SECTION
+  const isReversed = variant === 'brand-split-reversed';
 
   return (
     <section 
@@ -42,9 +135,9 @@ export const BrandSection: React.FC<BrandSectionProps> = ({
             : 'grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center'
         }`}>
           {/* Visual Showcase */}
-          <div className={`${!isMobile && !isTablet ? 'lg:col-span-6' : ''} relative ${isMobile ? 'order-2' : 'order-2 lg:order-1'}`}>
+          <div className={`${!isMobile && !isTablet ? `lg:col-span-6 ${isReversed ? 'lg:order-2' : 'lg:order-1'}` : 'order-2 lg:order-1'} relative`}>
             <div 
-              className={`w-full ${isMobile ? 'aspect-[16/10] rounded-xl' : 'aspect-[4/3] rounded-3xl'} overflow-hidden shadow-xl sm:shadow-2xl border`}
+              className={`w-full ${isMobile ? 'aspect-[16/10]' : 'aspect-[4/3]'} ${cardRadiusClass} overflow-hidden shadow-xl sm:shadow-2xl border`}
               style={{ borderColor: theme.colors.border }}
             >
               <img 
@@ -54,27 +147,30 @@ export const BrandSection: React.FC<BrandSectionProps> = ({
               />
             </div>
             
-            {/* Architectural Callout Badge */}
+            {/* Architectural Callout Badge (Theme Surface Aware) */}
             <div 
               className={`${
                 isMobile 
-                  ? 'mt-3 p-3 rounded-xl border bg-white dark:bg-[#1C1A17] text-start space-y-1' 
-                  : 'absolute -bottom-6 -right-4 sm:-bottom-8 sm:right-6 p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#1C1A17] border shadow-xl max-w-xs text-start space-y-1.5'
+                  ? `mt-3 p-3 ${cardRadiusClass} border text-start space-y-1` 
+                  : `absolute -bottom-6 ${isReversed ? '-left-4 sm:left-6' : '-right-4 sm:right-6'} p-4 sm:p-5 ${cardRadiusClass} border shadow-xl max-w-xs text-start space-y-1.5`
               }`}
-              style={{ borderColor: theme.colors.border }}
+              style={{
+                backgroundColor: theme.colors.surface,
+                borderColor: theme.colors.border,
+              }}
             >
               <div className="flex items-center gap-1.5 text-xs font-bold" style={{ color: theme.colors.accent }}>
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>ARTISAN PRECISION</span>
               </div>
-              <p className="text-[10px] sm:text-[11px] text-stone-500 leading-snug">
-                100% Solid European Hardwoods & Authentic Italian Marble Quarried in Carrara.
+              <p className="text-[10px] sm:text-[11px] leading-snug" style={{ color: theme.colors.mutedText }}>
+                100% Solid European Hardwoods &amp; Authentic Italian Marble Quarried in Carrara.
               </p>
             </div>
           </div>
 
           {/* Copy Column */}
-          <div className={`${!isMobile && !isTablet ? 'lg:col-span-6' : ''} space-y-4 sm:space-y-6 text-start ${isMobile ? 'order-1' : 'order-1 lg:order-2'}`}>
+          <div className={`${!isMobile && !isTablet ? `lg:col-span-6 ${isReversed ? 'lg:order-1' : 'lg:order-2'}` : 'order-1 lg:order-2'} space-y-4 sm:space-y-6 text-start`}>
             {content.tag && (
               <span 
                 className="text-[9px] sm:text-[10px] tracking-[0.2em] font-bold uppercase block"
@@ -113,7 +209,7 @@ export const BrandSection: React.FC<BrandSectionProps> = ({
               <div className="pt-2">
                 <button
                   onClick={onNavigateToAbout}
-                  className="px-6 py-3 rounded-full text-xs uppercase tracking-wider font-bold transition shadow-md flex items-center gap-2 cursor-pointer hover:opacity-90"
+                  className={`px-6 py-3 ${btnRadiusClass} text-xs uppercase tracking-wider font-bold transition shadow-md flex items-center gap-2 cursor-pointer hover:opacity-90`}
                   style={{
                     backgroundColor: theme.colors.primary,
                     color: theme.colors.background,

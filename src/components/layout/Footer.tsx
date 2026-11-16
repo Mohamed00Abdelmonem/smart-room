@@ -153,35 +153,102 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* Egyptian Payment Gateways Accepted Bar */}
-      <div className="border-t border-[#2E2822] py-6 bg-[#16120E]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs text-[#A39E96]">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-bold text-white">
-              {isRTL ? 'بوابات السداد والتقسيط المعتمدة في مصر:' : 'Certified Egyptian Payment & BNPL Gateways:'}
-            </span>
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-2 text-[10px] font-bold">
-            <span className="px-2.5 py-1 rounded-lg bg-[#532677]/20 border border-[#532677]/40 text-[#D5A5FF]">
-              InstaPay (IPN Egypt)
-            </span>
-            <span className="px-2.5 py-1 rounded-lg bg-red-950/40 border border-red-800/40 text-red-400">
-              Vodafone Cash
-            </span>
-            <span className="px-2.5 py-1 rounded-lg bg-orange-950/40 border border-orange-800/40 text-orange-400">
-              Orange Money
-            </span>
-            <span className="px-2.5 py-1 rounded-lg bg-blue-950/40 border border-blue-800/40 text-blue-400">
-              Meeza National Card
-            </span>
-            <span className="px-2.5 py-1 rounded-lg bg-amber-950/40 border border-amber-800/40 text-amber-400">
-              ValU 0% Installments
-            </span>
-            <span className="px-2.5 py-1 rounded-lg bg-yellow-950/40 border border-yellow-800/40 text-yellow-400">
-              Fawry Pay Kiosks
-            </span>
-          </div>
+      {/* Payment Gateway Icons Bar (Icons Only) */}
+      <div className="border-t border-[#2E2822] py-4 bg-[#16120E]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-center gap-2.5">
+          {/* InstaPay */}
+          <span
+            title="InstaPay (IPN Egypt)"
+            aria-label="InstaPay"
+            className="w-11 h-7 rounded-md bg-[#241B2F] border border-[#532677]/50 flex items-center justify-center hover:border-[#9E5CE6] transition-colors"
+          >
+            <svg viewBox="0 0 36 22" className="w-7 h-4" fill="none" aria-hidden="true">
+              <path d="M19.5 3L11 12.5h5.8L15 19l9.5-9.5H18.4L19.5 3z" fill="#D5A5FF" />
+            </svg>
+          </span>
+
+          {/* Vodafone Cash */}
+          <span
+            title="Vodafone Cash"
+            aria-label="Vodafone Cash"
+            className="w-11 h-7 rounded-md bg-[#2A1617] border border-red-900/50 flex items-center justify-center hover:border-red-500/70 transition-colors"
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" fill="#E60000" />
+              <path d="M12.3 6.5c-2.6 0-4.7 2-4.7 4.7 0 2.2 1.5 3.9 3.6 4.1 1.6.1 2.7-.8 2.8-2.1.1-1.3-.8-2.2-2-2.2-.5 0-1 .2-1.3.5.3-1.7 1.4-3 2.9-3.5l-1.3-1.5z" fill="#FFFFFF" />
+            </svg>
+          </span>
+
+          {/* Orange Money */}
+          <span
+            title="Orange Money"
+            aria-label="Orange Money"
+            className="w-11 h-7 rounded-md bg-[#2A1C12] border border-orange-900/50 flex items-center justify-center hover:border-orange-500/70 transition-colors"
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" aria-hidden="true">
+              <rect x="4" y="4" width="16" height="16" rx="3" fill="#FF7900" />
+              <rect x="7" y="15.5" width="10" height="2" fill="#FFFFFF" />
+            </svg>
+          </span>
+
+          {/* Meeza */}
+          <span
+            title="Meeza National Card"
+            aria-label="Meeza"
+            className="w-11 h-7 rounded-md bg-[#162032] border border-blue-900/50 flex items-center justify-center hover:border-blue-400/70 transition-colors"
+          >
+            <svg viewBox="0 0 32 20" className="w-7 h-4" fill="none" aria-hidden="true">
+              <rect x="3" y="4" width="26" height="12" rx="2" stroke="#60A5FA" strokeWidth="1.5" />
+              <path d="M8 13V7l4 4 4-4v6" stroke="#93C5FD" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="23" cy="10" r="2.2" fill="#3B82F6" />
+            </svg>
+          </span>
+
+          {/* ValU */}
+          <span
+            title="ValU 0% Installments"
+            aria-label="ValU"
+            className="w-11 h-7 rounded-md bg-[#292014] border border-amber-900/50 flex items-center justify-center hover:border-amber-400/70 transition-colors"
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" aria-hidden="true">
+              <path d="M5 7l7 10 7-10" stroke="#FBBF24" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+
+          {/* Fawry */}
+          <span
+            title="Fawry Pay"
+            aria-label="Fawry"
+            className="w-11 h-7 rounded-md bg-[#292313] border border-yellow-900/50 flex items-center justify-center hover:border-yellow-400/70 transition-colors"
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" aria-hidden="true">
+              <rect x="4" y="5" width="16" height="14" rx="2.5" fill="#FACC15" />
+              <path d="M9 15V9h6M9 12h4.5" stroke="#1E3A8A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+
+          {/* Visa */}
+          <span
+            title="Visa"
+            aria-label="Visa"
+            className="w-11 h-7 rounded-md bg-[#1C1917] border border-[#36312B] flex items-center justify-center hover:border-white/40 transition-colors"
+          >
+            <svg viewBox="0 0 36 20" className="w-7 h-4" fill="none" aria-hidden="true">
+              <path d="M7 5l4.2 10h2.4L17.8 5h-2.5l-2.9 7.2L9.5 5H7zm13 0l-2 10h2.3l2-10H20zm7.4 0c-1.7 0-2.9.9-2.9 2.3 0 1 .9 1.6 1.6 2 .7.3 1 .6 1 .9 0 .5-.6.7-1.2.7-.8 0-1.3-.1-2-.4l-.3 1.7c.5.2 1.4.4 2.3.4 2.1 0 3.5-1 3.5-2.5 0-1-.6-1.7-1.7-2.2-.7-.3-1.1-.5-1.1-.9 0-.3.4-.6 1.1-.6.6 0 1.1.1 1.5.3l.3-1.6c-.5-.1-1.1-.3-2.1-.3z" fill="#E5E7EB" />
+            </svg>
+          </span>
+
+          {/* Mastercard */}
+          <span
+            title="Mastercard"
+            aria-label="Mastercard"
+            className="w-11 h-7 rounded-md bg-[#1C1917] border border-[#36312B] flex items-center justify-center hover:border-white/40 transition-colors"
+          >
+            <svg viewBox="0 0 32 20" className="w-7 h-4" fill="none" aria-hidden="true">
+              <circle cx="12.5" cy="10" r="5.5" fill="#EB001B" fillOpacity="0.9" />
+              <circle cx="19.5" cy="10" r="5.5" fill="#F79E1B" fillOpacity="0.9" />
+            </svg>
+          </span>
         </div>
       </div>
 

@@ -22,6 +22,147 @@ export const MarketingSection: React.FC<MarketingSectionProps> = ({
   const isMobile = viewport === 'mobile';
   const isTablet = viewport === 'tablet';
 
+  // 0A. ARCHITECTURAL FEATURES STRIP
+  if (type === 'features') {
+    const featGrid = isMobile
+      ? 'grid grid-cols-1 gap-4'
+      : isTablet
+      ? 'grid grid-cols-2 gap-5'
+      : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6';
+
+    return (
+      <section
+        className={`w-full ${isMobile ? 'py-10' : 'py-14 sm:py-20'} transition-colors border-y`}
+        style={{
+          backgroundColor: design.backgroundColor || theme.colors.background,
+          color: design.textColor || theme.colors.text,
+          borderColor: theme.colors.border,
+        }}
+      >
+        <div
+          className="mx-auto px-4 sm:px-6 lg:px-8 space-y-8"
+          style={{
+            maxWidth: theme.layout.containerMaxWidth === 'full' ? '100%' : theme.layout.containerMaxWidth,
+          }}
+        >
+          {content.title && (
+            <div className="text-center max-w-2xl mx-auto space-y-1.5">
+              {content.tag && (
+                <span className="text-[10px] tracking-[0.22em] font-bold uppercase block" style={{ color: theme.colors.accent }}>
+                  {content.tag}
+                </span>
+              )}
+              <h2
+                className={`${isMobile ? 'text-xl' : 'text-2xl sm:text-3xl'} font-bold tracking-tight`}
+                style={{ fontFamily: theme.typography.headingFont }}
+              >
+                {content.title}
+              </h2>
+            </div>
+          )}
+
+          <div className={`${featGrid} text-start`}>
+            {(content.items || []).map((item, idx) => (
+              <div
+                key={item.id || idx}
+                className="p-5 rounded-2xl border space-y-2 transition-all"
+                style={{
+                  backgroundColor: theme.colors.surface,
+                  borderColor: theme.colors.border,
+                }}
+              >
+                <span className="text-xs font-mono font-bold block" style={{ color: theme.colors.accent }}>
+                  {item.tag || `0${idx + 1}`}
+                </span>
+                <h4 className="font-bold text-sm" style={{ color: theme.colors.text }}>
+                  {item.title}
+                </h4>
+                <p className="text-xs leading-relaxed" style={{ color: theme.colors.mutedText }}>
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // 0B. ASYMMETRICAL LOOKBOOK GALLERY MOSAIC
+  if (type === 'gallery') {
+    const galleryItems = content.items || [];
+    return (
+      <section
+        className={`w-full ${isMobile ? 'py-10' : 'py-16 sm:py-22'} transition-colors`}
+        style={{
+          backgroundColor: design.backgroundColor || theme.colors.surface,
+          color: design.textColor || theme.colors.text,
+        }}
+      >
+        <div
+          className="mx-auto px-4 sm:px-6 lg:px-8 space-y-8"
+          style={{
+            maxWidth: theme.layout.containerMaxWidth === 'full' ? '100%' : theme.layout.containerMaxWidth,
+          }}
+        >
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b pb-5" style={{ borderColor: theme.colors.border }}>
+            <div className="text-start space-y-1">
+              {content.tag && (
+                <span className="text-[10px] tracking-[0.2em] font-bold uppercase block" style={{ color: theme.colors.accent }}>
+                  {content.tag}
+                </span>
+              )}
+              <h2
+                className={`${isMobile ? 'text-xl' : 'text-2xl sm:text-4xl'} font-bold tracking-tight`}
+                style={{ fontFamily: theme.typography.headingFont }}
+              >
+                {content.title || 'Editorial Interior Lookbook'}
+              </h2>
+            </div>
+            {content.subtitle && (
+              <p className="text-xs sm:text-sm max-w-md text-start" style={{ color: theme.colors.mutedText }}>
+                {content.subtitle}
+              </p>
+            )}
+          </div>
+
+          <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-1 md:grid-cols-12 gap-5'}`}>
+            {galleryItems.map((imgItem, idx) => {
+              const spanClass =
+                !isMobile && idx === 0
+                  ? 'md:col-span-7 aspect-[16/10]'
+                  : !isMobile && idx === 1
+                  ? 'md:col-span-5 aspect-[16/10] md:aspect-auto'
+                  : 'md:col-span-4 aspect-[4/3]';
+              return (
+                <div
+                  key={imgItem.id || idx}
+                  className={`relative overflow-hidden rounded-3xl border group ${spanClass}`}
+                  style={{ borderColor: theme.colors.border }}
+                >
+                  <img
+                    src={imgItem.imageUrl}
+                    alt={imgItem.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4 text-start text-white">
+                    <span className="text-[9px] font-mono uppercase tracking-widest opacity-80 block">
+                      {imgItem.subtitle || 'CURATED SPACE'}
+                    </span>
+                    <span className="font-bold text-sm sm:text-base block" style={{ fontFamily: theme.typography.headingFont }}>
+                      {imgItem.title}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   // 1. TESTIMONIALS SECTION
   if (type === 'testimonials') {
     const testimonialGrid = isMobile
@@ -64,8 +205,11 @@ export const MarketingSection: React.FC<MarketingSectionProps> = ({
             {(content.items || []).map((t, idx) => (
               <div 
                 key={t.id || idx}
-                className="p-5 sm:p-8 rounded-2xl border flex flex-col justify-between space-y-4 shadow-2xs bg-stone-50/50 dark:bg-[#1A1815]"
-                style={{ borderColor: theme.colors.border }}
+                className="p-5 sm:p-8 rounded-2xl border flex flex-col justify-between space-y-4 shadow-2xs"
+                style={{
+                  backgroundColor: theme.colors.surface,
+                  borderColor: theme.colors.border,
+                }}
               >
                 <div className="flex items-center gap-1 text-amber-500">
                   {Array.from({ length: t.rating || 5 }).map((_, i) => (
@@ -316,7 +460,13 @@ export const MarketingSection: React.FC<MarketingSectionProps> = ({
           </div>
 
           {/* Right Form */}
-          <div className={`${!isMobile && !isTablet ? 'lg:col-span-7' : ''} p-5 sm:p-8 rounded-2xl border bg-white dark:bg-[#1A1815] shadow-xs text-start`} style={{ borderColor: theme.colors.border }}>
+          <div
+            className={`${!isMobile && !isTablet ? 'lg:col-span-7' : ''} p-5 sm:p-8 rounded-2xl border shadow-xs text-start`}
+            style={{
+              backgroundColor: theme.colors.surface,
+              borderColor: theme.colors.border,
+            }}
+          >
             {contactSubmitted ? (
               <div className="py-12 text-center space-y-3 animate-fadeIn">
                 <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
