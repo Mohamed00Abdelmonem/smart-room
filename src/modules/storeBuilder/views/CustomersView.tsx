@@ -1,18 +1,20 @@
 import React from 'react';
 import { useStoreBuilder } from '../context/StoreBuilderContext';
-import { Users, Mail, Phone, MapPin } from 'lucide-react';
+import { useLanguage } from '../../../context/LanguageContext';
+import { MapPin } from 'lucide-react';
 
 export const CustomersView: React.FC = () => {
   const { store } = useStoreBuilder();
+  const { isRTL } = useLanguage();
 
   return (
     <div className="space-y-6 text-start max-w-6xl mx-auto p-4 sm:p-8 md:p-10">
       <div className="pb-6 border-b border-[#E2DBD0] dark:border-[#2D2A26]">
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1E1E1E] dark:text-white">
-          Customer Roster
+          {isRTL ? 'قائمة العملاء' : 'Customer Roster'}
         </h1>
         <p className="text-xs text-stone-500 mt-1">
-          Review customer profiles, contact info, and lifetime furniture spend.
+          {isRTL ? 'استعراض ملفات العملاء ومعلومات الاتصال وإجمالي المشتريات.' : 'Review customer profiles, contact info, and lifetime furniture spend.'}
         </p>
       </div>
 
@@ -21,11 +23,11 @@ export const CustomersView: React.FC = () => {
           <table className="w-full text-start text-xs">
             <thead className="bg-[#FAF8F5] dark:bg-[#151311] border-b border-[#E2DBD0] dark:border-[#2D2A26] text-stone-500 uppercase text-[10px] tracking-wider">
               <tr>
-                <th className="py-3 px-4">Customer</th>
-                <th className="py-3 px-4">Location</th>
-                <th className="py-3 px-4">Orders</th>
-                <th className="py-3 px-4 font-mono">Lifetime Spend</th>
-                <th className="py-3 px-4">Last Active</th>
+                <th className="py-3 px-4">{isRTL ? 'العميل' : 'Customer'}</th>
+                <th className="py-3 px-4">{isRTL ? 'الموقع' : 'Location'}</th>
+                <th className="py-3 px-4">{isRTL ? 'الطلبات' : 'Orders'}</th>
+                <th className="py-3 px-4 font-mono">{isRTL ? 'إجمالي الإنفاق' : 'Lifetime Spend'}</th>
+                <th className="py-3 px-4">{isRTL ? 'آخر طلب' : 'Last Active'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100 dark:divide-stone-800">
@@ -33,7 +35,7 @@ export const CustomersView: React.FC = () => {
                 <tr key={c.id} className="hover:bg-stone-50/50 dark:hover:bg-stone-900/50 transition">
                   <td className="py-3.5 px-4">
                     <span className="font-bold text-[#1E1E1E] dark:text-white block">{c.name}</span>
-                    <span className="text-[10px] text-stone-400 font-mono">{c.email} · {c.phone}</span>
+                    <span dir="ltr" className="text-[10px] text-stone-400 font-mono">{c.email} · {c.phone}</span>
                   </td>
                   <td className="py-3.5 px-4 text-stone-600 dark:text-stone-300">
                     <div className="flex items-center gap-1">
@@ -42,10 +44,10 @@ export const CustomersView: React.FC = () => {
                     </div>
                   </td>
                   <td className="py-3.5 px-4 font-mono font-semibold">
-                    {c.ordersCount} orders
+                    {c.ordersCount} {isRTL ? 'طلبات' : 'orders'}
                   </td>
                   <td className="py-3.5 px-4 font-mono font-bold text-[#1E1E1E] dark:text-white">
-                    {c.totalSpentEgp.toLocaleString()} EGP
+                    {c.totalSpentEgp.toLocaleString()} {isRTL ? 'ج.م' : 'EGP'}
                   </td>
                   <td className="py-3.5 px-4 text-stone-400 font-mono text-[11px]">
                     {c.lastOrderDate}
@@ -59,4 +61,3 @@ export const CustomersView: React.FC = () => {
     </div>
   );
 };
-

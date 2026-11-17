@@ -1,28 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStoreBuilder } from '../context/StoreBuilderContext';
-import { 
-  FileText, 
-  Home, 
-  Plus, 
-  Copy, 
-  Trash2, 
-  Edit3, 
-  ExternalLink,
-  CheckCircle2,
-  Sliders
-} from 'lucide-react';
+import { useLanguage } from '../../../context/LanguageContext';
+import { FileText, Home, Plus, Copy, Trash2, Sliders } from 'lucide-react';
 
 export const PagesManagementView: React.FC = () => {
-  const { 
-    store, 
-    createPage, 
-    deletePage, 
-    duplicatePage, 
-    setHomePage, 
+  const {
+    store,
+    createPage,
+    deletePage,
+    duplicatePage,
+    setHomePage,
     setActivePageId,
-    updatePageMeta 
+    updatePageMeta,
   } = useStoreBuilder();
+  const { isRTL } = useLanguage();
   const navigate = useNavigate();
 
   const [newPageTitle, setNewPageTitle] = useState('');
@@ -44,7 +36,7 @@ export const PagesManagementView: React.FC = () => {
     }
   };
 
-  const startEdit = (p: typeof store.pages[0]) => {
+  const startEdit = (p: (typeof store.pages)[0]) => {
     setEditingPageId(p.id);
     setEditTitle(p.title);
     setEditSlug(p.slug);
@@ -69,10 +61,12 @@ export const PagesManagementView: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E2DBD0] dark:border-[#2D2A26]">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#1E1E1E] dark:text-white">
-            Pages & Navigation
+            {isRTL ? 'الصفحات والتنقل' : 'Pages & Navigation'}
           </h1>
           <p className="text-xs text-stone-500 mt-1">
-            Manage your store's multi-page architecture, SEO titles, and layout structure.
+            {isRTL
+              ? 'إدارة صفحات متجرك وعناوين محركات البحث (SEO) والروابط.'
+              : "Manage your store's multi-page architecture, SEO titles, and layout structure."}
           </p>
         </div>
 
@@ -81,7 +75,7 @@ export const PagesManagementView: React.FC = () => {
           className="px-5 py-2.5 rounded-full bg-[#1E1E1E] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-stone-800 transition shadow-xs cursor-pointer w-fit"
         >
           <Plus className="w-4 h-4" />
-          <span>Create New Page</span>
+          <span>{isRTL ? 'إنشاء صفحة جديدة' : 'Create New Page'}</span>
         </button>
       </div>
 
@@ -91,11 +85,11 @@ export const PagesManagementView: React.FC = () => {
           <table className="w-full text-start text-xs">
             <thead className="bg-[#FAF8F5] dark:bg-[#151311] border-b border-[#E2DBD0] dark:border-[#2D2A26] text-stone-500 uppercase text-[10px] tracking-wider">
               <tr>
-                <th className="py-3 px-4">Page Title</th>
-                <th className="py-3 px-4">URL Slug</th>
-                <th className="py-3 px-4">Sections</th>
-                <th className="py-3 px-4">Role</th>
-                <th className="py-3 px-4 text-end">Actions</th>
+                <th className="py-3 px-4">{isRTL ? 'عنوان الصفحة' : 'Page Title'}</th>
+                <th className="py-3 px-4">{isRTL ? 'الرابط (Slug)' : 'URL Slug'}</th>
+                <th className="py-3 px-4">{isRTL ? 'الأقسام' : 'Sections'}</th>
+                <th className="py-3 px-4">{isRTL ? 'الدور' : 'Role'}</th>
+                <th className="py-3 px-4 text-end">{isRTL ? 'إجراءات' : 'Actions'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100 dark:divide-stone-800">
@@ -112,27 +106,27 @@ export const PagesManagementView: React.FC = () => {
                     </div>
                   </td>
 
-                  <td className="py-3.5 px-4 font-mono text-stone-500">
+                  <td dir="ltr" className="py-3.5 px-4 font-mono text-stone-500 text-start">
                     /{page.slug}
                   </td>
 
                   <td className="py-3.5 px-4">
                     <span className="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-[10px] font-mono">
-                      {page.sections.length} sections
+                      {page.sections.length} {isRTL ? 'أقسام' : 'sections'}
                     </span>
                   </td>
 
                   <td className="py-3.5 px-4">
                     {page.isHome ? (
                       <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-bold text-[10px] uppercase">
-                        Homepage
+                        {isRTL ? 'الرئيسية' : 'Homepage'}
                       </span>
                     ) : (
                       <button
                         onClick={() => setHomePage(page.id)}
                         className="text-[10px] text-stone-400 hover:text-stone-700 underline cursor-pointer"
                       >
-                        Set as Home
+                        {isRTL ? 'تعيين كرئيسية' : 'Set as Home'}
                       </button>
                     )}
                   </td>
@@ -146,13 +140,13 @@ export const PagesManagementView: React.FC = () => {
                         }}
                         className="px-3 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-stone-700 dark:text-stone-200 font-bold text-[11px] cursor-pointer"
                       >
-                        Edit in Builder
+                        {isRTL ? 'تعديل في المحرر' : 'Edit in Builder'}
                       </button>
 
                       <button
                         onClick={() => startEdit(page)}
                         className="p-1.5 text-stone-400 hover:text-stone-700 rounded cursor-pointer"
-                        title="SEO Settings"
+                        title={isRTL ? 'إعدادات SEO' : 'SEO Settings'}
                       >
                         <Sliders className="w-3.5 h-3.5" />
                       </button>
@@ -160,7 +154,7 @@ export const PagesManagementView: React.FC = () => {
                       <button
                         onClick={() => duplicatePage(page.id)}
                         className="p-1.5 text-stone-400 hover:text-stone-700 rounded cursor-pointer"
-                        title="Duplicate"
+                        title={isRTL ? 'نسخ' : 'Duplicate'}
                       >
                         <Copy className="w-3.5 h-3.5" />
                       </button>
@@ -169,7 +163,7 @@ export const PagesManagementView: React.FC = () => {
                         <button
                           onClick={() => deletePage(page.id)}
                           className="p-1.5 text-stone-400 hover:text-red-500 rounded cursor-pointer"
-                          title="Delete"
+                          title={isRTL ? 'حذف' : 'Delete'}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -186,45 +180,42 @@ export const PagesManagementView: React.FC = () => {
       {/* Add Page Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <form 
+          <form
             onSubmit={handleCreate}
             className="w-full max-w-md bg-white dark:bg-[#1A1815] rounded-3xl p-6 shadow-2xl border space-y-4 text-start"
           >
-            <h3 className="font-bold text-base">Create New Store Page</h3>
+            <h3 className="font-bold text-base">{isRTL ? 'إنشاء صفحة متجر جديدة' : 'Create New Store Page'}</h3>
             <div>
-              <label className="block text-xs font-semibold mb-1">Page Title *</label>
-              <input 
-                type="text" 
-                required 
-                value={newPageTitle} 
+              <label className="block text-xs font-semibold mb-1">{isRTL ? 'عنوان الصفحة *' : 'Page Title *'}</label>
+              <input
+                type="text"
+                required
+                value={newPageTitle}
                 onChange={(e) => setNewPageTitle(e.target.value)}
-                placeholder="e.g. Living Room Lookbook" 
+                placeholder={isRTL ? 'مثال: صالة المعيشة' : 'e.g. Living Room Lookbook'}
                 className="w-full px-3 py-2 rounded-xl border text-xs bg-stone-50 dark:bg-stone-900 outline-hidden"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">URL Slug (Optional)</label>
-              <input 
-                type="text" 
-                value={newPageSlug} 
+              <label className="block text-xs font-semibold mb-1">{isRTL ? 'الرابط المختصر (اختياري)' : 'URL Slug (Optional)'}</label>
+              <input
+                type="text"
+                value={newPageSlug}
                 onChange={(e) => setNewPageSlug(e.target.value)}
-                placeholder="e.g. lookbook" 
+                placeholder="lookbook"
                 className="w-full px-3 py-2 rounded-xl border text-xs bg-stone-50 dark:bg-stone-900 outline-hidden"
               />
             </div>
             <div className="flex justify-end gap-2 pt-2">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => setShowAddModal(false)}
                 className="px-4 py-2 rounded-xl text-xs text-stone-500"
               >
-                Cancel
+                {isRTL ? 'إلغاء' : 'Cancel'}
               </button>
-              <button 
-                type="submit" 
-                className="px-5 py-2 rounded-xl bg-[#1E1E1E] text-white text-xs font-bold"
-              >
-                Create Page
+              <button type="submit" className="px-5 py-2 rounded-xl bg-[#1E1E1E] text-white text-xs font-bold">
+                {isRTL ? 'إنشاء الصفحة' : 'Create Page'}
               </button>
             </div>
           </form>
@@ -235,64 +226,56 @@ export const PagesManagementView: React.FC = () => {
       {editingPageId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
           <div className="w-full max-w-lg bg-white dark:bg-[#1A1815] rounded-3xl p-6 shadow-2xl border space-y-4 text-start">
-            <h3 className="font-bold text-base">Page Settings & SEO Metadata</h3>
+            <h3 className="font-bold text-base">{isRTL ? 'إعدادات الصفحة و SEO' : 'Page Settings & SEO Metadata'}</h3>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block font-semibold mb-1">Page Title</label>
-                <input 
-                  type="text" 
-                  value={editTitle} 
+                <label className="block font-semibold mb-1">{isRTL ? 'عنوان الصفحة' : 'Page Title'}</label>
+                <input
+                  type="text"
+                  value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl border bg-stone-50 dark:bg-stone-900 outline-hidden"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">URL Slug</label>
-                <input 
-                  type="text" 
-                  value={editSlug} 
+                <label className="block font-semibold mb-1">{isRTL ? 'الرابط (Slug)' : 'URL Slug'}</label>
+                <input
+                  type="text"
+                  value={editSlug}
                   onChange={(e) => setEditSlug(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl border bg-stone-50 dark:bg-stone-900 outline-hidden font-mono"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">SEO Meta Title</label>
-                <input 
-                  type="text" 
-                  value={editSeoTitle} 
+                <label className="block font-semibold mb-1">{isRTL ? 'عنوان SEO لمحركات البحث' : 'SEO Meta Title'}</label>
+                <input
+                  type="text"
+                  value={editSeoTitle}
                   onChange={(e) => setEditSeoTitle(e.target.value)}
-                  placeholder="Appears in search engine results"
                   className="w-full px-3 py-2 rounded-xl border bg-stone-50 dark:bg-stone-900 outline-hidden"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">SEO Description</label>
-                <textarea 
+                <label className="block font-semibold mb-1">{isRTL ? 'وصف SEO' : 'SEO Description'}</label>
+                <textarea
                   rows={3}
-                  value={editSeoDesc} 
+                  value={editSeoDesc}
                   onChange={(e) => setEditSeoDesc(e.target.value)}
-                  placeholder="Summary for Google and social previews..."
                   className="w-full px-3 py-2 rounded-xl border bg-stone-50 dark:bg-stone-900 outline-hidden"
                 />
               </div>
             </div>
 
             <div className="flex justify-end gap-2 pt-2 border-t">
-              <button 
-                onClick={() => setEditingPageId(null)}
-                className="px-4 py-2 rounded-xl text-xs text-stone-500"
-              >
-                Cancel
+              <button onClick={() => setEditingPageId(null)} className="px-4 py-2 rounded-xl text-xs text-stone-500">
+                {isRTL ? 'إلغاء' : 'Cancel'}
               </button>
-              <button 
-                onClick={saveEdit}
-                className="px-5 py-2 rounded-xl bg-[#1E1E1E] text-white text-xs font-bold"
-              >
-                Save Changes
+              <button onClick={saveEdit} className="px-5 py-2 rounded-xl bg-[#1E1E1E] text-white text-xs font-bold">
+                {isRTL ? 'حفظ التغييرات' : 'Save Changes'}
               </button>
             </div>
           </div>
@@ -301,4 +284,3 @@ export const PagesManagementView: React.FC = () => {
     </div>
   );
 };
-

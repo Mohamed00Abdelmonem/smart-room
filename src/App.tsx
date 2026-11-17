@@ -22,6 +22,13 @@ import { VisualizerPage } from './pages/VisualizerPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { IntegrationPage } from './pages/IntegrationPage';
 
+// Showroom Marketplace Module
+import { ShowroomMarketplaceProvider } from './modules/showroom/context/ShowroomMarketplaceContext';
+import { BrandProfilePage } from './modules/showroom/views/BrandProfilePage';
+import { PlaceProfilePage } from './modules/showroom/views/PlaceProfilePage';
+import { ProductDetailsPage } from './modules/showroom/views/ProductDetailsPage';
+import { ShowroomManagePage } from './modules/showroom/views/ShowroomManagePage';
+
 // Store Builder Module
 import { StoreBuilderProvider } from './modules/storeBuilder/context/StoreBuilderContext';
 import { StoreBuilderLayout } from './modules/storeBuilder/components/layout/StoreBuilderLayout';
@@ -73,29 +80,35 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-white text-[#292722] dark:bg-[#121110] dark:text-[#F8F7F3] transition-colors duration-300">
-      <Navbar />
-      <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/showroom" element={<ShowroomPage />} />
-          <Route path="/visualizer" element={<VisualizerPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/integration" element={<IntegrationPage />} />
-          <Route path="*" element={<HomePage />} />
-        </Routes>
-      </main>
-      <Footer />
+      <ShowroomMarketplaceProvider>
+        <div className="min-h-screen flex flex-col font-sans bg-white text-[#292722] dark:bg-[#121110] dark:text-[#F8F7F3] transition-colors duration-300">
+          <Navbar />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/showroom" element={<ShowroomPage />} />
+              <Route path="/showroom/brands/:slug" element={<BrandProfilePage />} />
+              <Route path="/showroom/places/:slug" element={<PlaceProfilePage />} />
+              <Route path="/showroom/products/:slug" element={<ProductDetailsPage />} />
+              <Route path="/showroom/manage" element={<ShowroomManagePage />} />
+              <Route path="/visualizer" element={<VisualizerPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/integration" element={<IntegrationPage />} />
+              <Route path="*" element={<HomePage />} />
+            </Routes>
+          </main>
+          <Footer />
 
-      {/* Global Modals & Drawers */}
-      <TryInRoomModal />
-      <ProductDetailModal />
-      <BookDemoModal />
-      <ProposalComparisonModal />
-      <EgyptPaymentModal />
-      <CartDrawer />
-      <Toast />
+        {/* Global Modals & Drawers */}
+        <TryInRoomModal />
+        <ProductDetailModal />
+        <BookDemoModal />
+        <ProposalComparisonModal />
+        <EgyptPaymentModal />
+        <CartDrawer />
+        <Toast />
     </div>
+    </ShowroomMarketplaceProvider >
   );
 };
 
